@@ -43,37 +43,12 @@ module RegisterFile_tb();
 	initial begin
 	
     RegWrite <= 0; ReadRegister1 <= 5'b00001; ReadRegister2 <= 5'b00010; WriteRegister <= 5'b00010; WriteData <= 424;
-	@(posedge Clk);
-	@(posedge Clk);
-    RegWrite <= 1;
-	@(posedge Clk);
-	@(posedge Clk);
-	@(posedge Clk);
-	
-    WriteRegister <= 5'b00001;
-	@(posedge Clk);
-	@(posedge Clk);
-	@(posedge Clk);
-	@(posedge Clk);
-
-    RegWrite <= 1;
-	@(posedge Clk);
-	WriteData <= 3;
-	@(posedge Clk);
-	@(posedge Clk);
-    WriteRegister <= 5'b00010;
-	@(posedge Clk);
-	@(posedge Clk);
-	@(posedge Clk);
-	WriteData <= 424;
-	@(posedge Clk);
-	@(posedge Clk);
-	@(posedge Clk);
-
-
-    
-
-	    	
+	#60 RegWrite <= 1;
+	#60 WriteRegister <= 5'b00001;
+	#100 WriteData <= 3;
+	#40 WriteRegister <= 5'b00010;
+	#60 WriteData <= 424;
+		    	
 	end
 
 endmodule
