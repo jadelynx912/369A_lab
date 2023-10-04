@@ -25,7 +25,59 @@ module ALU32Bit_tb();
 
 	initial begin
 	
-    /* Please fill in the implementation here... */
+        A <= 2;
+	    B <= 1;
+	    ALUControl <= 5'b00001; //3
+	    #10
+	    ALUControl <= 5'b00010; //1
+	    #10
+	    ALUControl <= 5'b00011; //2
+	    #10
+	    ALUControl <= 5'b00100; //4
+	    #10
+	    ALUControl <= 5'b00101; //1
+	    A <= 1;
+	    B <= 0;
+	    ALUControl <= 5'b00110; //0
+	    #10
+	    ALUControl <= 5'b00111; //1
+	    #10
+	    ALUControl <= 5'b01000; //1
+	    #10
+	    ALUControl <= 5'b01001; //1
+	    #10
+	    ALUControl <= 5'b01010; //0
+	    #10
+	    A <= 3;
+	    B <= 0;
+	    ALUControl <= 5'b01011; //1 and Zero = 1
+	    #10
+	    A <= 0; //1 and Zero = 1
+	    #10
+	    ALUControl <= 5'b01100; //1 and Zero = 1
+	    A <= 1;
+	    ALUControl <= 5'b01100; //0 and Zero = 1
+	    #10
+	    ALUControl <= 5'b01110; //0 
+	    #10
+	    ALUControl <= 5'b01111; //1 and Zero = 1
+	    #10
+	    A <= 0; //0 and Zero = 1
+	    #10
+	    ALUControl <= 5'b10000; //0 and Zero = 1
+	    #10
+	    A <= 1;  //1 and Zero = 1
+	    #10
+	    ALUControl <= 5'b10001; //0 and Zero = 1
+	    #10
+	    ALUControl <= 5'b10010; //0 and Zero = 1
+	    #10
+	    ALUControl <= 5'b0; //Zero = 1
+	    
+	    
+	    
+	    
+	    
 	
 	end
 
