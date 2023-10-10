@@ -28,7 +28,7 @@
 
 module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 
-	input [3:0] ALUControl; // control bits for ALU operation
+	input [4:0] ALUControl; // control bits for ALU operation
                                 // you need to adjust the bitwidth as needed
 	input [31:0] A, B;	    // inputs
 
@@ -53,20 +53,20 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
            ALUResult = A | B;
 	    5'b01000://  Logical xor
            ALUResult = A ^ B;
-	    5'b01001: // Logical nand 
+	    /*5'b01001: // Logical nand 
            ALUResult = ~(A & B);
         5'b01010: // Logical xnor
-           ALUResult = ~(A ^ B);
+           ALUResult = ~(A ^ B);*/
         5'b01011: begin // Branch if greater than or equal to zero (bgez)
            ALUResult = (A>=B)?8'd1:8'd0;
-	       Zero = 1;
+           Zero = 1;
 	    end
         5'b01100: begin// Branch on equal (beq)
            ALUResult = (A==B)?8'd1:8'd0;
 	       Zero = 1;
 	    end
 	    5'b01101: // Logical nor
-	      ALUResult = ~(A | B);
+	      ALUResult = !(A | B);
 	    5'b01110: //Logical slt
 	      if (A != B) begin
 		    if (A > B) begin
