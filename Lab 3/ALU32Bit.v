@@ -51,7 +51,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
            ALUResult = A & B;
 	    5'b00111: //Logical or
            ALUResult = A | B;
-	    5'b01000://  Logical xor
+	    5'b01000: //  Logical xor
            ALUResult = A ^ B;
 	    /*5'b01001: // Logical nand 
            ALUResult = ~(A & B);
@@ -59,11 +59,15 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
            ALUResult = ~(A ^ B);*/
         5'b01011: begin // Branch if greater than or equal to zero (bgez)
            ALUResult = (A>=B)?8'd1:8'd0;
-           Zero = 1;
+           if (ALUResult == 1) begin
+                Zero = 1;
+           end
 	    end
-        5'b01100: begin// Branch on equal (beq)
+        5'b01100: begin // Branch on equal (beq)
            ALUResult = (A==B)?8'd1:8'd0;
-	       Zero = 1;
+	       if (ALUResult == 1) begin
+                Zero = 1;
+           end
 	    end
 	    5'b01101: // Logical nor
 	      ALUResult = !(A | B);
@@ -86,19 +90,27 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 		  end
 	   5'b01111:  begin // Branch on not equal (bne)
    	     ALUResult = (A!=B)?8'd1:8'd0;
-         Zero = 1;
+         if (ALUResult == 1) begin
+                Zero = 1;
+           end
        end
 	   5'b10000: begin //Branch on greater than zero (btgz)
          ALUResult = (A>B)?8'd1:8'd0;
-	     Zero = 1;
+	     if (ALUResult == 1) begin
+                Zero = 1;
+           end
 	   end
        5'b10001: begin// Branch if less than or equal to zero (blez)
          ALUResult = (A<=B)?8'd1:8'd0;
-         Zero = 1;
+         if (ALUResult == 1) begin
+                Zero = 1;
+           end
        end
 	   5'b10010: begin//Branch on less than zero (btgz)
          ALUResult = (A<B)?8'd1:8'd0;
-	     Zero = 1;
+	     if (ALUResult == 1) begin
+                Zero = 1;
+           end
 	   end
 	   default: ALUResult = 0; 
        endcase
