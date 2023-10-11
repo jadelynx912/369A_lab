@@ -19,8 +19,9 @@ module InstructionMemory_tb();
 	);
 
 	initial begin
-	
-    /* Please fill in the implementation here... */
+	   Address = 32'h0000000C;
+	   #50 Address = 32'h0000001C;
+	   #50 Address = 32'h00000068;
 	
 	end
 

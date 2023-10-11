@@ -19,9 +19,9 @@ module PCAdder_tb();
     );
 
 	initial begin
-	
-    /* Please fill in the implementation here... */
-	
+        PCResult <= 'h000000000;
+        #50 PCResult <= 'h00000111;
+        #50 PCResult <= 'hAAAAAAAA;
 	end
 
 endmodule

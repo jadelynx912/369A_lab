@@ -27,8 +27,8 @@ module ProgramCounter_tb();
 	end
 
 	initial begin
-	
-    /* Please fill in the implementation here... */
+        Address <= 32'h00000000;
+        #50 Address <= 32'h00000008;
 	
 	end
 

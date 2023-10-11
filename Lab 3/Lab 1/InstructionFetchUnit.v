@@ -37,8 +37,19 @@
 // which generates a continuous clock pulse into the module.
 ////////////////////////////////////////////////////////////////////////////////
 
-module InstructionFetchUnit(Instruction, Reset, Clk);
-
-    /* Please fill in the implementation here... */
+module InstructionFetchUnit(Instruction, PCResult, Reset, Clk);
+    input Reset;
+    input Clk;
+    output [31:0] Instruction;
+    output [31:0] PCResult;
+    
+    wire [31:0] PCAddResult;
+    
+    ProgramCounter pc1(PCAddResult, PCResult, Reset, Clk);
+    
+    InstructionMemory im1(PCResult, Instruction);
+    
+    PCAdder pca1(PCResult, PCAddResult);
+    
 endmodule
 

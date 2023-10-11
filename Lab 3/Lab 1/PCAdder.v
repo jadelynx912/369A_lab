@@ -24,11 +24,8 @@ module PCAdder(PCResult, PCAddResult);
     input [31:0] PCResult;
 
     output [31:0] PCAddResult;
-
-    /* Please fill in the implementation here... */
     
     assign PCAddResult = PCResult + 4;
-    
 
 endmodule
 
