@@ -18,10 +18,10 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl);
+module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl);
     input [31:0] Instruction;
-    output reg RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump;
-    output reg ALUControl[4:0];
+    output reg RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal;
+    output reg [4:0] ALUControl;
     
     always @ (Instruction) begin
         case(Instruction[31:26])
@@ -34,6 +34,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             //To get ALU control value for each instruction
             case(Instruction[5:0])
                 6'b100000: ALUControl <= 5'b00001;      //add
@@ -57,6 +59,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 0;
             MemToReg <= 0;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'b00001;      //add to get address
         end
         6'b101011 || 6'b101000 || 6'b101001: begin      //sw, sb, sh
@@ -68,6 +72,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 0;
             MemToReg <= 1'bx;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'b00001;     //add to get address
         end
         6'b001100: begin            //andi
@@ -79,6 +85,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'b00110;
         end 
         6'b001101: begin            //ori
@@ -90,6 +98,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'b00111;
         end
         6'b001110: begin            //xori
@@ -101,6 +111,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'b01000;
         end
         6'b001010: begin            //slti
@@ -112,6 +124,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'b01110;
         end
         6'b000101: begin            //bne
@@ -123,6 +137,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'b01111;
         end
         6'b000100: begin            //beq
@@ -134,6 +150,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'b01100;
         end
         6'b000001: begin            //bgez, bltz
@@ -145,6 +163,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             case(Instruction[20:16])            //Uses rt as an extension of the opcode
                 5'b00001: begin                 //bgez
                     ALUControl <= 5'b01111;
@@ -163,6 +183,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'b10000;
         end
         6'b000110: begin            //blez
@@ -174,6 +196,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'b10001;
         end
         6'b000010: begin            //j - Add or gate for what comes out of the AND gate and jump
@@ -185,9 +209,24 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 0;
             MemToReg <= 1'bx;
             Jump <= 1;
+            Jr <= 0;
+            Jal <= 0;
             ALUControl <= 5'bxxxxx;
         end
-        6'b000011: begin            //jal - FIXME NEED TO SOMEHOW STORE IN $ra?????
+        6'b000011: begin            //jal
+            RegWrite <= 0;
+            ALUSrc <= 0;
+            RegDst <= 1'bx;
+            MemWrite <= 0; 
+            MemRead <= 0;
+            Branch <= 1;
+            MemToReg <= 1'bx;
+            Jump <= 1;
+            Jr <= 0;
+            Jal <= 1;
+            ALUControl <= 5'bxxxxx;
+        end
+        6'b001001: begin            //jr
             RegWrite <= 0;
             ALUSrc <= 0;
             RegDst <= 1'bx;
@@ -196,17 +235,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
-            ALUControl <= 5'bxxxxx;
-        end
-        6'b001001: begin            //jr - FIXME - check implementation
-            RegWrite <= 0;
-            ALUSrc <= 0;
-            RegDst <= 1'bx;
-            MemWrite <= 0; 
-            MemRead <= 0;
-            Branch <= 1;
-            MemToReg <= 1'bx;
-            Jump <= 0;
+            Jr <= 1;
+            Jal <= 0;
             ALUControl <= 5'bxxxxx;
         end
         endcase
