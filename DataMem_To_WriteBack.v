@@ -5,7 +5,7 @@
 // 
 // Create Date: 10/16/2023 12:53:58 PM
 // Design Name: 
-// Module Name: Execute_To_DataMem
+// Module Name: DataMem_To_WriteBack
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,19 +20,19 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module DataMem_To_WriteBack();
+module DataMem_To_WriteBack(Clk, Reset, PCAddResult, MemReadData, ALUResult, RegRd, 
+			PCAddResultOut, MemReadDataOut, ALUResultOut, RegRdOut);
 
+input Clk, Reset;
+input [31:0] PCAddResult, MemReadData, ALUResult, RegRd;
 
-input clk;
+output reg PCAddResultOut, MemReadDataOut, ALUResultOut, RegRdOut;
 
-input [31:0]PCAddResult, instruction;
-
-output reg[31:0] PCAddResultOut, instructionOut;
-
-always @(posedge clk) begin
+always @(posedge Clk) begin
     PCAddResultOut <= PCAddResult;
-    instructionOut <= instruction;
+    MemReadDataOut <= MemReadData;
+    ALUResultOut <= ALUResult;
+    RegRdOut <= RegRd;
+
 end
-
-
 endmodule
