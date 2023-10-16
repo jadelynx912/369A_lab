@@ -5,7 +5,7 @@
 // 
 // Create Date: 10/16/2023 12:53:58 PM
 // Design Name: 
-// Module Name: Execute_To_DataMem
+// Module Name: Fetch_to_Decode
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,15 +20,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Fetch_To_Decode(PCAddResult, instruction, PCAddResultOut, instructionOut, clk);
+module Fetch_To_Decode(PCAddResult, instruction, PCAddResultOut, instructionOut, Clk, Reset);
 
-input clk;
-
+input Clk, Reset;
 input [31:0]PCAddResult, instruction;
 
 output reg[31:0] PCAddResultOut, instructionOut;
 
-always @(posedge clk) begin
+always @(posedge Clk) begin
     PCAddResultOut <= PCAddResult;
     instructionOut <= instruction;
 end
