@@ -5,7 +5,7 @@
 // 
 // Create Date: 10/16/2023 12:53:58 PM
 // Design Name: 
-// Module Name: Execute_To_DataMem
+// Module Name: Decode_To_Execute
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,27 +20,39 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Decode_To_Execute(clk, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl, PCAddResult, ReadData1, ReadData2, SignExt, RegDst1, RegDst2, 
-PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut,RegDst1Out, RegDst2Out,RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, ALUControlOut);
+module Decode_To_Execute(Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl, PCAddResult, ReadData1, ReadData2, SignExt, RegDst1, RegDst2, 
+PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut, RegDst1Out, RegDst2Out, RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut, ALUControlOut);
 
 
-input clk;
+input Clk, Reset;
 
-input RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl;
+input RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal;
+input [4:0] ALUControl, RegDst1, RegDst2;
 
 
 input [31:0] PCAddResult, ReadData1, ReadData2, SignExt;
-input [4:0] RegDst1, RegDst2;
 
 output reg [31:0] PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut;
-output reg [4:0] RegDst1Out, RegDst2Out;
-output reg RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, ALUControlOut;
+output reg [4:0] ALUControlOut, RegDst1Out, RegDst2Out;
+output reg RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, Jrout, JalOut, ALUControlOut;
 
-// MISSING PCSRC
-
-always @(posedge clk) begin
-    PCAddResultOut <= PCAddResult;
-    instructionOut <= instruction;
+always @(posedge Clk) begin
+    RegWriteOut <= RegWrite;
+    ALUSrcOut <= ALUSrs;
+    RegDstOut <= RegDest;
+    MemWriteOut <= MemWrite;
+    MemReadOut <= MemRead;
+    BranchOut <= Branch;
+    MemToRegOut <= MemToReg;
+    JumpOut <= Jump;
+    JrOut <= Jr;
+    JalOut <= Jal;
+    ALUControlOut <= ALUControl;
+    RegDst1Out <= RegDst1;
+    RegDst2Out <= RegDst2;
+    ReadData1Out <= ReadData1;
+    ReadData2Out <= ReadData2;
+    SignExtOut <= SignExt;
 end
 
 
