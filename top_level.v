@@ -20,20 +20,26 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module top_level(clk, rst, address);
+module top_level(Clk, Reset, PCResult, WData);
 
-input clk, rst; 
-input [31:0] address;
+input Clk, Reset; 
+output [31:0] WData;
+input [31:0] PCResult;
 
 wire [31:0] instruction;
-wire [31:0] PCResult, PCAddResult, PCSrcOutput;
+wire [31:0] PCAddResult, PCSrcOutput;
 wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
-wire RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl; //controller stuff, no PCSrc?
+wire PCSrc;
+wire RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl; 
 wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend; 
 
 ///////////////////
+wire [31:0] temp;
+wire temp1, temp2;
+
+
 wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute;
 wire [4:0] RegDst1Execute, RegDst2Execute;
 wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, ALUControlExecute;
@@ -46,35 +52,37 @@ wire RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory
 wire [31:0] PCAdder_SignExtensionMemory, ALUResultMemory, ReadData2Memory, RdMemory;
 wire ZeroMemory;
 
+wire [31:0] ReadData;
 
 
 
 
 
-Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAddResult, inB, jumpFinal); //change inB
 
-ProgramCounter Pcount(PCSrcOutput, PCResult, rst, clk);
+Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PCSrc); 
 
-InstructionMemory Imem(Address, instruction);
+ProgramCounter Pcount(PCSrcOutput, PCResult, rst, Clk);
+
+InstructionMemory Imem(PCSrcOutput, instruction);
 
 PCAdder adder(PCResult, PCAddResult);
 
 
 //INSTRUCTION FETCH STAGE / DECODE STAGE
-Fetch_To_Decode ftd(instruction, PCAddResult, PCAddResultDecode, instructionDecode, clk);
+Fetch_To_Decode ftd(instruction, PCAddResult, PCAddResultDecode, instructionDecode, Clk);
 
-RegisterFile reggy(instructionDecode[25:21], instructionDecode[20:16], WriteRegister, WriteDataReg, RegWrite, clk, ReadData1, ReadData2);
-//WriteData and Write Address to be updated
+RegisterFile reggy(instructionDecode[25:21], instructionDecode[20:16], RdMemory, WriteDataReg, RegWrite, Clk, ReadData1, ReadData2);
 
 SignExtension signE(instructionDecode[15:0], signExtend);
 
 Controller controlly(instructionDecode, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl);
 
 //DECODE STAGE / EXECUTE STAGE
-Decode_To_Execute dte (clk, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl, PCAddResult, ReadData1, ReadData2, signE, instructionDecode[20:16], instructionDecode[15:11],
+Decode_To_Execute dte (Clk, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl, PCAddResult, ReadData1, ReadData2, signE, instructionDecode[20:16], instructionDecode[15:11],
 PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, RegDst1Execute, RegDst2Execute,RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, ALUControlExecute);
 
-//add logic gates//////////////////////////
+assign temp = SignExtExecute << 2;
+assign PCAdder_SignExtension = temp + PCAddResultExecute;
 
 Mux32Bit2To1 aluSrc(ALUSrcOutput, SignExtExecute, ReadData2Execute, ALUSrcExecute); //SignExtOut if 1, ReadData2Out if 0
 
@@ -83,16 +91,22 @@ Mux32Bit2To1 regDst(regDstOutput, RegDst2Execute, RegDst1Execute, RegDstExecute)
 ALU32Bit alu(ALUControlExecute, ReadData1Execute, ALUSrcOutput, ALUResult, Zero);
 
 //EXECUTE STAGE / DATA MEMORY STAGE
-Execute_To_DataMem etdm(clk, Zero, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, PCAdder_SignExtension, ALUResult, ReadData2Execute, regDstOutput, 
+Execute_To_DataMem etdm(Clk, Zero, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, PCAdder_SignExtension, ALUResult, ReadData2Execute, regDstOutput, 
 RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, PCAdder_SignExtensionMemory, ALUResultMemory, ReadData2Memory, RdMemory, ZeroMemory);
-//IMPLEMENT PCAdder_SignExtension THROUGH LOGIC GATES
 
 
-DataMemory DataMem(Address, WriteData, Clk, MemWrite, MemRead, ReadData); 
+assign temp1 = Zero;
+assign temp2 = BranchMemory;
+
+assign PCSrc = temp1 & temp2;
+ 
+DataMemory DataMem(ALUResultMemory, ReadData2Memory, Clk, MemWriteMemory, MemReadMemory, ReadData); 
 
 //DATA MEMORY STAGE / WRITE BACK STAGE
 
-Mux32Bit2To1 Writeback(WriteDataReg, inA, inB, sel);
+
+// need to declare this register
+Mux32Bit2To1 Writeback(WriteDataReg, ALUResultWrite, ReadDataWrite, MemToRegWrite);
 
 
 
