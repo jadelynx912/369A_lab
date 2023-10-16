@@ -20,23 +20,35 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Execute_To_DataMem(clk, Zero, RegWrite, MemWrite, MemRead, Branch, MemToReg, Jump, PCAdder_SignExtension, ALUResult, ReadData2, Rd, 
-RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, PCAdder_SignExtensionOut, ALUResultOut, ReadData2Out, RdOut, ZeroOut);
+module Execute_To_DataMem(Clk, Reset, RegWrite, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, Zero, RData2, ALUResult, PCAddResult, BranchPC, RdReg, 
+RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut, ZeroOut, RData2Out, ALUResultOut, PCAddResultOut, BranchPCOut, RdRegOut);
 
 
-input clk, Zero;
+input Clk, Reset;
 
-input RegWrite, MemWrite, MemRead, Branch, MemToReg, Jump;
-input [31:0] PCAdder_SignExtension, ALUResult, ReadData2, Rd;
+input RegWrite, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, Zero;
+input [31:0] RData2, ALUResult, PCAddResult, BranchPC, RdReg;
 
-output reg RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut;
-output reg [31:0] PCAdder_SignExtensionOut, ALUResultOut, ReadData2Out, RdOut;
-output reg ZeroOut;
+output reg RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut, ZeroOut;
+output reg [31:0] RData2Out, ALUResultOut, PCAddResultOut, BranchPCOut, RdRegOut;
 
 
-always @(posedge clk) begin
+always @(posedge Clk) begin
+    RegWriteOut <= RegWrite;
+    MemWriteOut <= MemWrite;
+    MemReadOut <= MemRead;
+    BranchOut <= Branch;
+    MemToRegOut <= MemToReg;
+    JumpOut <= Jump;
+    JrOut <= Jr;
+    JalOut <= Jal;
+    ZeroOut <= Zero;
+    RData2Out <= RData2;
+    ALUResultOut <= ALUResult;
     PCAddResultOut <= PCAddResult;
-    instructionOut <= instruction;
+    BranchPCOut <= BranchPC;
+    RdRegOut <= RdReg;
+
 end
 
 
