@@ -29,7 +29,7 @@ output reg[31:0] PCAddResultOut, instructionOut;
 
 always @(posedge Clk) begin
     PCAddResultOut <= PCAddResult;
-    instructionOut <= instruction;
+    InstructionOut <= Instruction;
 end
 
 endmodule
