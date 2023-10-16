@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Fetch_To_Decode(PCAddResult, instruction, PCAddResultOut, instructionOut, Clk, Reset);
+module Fetch_To_Decode(PCAddResult, Instruction, PCAddResultOut, InstructionOut, Clk, Reset);
 
 input Clk, Reset;
 input [31:0]PCAddResult, instruction;
