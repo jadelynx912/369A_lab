@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Fetch_To_Decode(PCAddResult, instruction, PCAddResultOut, instructionOut, Clk, Reset);
+module Fetch_To_Decode(PCAddResult, Instruction, PCAddResultOut, InstructionOut, Clk, Reset);
 
 input Clk, Reset;
 input [31:0]PCAddResult, instruction;
@@ -29,7 +29,7 @@ output reg[31:0] PCAddResultOut, instructionOut;
 
 always @(posedge Clk) begin
     PCAddResultOut <= PCAddResult;
-    instructionOut <= instruction;
+    InstructionOut <= Instruction;
 end
 
 endmodule
