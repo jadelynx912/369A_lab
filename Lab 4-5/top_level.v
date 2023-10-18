@@ -22,10 +22,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module top_level(Clk, Reset, PCResult);
+module top_level(Clk, Reset, PCResult, WData);
 
 input Clk, Reset; 
-//output [31:0] WData;
+output [31:0] WData;
 input [31:0] PCResult;
 
 wire [31:0] instruction;

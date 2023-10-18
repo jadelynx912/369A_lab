@@ -23,9 +23,10 @@
 module top_level_tb();
     reg Clk, Rst;
     
-    wire PCResult;
+    wire WData, PCResult;
     
-    top_level(Clk, Rst, PCResult);
+    top_level(Clk, Rst, PCResult, WData);
+    
     always 
     begin
         Clk <= 0;
