@@ -17,4 +17,7 @@ Finished scanning sourcesINFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1704] No user IP repositories specified
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2020.2/data/ip'.
 oopen_project: Time (s): cpu = 00:00:19 ; elapsed = 00:00:11 . Memory (MB): peak = 1006.988 ; gain = 0.000update_compile_order -fileset sources_1
-
+iexit
+INFO: [Common 17-206] Exiting Vivado at Wed Oct 18 14:22:37 2023...
+b/Lab 4-5/SignExtension_25to32.v}}
+update_compile_order -fileset sources_1

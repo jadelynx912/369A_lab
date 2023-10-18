@@ -11,4 +11,5 @@
 #-----------------------------------------------------------
 start_gui
 oopen_project C:/Users/willy/OneDrive/Documents/GitHub/369A_lab/LabProject/LabProject.xprupdate_compile_order -fileset sources_1
-
+import_files -norecurse {{C:/Users/willy/OneDrive/Documents/GitHub/369A_lab/Lab 4-5/SignExtension_25to32.v}}
+update_compile_order -fileset sources_1

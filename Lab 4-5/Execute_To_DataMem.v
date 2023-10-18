@@ -20,18 +20,18 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Execute_To_DataMem(Clk, Reset, RegWrite, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, Zero, RData2, ALUResult, PCAddResult, BranchPC, RdReg, 
-RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut, ZeroOut, RData2Out, ALUResultOut, PCAddResultOut, BranchPCOut, RdRegOut);
+module Execute_To_DataMem(Clk, Reset, RegWrite, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, Zero, RData1, RData2, ALUResult, PCAddResult, BranchPC, RdReg, 
+RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut, ZeroOut, RData1Out, RData2Out, ALUResultOut, PCAddResultOut, BranchPCOut, RdRegOut);
 
 
 input Clk, Reset;
 
 input RegWrite, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, Zero;
-input [31:0] RData2, ALUResult, PCAddResult, BranchPC;
+input [31:0] RData1, RData2, ALUResult, PCAddResult, BranchPC;
 input [4:0] RdReg;
 
 output reg RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut, ZeroOut;
-output reg [31:0] RData2Out, ALUResultOut, PCAddResultOut, BranchPCOut;
+output reg [31:0] RData1Out, RData2Out, ALUResultOut, PCAddResultOut, BranchPCOut;
 output reg [4:0] RdRegOut;
 
 

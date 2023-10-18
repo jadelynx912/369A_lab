@@ -29,7 +29,7 @@ input Clk, Reset;
 input [31:0] PCResult;
 
 wire [31:0] instruction;
-wire [31:0] PCAddResult, PCSrcOutput;
+wire [31:0] PCAddResult, PCSrcOutput, Jump_To_PC;
 wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
@@ -50,7 +50,7 @@ wire [31:0] ALUResult, BranchPCExecute;
 wire Zero;
 //////////////////////////////////
 wire RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory, BranchPCMemory;
-wire [31:0] PCAdder_SignExtensionMemory, ALUResultMemory, ReadData2Memory, RdMemory;
+wire [31:0] PCAdder_SignExtensionMemory, ALUResultMemory, ReadData1Memory, ReadData2Memory, RdMemory;
 wire ZeroMemory;
 
 wire RegWriteWrite, MemToRegWrite, JalWrite;
@@ -70,7 +70,9 @@ assign PCSrc_Jump_OR = JumpMemory | PCSrc; //Do we grab Jump straight from contr
 
 Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PCSrc); 
 
-ProgramCounter Pcount(PCSrcOutput, PCResult, Reset, Clk);
+Mux32Bit2To1 JumpMux(Jump_To_PC, ReadData1Memory, PCSrcOutput, Jr); // May need to replace JR with JR Memory?????
+
+ProgramCounter Pcount(Jump_To_PC, PCResult, Reset, Clk);
 
 InstructionMemory Imem(PCResult, instruction); //Replaced PCSrcOutput with PCResult
 
@@ -101,15 +103,15 @@ Mux32Bit2To1 aluSource(ALUSrcOutput, SignExtExecute, ReadData2Execute, ALUSrcExe
 
 Mux32Bit2To1 regDest(regDstMux, RegDst2Execute, RegDst1Execute, RegDstExecute); //RegDst1Out if 0 , RegDst2Out if 1
 
-Mux32Bit2To1 JalRAMux(regDstOutput, 29, regDstMux, JalExecute); //How tf do you implement ra here?
+Mux32Bit2To1 JalRAMux(regDstOutput, 31, regDstMux, JalExecute); //How tf do you implement ra here?
 
 ALU32Bit alu(ALUControlExecute, ReadData1Execute, ALUSrcOutput, ALUResult, Zero);
 
 assign BranchPCExecute = PCAddResultExecute; //for organizational purposes
 
 //EXECUTE STAGE / DATA MEMORY STAGE
-Execute_To_DataMem etdm(Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, Zero, ReadData2Execute, ALUResult, PCAdder_SignExtension, BranchPCExecute, regDstOutput, 
-RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory, ZeroMemory, ReadData2Memory, ALUResultMemory, PCAdder_SignExtensionMemory, BranchPCMemory, RdMemory);
+Execute_To_DataMem etdm(Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, Zero, ReadData1Execute, ReadData2Execute, ALUResult, PCAdder_SignExtension, BranchPCExecute, regDstOutput, 
+RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory, ZeroMemory, ReadData1Memory, ReadData2Memory, ALUResultMemory, PCAdder_SignExtensionMemory, BranchPCMemory, RdMemory);
 
 assign temp1 = ZeroMemory;
 assign temp2 = BranchMemory;
