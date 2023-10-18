@@ -27,10 +27,12 @@ RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, Ja
 input Clk, Reset;
 
 input RegWrite, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, Zero;
-input [31:0] RData2, ALUResult, PCAddResult, BranchPC, RdReg;
+input [31:0] RData2, ALUResult, PCAddResult, BranchPC;
+input [4:0] RdReg;
 
 output reg RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut, ZeroOut;
-output reg [31:0] RData2Out, ALUResultOut, PCAddResultOut, BranchPCOut, RdRegOut;
+output reg [31:0] RData2Out, ALUResultOut, PCAddResultOut, BranchPCOut;
+output reg [4:0] RdRegOut;
 
 
 always @(posedge Clk) begin

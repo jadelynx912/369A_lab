@@ -20,10 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module top_level(Clk, Reset, PCResult, WData);
+module top_level(Clk, Reset, PCResult);
 
 input Clk, Reset; 
-output [31:0] WData;
+//output [31:0] WData;
 input [31:0] PCResult;
 
 wire [31:0] instruction;
@@ -32,8 +32,8 @@ wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
 wire PCSrc;
-wire RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl; 
-wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend; 
+wire RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl; 
+wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, WritebackOutput; 
 
 ///////////////////
 wire [31:0] temp;
@@ -42,60 +42,68 @@ wire temp1, temp2;
 
 wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute;
 wire [4:0] RegDst1Execute, RegDst2Execute;
-wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, ALUControlExecute;
+wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, ALUControlExecute, JrExecute, JalExecute;
 wire [31:0] ALUSrcOutput, regDstOutput;
 
-wire [31:0] ALUResult;
+wire [31:0] ALUResult, BranchPCExecute;
 wire Zero;
 //////////////////////////////////
-wire RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory;
+wire RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory, BranchPCMemory;
 wire [31:0] PCAdder_SignExtensionMemory, ALUResultMemory, ReadData2Memory, RdMemory;
 wire ZeroMemory;
 
-wire [31:0] ReadData;
+wire RegWriteWrite, MemToRegWrite, JalWrite;
+wire [31:0] ReadData, MemReadDataWrite, ALUResultWrite, BranchPCWrite;
+wire [4:0] RegRdWrite;
 
 
-
+//Branch PC may be fucked and needs to be checked
+//Branch vs BranchPC???
+//Double check I pass through ALUControl, and RD Mux values through as 5 bits and not signals.
+//DATAMEN_TO_WRITEBACK MISSING CONTROL SIGNALS
+//Check any signal that should be 5 bits
+//RegDstOutput should be 5 bits
 
 
 
 Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PCSrc); 
 
-ProgramCounter Pcount(PCSrcOutput, PCResult, rst, Clk);
+ProgramCounter Pcount(PCSrcOutput, PCResult, Reset, Clk);
 
-InstructionMemory Imem(PCSrcOutput, instruction);
+InstructionMemory Imem(PCResult, instruction); //Replaced PCSrcOutput with PCResult
 
 PCAdder adder(PCResult, PCAddResult);
 
 
 //INSTRUCTION FETCH STAGE / DECODE STAGE
-Fetch_To_Decode ftd(instruction, PCAddResult, PCAddResultDecode, instructionDecode, Clk);
+Fetch_To_Decode ftd(PCAddResult, instruction,  PCAddResultDecode, instructionDecode, Clk, Reset);
 
-RegisterFile reggy(instructionDecode[25:21], instructionDecode[20:16], RdMemory, WriteDataReg, RegWrite, Clk, ReadData1, ReadData2);
+RegisterFile reggy(instructionDecode[25:21], instructionDecode[20:16], RegRdWrite, WriteDataReg, RegWriteWrite, Clk, ReadData1, ReadData2);
 
 SignExtension signE(instructionDecode[15:0], signExtend);
 
-Controller controlly(instructionDecode, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl);
+Controller controlly(instructionDecode, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl);
 
 //DECODE STAGE / EXECUTE STAGE
-Decode_To_Execute dte (Clk, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, ALUControl, PCAddResult, ReadData1, ReadData2, signE, instructionDecode[20:16], instructionDecode[15:11],
-PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, RegDst1Execute, RegDst2Execute,RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, ALUControlExecute);
+Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl, PCAddResult, ReadData1, ReadData2, signExtend, instructionDecode[20:16], instructionDecode[15:11],
+PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, RegDst1Execute, RegDst2Execute,RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, ALUControlExecute);
 
 assign temp = SignExtExecute << 2;
 assign PCAdder_SignExtension = temp + PCAddResultExecute;
 
-Mux32Bit2To1 aluSrc(ALUSrcOutput, SignExtExecute, ReadData2Execute, ALUSrcExecute); //SignExtOut if 1, ReadData2Out if 0
+Mux32Bit2To1 aluSource(ALUSrcOutput, SignExtExecute, ReadData2Execute, ALUSrcExecute); //SignExtOut if 1, ReadData2Out if 0
 
-Mux32Bit2To1 regDst(regDstOutput, RegDst2Execute, RegDst1Execute, RegDstExecute); //RegDst1Out if 0 , RegDst2Out if 1
+Mux32Bit2To1 regDest(regDstOutput, RegDst2Execute, RegDst1Execute, RegDstExecute); //RegDst1Out if 0 , RegDst2Out if 1
 
 ALU32Bit alu(ALUControlExecute, ReadData1Execute, ALUSrcOutput, ALUResult, Zero);
 
+assign BranchPCExecute = PCAddResultExecute; //for organizational purposes
+
 //EXECUTE STAGE / DATA MEMORY STAGE
-Execute_To_DataMem etdm(Clk, Zero, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, PCAdder_SignExtension, ALUResult, ReadData2Execute, regDstOutput, 
-RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, PCAdder_SignExtensionMemory, ALUResultMemory, ReadData2Memory, RdMemory, ZeroMemory);
+Execute_To_DataMem etdm(Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, Zero, ReadData2Execute, ALUResult, PCAdder_SignExtension, BranchPCExecute, regDstOutput, 
+RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory, ZeroMemory, ReadData2Memory, ALUResultMemory, PCAdder_SignExtensionMemory, BranchPCMemory, RdMemory);
 
-
-assign temp1 = Zero;
+assign temp1 = ZeroMemory;
 assign temp2 = BranchMemory;
 
 assign PCSrc = temp1 & temp2;
@@ -103,10 +111,14 @@ assign PCSrc = temp1 & temp2;
 DataMemory DataMem(ALUResultMemory, ReadData2Memory, Clk, MemWriteMemory, MemReadMemory, ReadData); 
 
 //DATA MEMORY STAGE / WRITE BACK STAGE
+DataMem_To_WriteBack dmtw(Clk, Reset, PCAddResult, ReadData, ALUResultMemory, RdMemory, BranchPCMemory, RegWriteMemory, MemToRegMemory, JalMemory,
+			PCAddResultWrite, MemReadDataWrite, ALUResultWrite, RegRdWrite, BranchPCWrite, RegWriteWrite, MemToRegWrite, JalWrite); 
 
+//PCAddResult being passed in, why?
 
-// need to declare this register
-Mux32Bit2To1 Writeback(WriteDataReg, ALUResultWrite, ReadDataWrite, MemToRegWrite);
+Mux32Bit2To1 Writeback(WritebackOutput, ALUResultWrite, MemReadDataWrite, MemToRegWrite);
+
+Mux32Bit2To1 LastMux(WriteDataReg, BranchPCWrite, WritebackOutput, JalWrite); 
 
 
 

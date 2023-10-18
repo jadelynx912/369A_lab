@@ -34,12 +34,12 @@ input [31:0] PCAddResult, ReadData1, ReadData2, SignExt;
 
 output reg [31:0] PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut;
 output reg [4:0] ALUControlOut, RegDst1Out, RegDst2Out;
-output reg RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, Jrout, JalOut, ALUControlOut;
+output reg RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut;
 
 always @(posedge Clk) begin
     RegWriteOut <= RegWrite;
-    ALUSrcOut <= ALUSrs;
-    RegDstOut <= RegDest;
+    ALUSrcOut <= ALUSrc;
+    RegDstOut <= RegDst;
     MemWriteOut <= MemWrite;
     MemReadOut <= MemRead;
     BranchOut <= Branch;

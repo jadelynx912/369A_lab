@@ -20,19 +20,23 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module DataMem_To_WriteBack(Clk, Reset, PCAddResult, MemReadData, ALUResult, RegRd, 
-			PCAddResultOut, MemReadDataOut, ALUResultOut, RegRdOut);
+module DataMem_To_WriteBack(Clk, Reset, PCAddResult, MemReadData, ALUResult, RegRd, BranchPCMemory, RegWrite, MemToReg, Jal,
+			PCAddResultOut, MemReadDataOut, ALUResultOut, RegRdOut, BranchPCWrite, RegWriteOut, MemToRegOut, JalOut);
 
 input Clk, Reset;
-input [31:0] PCAddResult, MemReadData, ALUResult, RegRd;
+input [31:0] PCAddResult, MemReadData, ALUResult, RegRd, BranchPCMemory;
+input RegWrite, MemToReg, Jal;
 
-output reg PCAddResultOut, MemReadDataOut, ALUResultOut, RegRdOut;
+output reg [31:0] PCAddResultOut, MemReadDataOut, ALUResultOut, RegRdOut;
+output reg [31:0] BranchPCWrite;
+output reg RegWriteOut, MemToRegOut, JalOut;
 
 always @(posedge Clk) begin
     PCAddResultOut <= PCAddResult;
     MemReadDataOut <= MemReadData;
     ALUResultOut <= ALUResult;
     RegRdOut <= RegRd;
+    BranchPCWrite <= BranchPCMemory;
 
 end
 endmodule

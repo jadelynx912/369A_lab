@@ -21,11 +21,13 @@
 
 
 module Fetch_To_Decode(PCAddResult, Instruction, PCAddResultOut, InstructionOut, Clk, Reset);
+//Fetch_To_Decode ftd(PCAddResult, instruction,  PCAddResultDecode, instructionDecode, Clk, Reset);
+
 
 input Clk, Reset;
-input [31:0]PCAddResult, instruction;
+input [31:0]PCAddResult, Instruction;
 
-output reg[31:0] PCAddResultOut, instructionOut;
+output reg[31:0] PCAddResultOut, InstructionOut;
 
 always @(posedge Clk) begin
     PCAddResultOut <= PCAddResult;
