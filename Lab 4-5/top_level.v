@@ -17,6 +17,8 @@
 // Revision 0.01 - File Created
 // Additional Comments:
 // 
+// Percent Effor: William Rains 33%, Kari Cordes 33%, Samantha Perry 33%
+//
 //////////////////////////////////////////////////////////////////////////////////
 
 
@@ -31,9 +33,9 @@ wire [31:0] PCAddResult, PCSrcOutput;
 wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
-wire PCSrc;
+wire PCSrc, PCSrc_Jump_OR;
 wire RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl; 
-wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, WritebackOutput; 
+wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, signExtend25, signExtend15, WritebackOutput; 
 
 ///////////////////
 wire [31:0] temp;
@@ -43,7 +45,7 @@ wire temp1, temp2;
 wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute;
 wire [4:0] RegDst1Execute, RegDst2Execute;
 wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, ALUControlExecute, JrExecute, JalExecute;
-wire [31:0] ALUSrcOutput, regDstOutput;
+wire [31:0] ALUSrcOutput, regDstOutput, regDstMux;
 
 wire [31:0] ALUResult, BranchPCExecute;
 wire Zero;
@@ -65,6 +67,7 @@ wire [4:0] RegRdWrite;
 //RegDstOutput should be 5 bits
 
 
+assign PCSrc_Jump_OR = JumpMemory | PCSrc; //Do we grab Jump straight from controller or from memory pipeline?
 
 Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PCSrc); 
 
@@ -80,7 +83,11 @@ Fetch_To_Decode ftd(PCAddResult, instruction,  PCAddResultDecode, instructionDec
 
 RegisterFile reggy(instructionDecode[25:21], instructionDecode[20:16], RegRdWrite, WriteDataReg, RegWriteWrite, Clk, ReadData1, ReadData2);
 
-SignExtension signE(instructionDecode[15:0], signExtend);
+SignExtension signE(instructionDecode[15:0], signExtend15);
+
+SignExtension_25to32 signE25(instructionDecode[25:0], signExtend25);
+
+Mux32Bit2To1 SignExtensionMuxxy(signExtend, signExtend25, signExtend15, Jump);
 
 Controller controlly(instructionDecode, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl);
 
@@ -93,7 +100,9 @@ assign PCAdder_SignExtension = temp + PCAddResultExecute;
 
 Mux32Bit2To1 aluSource(ALUSrcOutput, SignExtExecute, ReadData2Execute, ALUSrcExecute); //SignExtOut if 1, ReadData2Out if 0
 
-Mux32Bit2To1 regDest(regDstOutput, RegDst2Execute, RegDst1Execute, RegDstExecute); //RegDst1Out if 0 , RegDst2Out if 1
+Mux32Bit2To1 regDest(regDstMux, RegDst2Execute, RegDst1Execute, RegDstExecute); //RegDst1Out if 0 , RegDst2Out if 1
+
+Mux32Bit2To1 JalRAMux(regDstOutput, 29, regDstMux, JalExecute); //How tf do you implement ra here?
 
 ALU32Bit alu(ALUControlExecute, ReadData1Execute, ALUSrcOutput, ALUResult, Zero);
 
