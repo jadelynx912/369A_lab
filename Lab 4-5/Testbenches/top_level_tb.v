@@ -20,7 +20,30 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module top_level_tb(
-
-    );
+module top_level_tb();
+    reg Clk, Rst;
+    
+    wire PCResult;
+    
+    top_level(Clk, Rst, PCResult);
+    always 
+    begin
+        Clk <= 0;
+        #100;
+        Clk <= 1;
+        #100;
+    end
+    
+    initial
+    begin
+        Rst <= 1'b1;
+        @ (posedge Clk);
+        #50 Rst <= 1'b0; 
+        @ (posedge Clk);
+        @ (posedge Clk);
+        @ (posedge Clk);
+        @ (posedge Clk);
+        @ (posedge Clk);
+        
+    end
 endmodule
