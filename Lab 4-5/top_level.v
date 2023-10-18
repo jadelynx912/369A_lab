@@ -68,9 +68,9 @@ wire [4:0] RegRdWrite;
 
 assign PCSrc_Jump_OR = JumpMemory | PCSrc; //Do we grab Jump straight from controller or from memory pipeline?
 
-Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PCSrc); 
+Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PCSrc_Jump_OR); 
 
-Mux32Bit2To1 JumpMux(Jump_To_PC, ReadData1Memory, PCSrcOutput, Jr); // May need to replace JR with JR Memory?????
+Mux32Bit2To1 JumpMux(Jump_To_PC, ReadData1Memory, PCSrcOutput, JrMemory); 
 
 ProgramCounter Pcount(Jump_To_PC, PCResult, Reset, Clk);
 
