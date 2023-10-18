@@ -42,7 +42,7 @@ module InstructionMemory(Address, Instruction);
 
     output reg [31:0] Instruction;    // Instruction at memory location Address
     
-    reg[31:0] memory[127:0];
+    reg[31:0] memory[1023:0];
     integer i;
     
     initial begin
