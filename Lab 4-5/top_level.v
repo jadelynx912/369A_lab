@@ -41,6 +41,7 @@ wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, signE
 wire [31:0] temp;
 wire temp1, temp2;
 
+ajskcg asdjnkasdjgnkj
 
 wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute;
 wire [4:0] RegDst1Execute, RegDst2Execute;
