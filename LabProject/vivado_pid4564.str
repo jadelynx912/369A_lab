@@ -127,3 +127,20 @@ selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sourc
 selectCodeEditor("top_level.v", 128, 165); // bP
 // TclEventType: DG_GRAPH_STALE
 // TclEventType: FILE_SET_CHANGE
+// Elapsed time: 28 seconds
+selectCodeEditor("top_level.v", 644, 208); // bP
+// Elapsed time: 38 seconds
+selectCodeEditor("top_level.v", 90, 276); // bP
+selectCodeEditor("top_level.v", 90, 276, false, false, false, false, true); // bP - Double Click
+selectCodeEditor("top_level.v", 90, 276); // bP
+selectCodeEditor("top_level.v", 150, 216); // bP
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// Elapsed time: 31 seconds
+selectCodeEditor("top_level.v", 654, 187); // bP
+selectCodeEditor("top_level.v", 353, 191); // bP
+selectCodeEditor("top_level.v", 132, 234); // bP
+// Elapsed time: 35 seconds
+selectCodeEditor("top_level.v", 18, 263); // bP
+// Elapsed time: 170 seconds
+selectCodeEditor("top_level.v", 82, 34); // bP

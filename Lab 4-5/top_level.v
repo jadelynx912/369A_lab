@@ -29,7 +29,7 @@ input Clk, Reset;
 input [31:0] PCResult;
 
 wire [31:0] instruction;
-wire [31:0] PCAddResult, PCSrcOutput;
+wire [31:0] PCAddResult, PCSrcOutput, Jump_To_PC;
 wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
@@ -40,6 +40,7 @@ wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, signE
 ///////////////////
 wire [31:0] temp;
 wire temp1, temp2;
+
 
 wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute;
 wire [4:0] RegDst1Execute, RegDst2Execute;
@@ -64,13 +65,16 @@ wire [4:0] RegRdWrite;
 //DATAMEN_TO_WRITEBACK MISSING CONTROL SIGNALS
 //Check any signal that should be 5 bits
 //RegDstOutput should be 5 bits
+//May need to replace JR with JR Memory
 
 
 assign PCSrc_Jump_OR = JumpMemory | PCSrc; //Do we grab Jump straight from controller or from memory pipeline?
 
 Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PCSrc); 
 
-ProgramCounter Pcount(PCSrcOutput, PCResult, Reset, Clk);
+Mux32Bit2To1 JumpMux(Jump_To_PC, , PCSrcOutput, Jr); // May need to replace JR with JR Memory?????
+
+ProgramCounter Pcount(Jump_To_PC, PCResult, Reset, Clk);
 
 InstructionMemory Imem(PCResult, instruction); //Replaced PCSrcOutput with PCResult
 

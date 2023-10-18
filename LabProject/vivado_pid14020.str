@@ -112,3 +112,5 @@ dismissDialog("Open Project"); // bz
 // TclEventType: DG_GRAPH_STALE
 // TclEventType: FILE_SET_CHANGE
 // [GUI Memory]: 136 MB (+5603kb) [00:02:39]
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
