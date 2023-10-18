@@ -103,7 +103,7 @@ Mux32Bit2To1 aluSource(ALUSrcOutput, SignExtExecute, ReadData2Execute, ALUSrcExe
 
 Mux32Bit2To1 regDest(regDstMux, RegDst2Execute, RegDst1Execute, RegDstExecute); //RegDst1Out if 0 , RegDst2Out if 1
 
-Mux32Bit2To1 JalRAMux(regDstOutput, 29, regDstMux, JalExecute); //How tf do you implement ra here?
+Mux32Bit2To1 JalRAMux(regDstOutput, 31, regDstMux, JalExecute); //How tf do you implement ra here?
 
 ALU32Bit alu(ALUControlExecute, ReadData1Execute, ALUSrcOutput, ALUResult, Zero);
 
