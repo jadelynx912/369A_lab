@@ -22,6 +22,8 @@
 
 module Execute_To_DataMem(Clk, Reset, RegWrite, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, Zero, RData1, RData2, ALUResult, PCAddResult, BranchPC, RdReg, 
 RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut, ZeroOut, RData1Out, RData2Out, ALUResultOut, PCAddResultOut, BranchPCOut, RdRegOut);
+//Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, Zero, ReadData1Execute, ReadData2Execute, ALUResult, PCAddResultExecute, PCAdder_SignExtension, regDstOutput, 
+//RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory, ZeroMemory, ReadData1Memory, ReadData2Memory, ALUResultMemory, PCAddResultMemory, PCAdder_SignExtensionMemory, RdMemory);
 
 
 input Clk, Reset;
@@ -45,6 +47,7 @@ always @(posedge Clk) begin
     JrOut <= Jr;
     JalOut <= Jal;
     ZeroOut <= Zero;
+    RData1Out <= RData1;
     RData2Out <= RData2;
     ALUResultOut <= ALUResult;
     PCAddResultOut <= PCAddResult;

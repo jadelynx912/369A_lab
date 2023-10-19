@@ -22,10 +22,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module top_level(Clk, Reset, PCResult);
+module top_level(Clk, Reset, PCResult, WriteDataReg);
 
 input Clk, Reset; 
-//output [31:0] WData;
+output [31:0] WriteDataReg;
 input [31:0] PCResult;
 
 wire [31:0] instruction;
@@ -46,15 +46,16 @@ wire [4:0] RegDst1Execute, RegDst2Execute;
 wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, ALUControlExecute, JrExecute, JalExecute;
 wire [31:0] ALUSrcOutput, regDstOutput, regDstMux;
 
-wire [31:0] ALUResult, BranchPCExecute;
+wire [31:0] ALUResult;
 wire Zero;
 //////////////////////////////////
-wire RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory, BranchPCMemory;
-wire [31:0] PCAdder_SignExtensionMemory, ALUResultMemory, ReadData1Memory, ReadData2Memory, RdMemory;
+wire RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory;
+wire [31:0] PCAdder_SignExtensionMemory, PCAddResultMemory, ALUResultMemory, ReadData1Memory, ReadData2Memory, RdMemory;
 wire ZeroMemory;
+wire [31:0] jrOffset;
 
 wire RegWriteWrite, MemToRegWrite, JalWrite;
-wire [31:0] ReadData, MemReadDataWrite, ALUResultWrite, BranchPCWrite;
+wire [31:0] ReadData, MemReadDataWrite, ALUResultWrite, PCAddResultWrite;
 wire [4:0] RegRdWrite;
 
 
@@ -68,9 +69,9 @@ wire [4:0] RegRdWrite;
 
 assign PCSrc_Jump_OR = JumpMemory | PCSrc; //Do we grab Jump straight from controller or from memory pipeline?
 
-Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PCSrc_Jump_OR); 
+Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResultMemory, PCSrc_Jump_OR); 
 
-Mux32Bit2To1 JumpMux(Jump_To_PC, ReadData1Memory, PCSrcOutput, JrMemory); 
+Mux32Bit2To1 JumpMux(Jump_To_PC, jrOffset, PCSrcOutput, JrMemory); 
 
 ProgramCounter Pcount(Jump_To_PC, PCResult, Reset, Clk);
 
@@ -93,7 +94,7 @@ Mux32Bit2To1 SignExtensionMuxxy(signExtend, signExtend25, signExtend15, Jump);
 Controller controlly(instructionDecode, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl);
 
 //DECODE STAGE / EXECUTE STAGE
-Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl, PCAddResult, ReadData1, ReadData2, signExtend, instructionDecode[20:16], instructionDecode[15:11],
+Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl, PCAddResultDecode, ReadData1, ReadData2, signExtend, instructionDecode[20:16], instructionDecode[15:11],
 PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, RegDst1Execute, RegDst2Execute,RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, ALUControlExecute);
 
 assign temp = SignExtExecute << 2;
@@ -103,32 +104,32 @@ Mux32Bit2To1 aluSource(ALUSrcOutput, SignExtExecute, ReadData2Execute, ALUSrcExe
 
 Mux32Bit2To1 regDest(regDstMux, RegDst2Execute, RegDst1Execute, RegDstExecute); //RegDst1Out if 0 , RegDst2Out if 1
 
-Mux32Bit2To1 JalRAMux(regDstOutput, 31, regDstMux, JalExecute); //How tf do you implement ra here?
+Mux32Bit2To1 JalRAMux(regDstOutput, 31, regDstMux, JalExecute); //$ra is reg 31
 
 ALU32Bit alu(ALUControlExecute, ReadData1Execute, ALUSrcOutput, ALUResult, Zero);
 
-assign BranchPCExecute = PCAddResultExecute; //for organizational purposes
+//assign BranchPCExecute = PCAddResultExecute; //for organizational purposes
 
 //EXECUTE STAGE / DATA MEMORY STAGE
-Execute_To_DataMem etdm(Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, Zero, ReadData1Execute, ReadData2Execute, ALUResult, PCAdder_SignExtension, BranchPCExecute, regDstOutput, 
-RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory, ZeroMemory, ReadData1Memory, ReadData2Memory, ALUResultMemory, PCAdder_SignExtensionMemory, BranchPCMemory, RdMemory);
+Execute_To_DataMem etdm(Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, Zero, ReadData1Execute, ReadData2Execute, ALUResult, PCAddResultExecute, PCAdder_SignExtension, regDstOutput, 
+RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory, ZeroMemory, ReadData1Memory, ReadData2Memory, ALUResultMemory, PCAddResultMemory, PCAdder_SignExtensionMemory, RdMemory);
 
 assign temp1 = ZeroMemory;
 assign temp2 = BranchMemory;
 
 assign PCSrc = temp1 & temp2;
- 
+assign jrOffset = ReadData1Memory + PCAddResultMemory;
 DataMemory DataMem(ALUResultMemory, ReadData2Memory, Clk, MemWriteMemory, MemReadMemory, ReadData); 
 
 //DATA MEMORY STAGE / WRITE BACK STAGE
-DataMem_To_WriteBack dmtw(Clk, Reset, PCAddResult, ReadData, ALUResultMemory, RdMemory, BranchPCMemory, RegWriteMemory, MemToRegMemory, JalMemory,
-			PCAddResultWrite, MemReadDataWrite, ALUResultWrite, RegRdWrite, BranchPCWrite, RegWriteWrite, MemToRegWrite, JalWrite); 
+DataMem_To_WriteBack dmtw(Clk, Reset, PCAddResultMemory, ReadData, ALUResultMemory, RdMemory, RegWriteMemory, MemToRegMemory, JalMemory,
+			PCAddResultWrite, MemReadDataWrite, ALUResultWrite, RegRdWrite, RegWriteWrite, MemToRegWrite, JalWrite); 
 
 //PCAddResult being passed in, why?
 
 Mux32Bit2To1 Writeback(WritebackOutput, ALUResultWrite, MemReadDataWrite, MemToRegWrite);
 
-Mux32Bit2To1 LastMux(WriteDataReg, BranchPCWrite, WritebackOutput, JalWrite); 
+Mux32Bit2To1 LastMux(WriteDataReg, PCAddResultWrite, WritebackOutput, JalWrite); 
 
 
 

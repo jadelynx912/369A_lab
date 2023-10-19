@@ -20,15 +20,18 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module DataMem_To_WriteBack(Clk, Reset, PCAddResult, MemReadData, ALUResult, RegRd, BranchPCMemory, RegWrite, MemToReg, Jal,
-			PCAddResultOut, MemReadDataOut, ALUResultOut, RegRdOut, BranchPCWrite, RegWriteOut, MemToRegOut, JalOut);
+module DataMem_To_WriteBack(Clk, Reset, PCAddResult, MemReadData, ALUResult, RegRd, RegWrite, MemToReg, Jal,
+			PCAddResultOut, MemReadDataOut, ALUResultOut, RegRdOut, RegWriteOut, MemToRegOut, JalOut);
+//Clk, Reset, PCAddResultMemory, ReadData, ALUResultMemory, RdMemory, RegWriteMemory, MemToRegMemory, JalMemory,
+//PCAddResultWrite, MemReadDataWrite, ALUResultWrite, RegRdWrite, RegWriteWrite, MemToRegWrite, JalWrite); 
 
 input Clk, Reset;
-input [31:0] PCAddResult, MemReadData, ALUResult, RegRd, BranchPCMemory;
+input [31:0] PCAddResult, MemReadData, ALUResult;
+input [4:0] RegRd;
 input RegWrite, MemToReg, Jal;
 
-output reg [31:0] PCAddResultOut, MemReadDataOut, ALUResultOut, RegRdOut;
-output reg [31:0] BranchPCWrite;
+output reg [31:0] PCAddResultOut, MemReadDataOut, ALUResultOut;
+output reg [4:0] RegRdOut;
 output reg RegWriteOut, MemToRegOut, JalOut;
 
 always @(posedge Clk) begin
@@ -36,7 +39,9 @@ always @(posedge Clk) begin
     MemReadDataOut <= MemReadData;
     ALUResultOut <= ALUResult;
     RegRdOut <= RegRd;
-    BranchPCWrite <= BranchPCMemory;
-
+    RegWriteOut <= RegWrite;
+    MemToRegOut <= MemToReg; 
+    JalOut <= Jal;
+    
 end
 endmodule
