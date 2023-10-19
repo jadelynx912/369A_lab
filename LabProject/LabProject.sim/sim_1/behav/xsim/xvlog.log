@@ -1,0 +1,32 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/ALU32Bit.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ALU32Bit
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Controller.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Controller
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/DataMem_To_WriteBack.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module DataMem_To_WriteBack
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/DataMemory.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module DataMemory
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Decode_To_Execute.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Decode_To_Execute
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Execute_To_DataMem.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Execute_To_DataMem
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Fetch_To_Decode.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Fetch_To_Decode
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 1/InstructionMemory.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module InstructionMemory
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Mux32Bit2To1.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module Mux32Bit2To1
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 1/PCAdder.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module PCAdder
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 1/ProgramCounter.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ProgramCounter
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/RegisterFile.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module RegisterFile
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/SignExtension.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module SignExtension
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/top_level.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module top_level
+INFO: [VRFC 10-2458] undeclared symbol jOffsetExecute, assumed default net type wire [C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/top_level.v:75]
+INFO: [VRFC 10-2458] undeclared symbol PCAdder_SignExtension, assumed default net type wire [C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/top_level.v:101]
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Testbenches/top_level_tb.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module top_level_tb

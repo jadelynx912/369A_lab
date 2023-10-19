@@ -26,24 +26,24 @@ module top_level(Clk, Reset, PCResult, WriteDataReg);
 
 input Clk, Reset; 
 output [31:0] WriteDataReg;
-input [31:0] PCResult;
+output [31:0] PCResult;
 
 wire [31:0] instruction;
-wire [31:0] PCAddResult, PCSrcOutput, Jump_To_PC;
+wire [31:0] PCAddResult, PCSrcOutput, Jump_To_PC, NextPC;
 wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
 wire PCSrc, PCSrc_Jump_OR;
 wire RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl; 
-wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, signExtend25, signExtend15, WritebackOutput; 
-
+wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, jOffset, WritebackOutput; 
+wire [27:0] tempOffset;
 ///////////////////
 wire [31:0] temp;
 wire temp1, temp2;
 
 wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute;
 wire [4:0] RegDst1Execute, RegDst2Execute;
-wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, ALUControlExecute, JrExecute, JalExecute;
+wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, ALUControlExecute, JrExecute, JalExecute;
 wire [31:0] ALUSrcOutput, regDstOutput, regDstMux;
 
 wire [31:0] ALUResult;
@@ -66,11 +66,13 @@ wire [4:0] RegRdWrite;
 //RegDstOutput should be 5 bits
 
 
-assign PCSrc_Jump_OR = JumpMemory | PCSrc; //Do we grab Jump straight from controller or from memory pipeline?
+//assign PCSrc_Jump_OR = JumpMemory | PCSrc; //Do we grab Jump straight from controller or from memory pipeline?
 
-Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResultMemory, PCSrc_Jump_OR); 
+Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PCSrc); 
 
-Mux32Bit2To1 JumpMux(Jump_To_PC, ReadData1Memory, PCSrcOutput, JrMemory); 
+Mux32Bit2To1 JRMux(Jump_To_PC, ReadData1Execute, PCSrcOutput, JrExecute); 
+
+Mux32Bit2To1 JumpMux(NextPC, jOffsetExecute, Jump_To_PC, Jump);
 
 ProgramCounter Pcount(Jump_To_PC, PCResult, Reset, Clk);
 
@@ -84,17 +86,16 @@ Fetch_To_Decode ftd(PCAddResult, instruction,  PCAddResultDecode, instructionDec
 
 RegisterFile reggy(instructionDecode[25:21], instructionDecode[20:16], RegRdWrite, WriteDataReg, RegWriteWrite, Clk, ReadData1, ReadData2);
 
-SignExtension signE(instructionDecode[15:0], signExtend15);
+SignExtension signE(instructionDecode[15:0], signExtend);
 
-SignExtension_25to32 signE25(instructionDecode[25:0], signExtend25);
-
-Mux32Bit2To1 SignExtensionMuxxy(signExtend, signExtend25, signExtend15, Jump);
+assign tempOffset = instructionDecode[25:0] << 2;
+assign jOffset = {PCAddResultDecode[31:28], tempOffset};
 
 Controller controlly(instructionDecode, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl);
 
 //DECODE STAGE / EXECUTE STAGE
-Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl, PCAddResultDecode, ReadData1, ReadData2, signExtend, instructionDecode[20:16], instructionDecode[15:11],
-PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, RegDst1Execute, RegDst2Execute,RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, ALUControlExecute);
+Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jr, Jal, ALUControl, PCAddResultDecode, ReadData1, ReadData2, signExtend, jOffset, instructionDecode[20:16], instructionDecode[15:11],
+RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute, ALUControlExecute, PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, jOffsetExecute, RegDst1Execute, RegDst2Execute);
 
 assign temp = SignExtExecute << 2;
 assign PCAdder_SignExtension = temp + PCAddResultExecute;
@@ -107,11 +108,10 @@ Mux32Bit2To1 JalRAMux(regDstOutput, 31, regDstMux, JalExecute); //$ra is reg 31
 
 ALU32Bit alu(ALUControlExecute, ReadData1Execute, ALUSrcOutput, ALUResult, Zero);
 
-//assign BranchPCExecute = PCAddResultExecute; //for organizational purposes
 
 //EXECUTE STAGE / DATA MEMORY STAGE
-Execute_To_DataMem etdm(Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, Zero, ReadData1Execute, ReadData2Execute, ALUResult, PCAddResultExecute, PCAdder_SignExtension, regDstOutput, 
-RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory, ZeroMemory, ReadData1Memory, ReadData2Memory, ALUResultMemory, PCAddResultMemory, PCAdder_SignExtensionMemory, RdMemory);
+Execute_To_DataMem etdm(Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JalExecute, Zero, ReadData2Execute, ALUResult, PCAddResultExecute, PCAdder_SignExtension, regDstOutput, 
+RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JalMemory, ZeroMemory, ReadData2Memory, ALUResultMemory, PCAddResultMemory, PCAdder_SignExtensionMemory, RdMemory);
 
 assign temp1 = ZeroMemory;
 assign temp2 = BranchMemory;

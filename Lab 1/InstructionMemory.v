@@ -54,7 +54,7 @@ module InstructionMemory(Address, Instruction);
     
     
     always @ (Address) begin;
-        Instruction <= memory[Address[11:2]];    //FIXME
+        Instruction <= memory[Address[11:2]];
     end
         
         

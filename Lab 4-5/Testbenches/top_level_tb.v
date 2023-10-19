@@ -23,7 +23,7 @@
 module top_level_tb();
     reg Clk, Rst;
     
-    wire WData, PCResult;
+    wire [31:0] WData, PCResult;
     
     top_level tl(Clk, Rst, PCResult, WData);
     

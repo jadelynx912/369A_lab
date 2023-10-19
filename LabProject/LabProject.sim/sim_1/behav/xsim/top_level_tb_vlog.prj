@@ -13,7 +13,6 @@ verilog xil_defaultlib  \
 "../../../../../Lab 1/ProgramCounter.v" \
 "../../../../../Lab 4-5/RegisterFile.v" \
 "../../../../../Lab 4-5/SignExtension.v" \
-"../../../../LabProject.srcs/sources_1/imports/Lab 4-5/SignExtension_25to32.v" \
 "../../../../../Lab 4-5/top_level.v" \
 "../../../../../Lab 4-5/Testbenches/top_level_tb.v" \
 

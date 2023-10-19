@@ -1,4 +1,4 @@
-00000000	//	loop:	nop ->	loop:	nop
+00004020	//	loop:	add	$t0, $zero, $zero ->	loop:	add	$t0, $zero, $zero
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop

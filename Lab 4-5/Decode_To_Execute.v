@@ -20,20 +20,20 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Decode_To_Execute(Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl, PCAddResult, ReadData1, ReadData2, SignExt, RegDst1, RegDst2, 
-PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut, RegDst1Out, RegDst2Out, RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut, ALUControlOut);
-//Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl, PCAddResultDecode, ReadData1, ReadData2, signExtend, instructionDecode[20:16], instructionDecode[15:11],
-//PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, RegDst1Execute, RegDst2Execute,RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JumpExecute, JrExecute, JalExecute, ALUControlExecute);
+module Decode_To_Execute(Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jr, Jal, ALUControl, PCAddResult, ReadData1, ReadData2, SignExt, jOffset, RegDst1, RegDst2, 
+RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JrOut, JalOut, ALUControlOut, PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut, jOffsetOut, RegDst1Out, RegDst2Out);
+//Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jr, Jal, ALUControl, PCAddResultDecode, ReadData1, ReadData2, signExtend, jOffset, instructionDecode[20:16], instructionDecode[15:11],
+//RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute, ALUControlExecute, PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, jOffsetExecute, RegDst1Execute, RegDst2Execute);
 
 input Clk, Reset;
 
-input RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal;
+input RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jr, Jal;
 input [4:0] ALUControl, RegDst1, RegDst2;
-input [31:0] PCAddResult, ReadData1, ReadData2, SignExt;
+input [31:0] PCAddResult, ReadData1, ReadData2, SignExt, jOffset;
 
-output reg [31:0] PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut;
+output reg [31:0] PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut, jOffsetOut;
 output reg [4:0] ALUControlOut, RegDst1Out, RegDst2Out;
-output reg RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JumpOut, JrOut, JalOut;
+output reg RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JrOut, JalOut;
 
 always @(posedge Clk) begin
     RegWriteOut <= RegWrite;
@@ -43,7 +43,6 @@ always @(posedge Clk) begin
     MemReadOut <= MemRead;
     BranchOut <= Branch;
     MemToRegOut <= MemToReg;
-    JumpOut <= Jump;
     JrOut <= Jr;
     JalOut <= Jal;
     ALUControlOut <= ALUControl;
@@ -53,6 +52,7 @@ always @(posedge Clk) begin
     ReadData1Out <= ReadData1;
     ReadData2Out <= ReadData2;
     SignExtOut <= SignExt;
+    jOffsetOut <= jOffset;
 end
 
 
