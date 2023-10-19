@@ -48,6 +48,10 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     /* Please fill in the implementation here */
     reg[31:0] memory[0:1023];
     
+    initial begin
+        $readmemh("data_memory.mem", memory);
+    end
+    
     always @ (posedge Clk) begin
         if (MemWrite == 1) begin
             memory[Address[11:2]] <= WriteData;

@@ -52,7 +52,6 @@ wire Zero;
 wire RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory;
 wire [31:0] PCAdder_SignExtensionMemory, PCAddResultMemory, ALUResultMemory, ReadData1Memory, ReadData2Memory, RdMemory;
 wire ZeroMemory;
-wire [31:0] jrOffset;
 
 wire RegWriteWrite, MemToRegWrite, JalWrite;
 wire [31:0] ReadData, MemReadDataWrite, ALUResultWrite, PCAddResultWrite;
@@ -71,7 +70,7 @@ assign PCSrc_Jump_OR = JumpMemory | PCSrc; //Do we grab Jump straight from contr
 
 Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResultMemory, PCSrc_Jump_OR); 
 
-Mux32Bit2To1 JumpMux(Jump_To_PC, jrOffset, PCSrcOutput, JrMemory); 
+Mux32Bit2To1 JumpMux(Jump_To_PC, ReadData1Memory, PCSrcOutput, JrMemory); 
 
 ProgramCounter Pcount(Jump_To_PC, PCResult, Reset, Clk);
 
@@ -118,7 +117,6 @@ assign temp1 = ZeroMemory;
 assign temp2 = BranchMemory;
 
 assign PCSrc = temp1 & temp2;
-assign jrOffset = ReadData1Memory + PCAddResultMemory;
 DataMemory DataMem(ALUResultMemory, ReadData2Memory, Clk, MemWriteMemory, MemReadMemory, ReadData); 
 
 //DATA MEMORY STAGE / WRITE BACK STAGE
