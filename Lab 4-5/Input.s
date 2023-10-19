@@ -3,7 +3,8 @@
 .text				# Put program here 
 .globl loop			# globally define 'main' 
 
-loop: addi $t0, $zero, $zero # t0=0, display 0, 0
+loop: 
+    addi $t0, $zero, $zero # t0=0, display 0, 0
 nop
 nop
 nop
