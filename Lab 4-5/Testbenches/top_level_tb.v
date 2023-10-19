@@ -25,14 +25,14 @@ module top_level_tb();
     
     wire WData, PCResult;
     
-    top_level(Clk, Rst, PCResult, WData);
+    top_level tl(Clk, Rst, PCResult, WData);
     
     always 
     begin
         Clk <= 0;
-        #100;
+        #10;
         Clk <= 1;
-        #100;
+        #10;
     end
     
     initial
