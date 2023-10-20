@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="10667fs"></ZoomStartTime>
-      <ZoomEndTime time="145268fs"></ZoomEndTime>
-      <Cursor1Time time="64267fs"></Cursor1Time>
+      <ZoomStartTime time="726300fs"></ZoomStartTime>
+      <ZoomEndTime time="1125801fs"></ZoomEndTime>
+      <Cursor1Time time="839300fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="234"></NameColumnWidth>
-      <ValueColumnWidth column_width="113"></ValueColumnWidth>
+      <ValueColumnWidth column_width="108"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="24" />
+   <WVObjectSize size="17" />
    <wvobject fp_name="/top_level_tb/Clk" type="logic">
       <obj_property name="ElementShortName">Clk</obj_property>
       <obj_property name="ObjectShortName">Clk</obj_property>
@@ -39,34 +39,6 @@
    <wvobject fp_name="/top_level_tb/tl/instructionDecode" type="array">
       <obj_property name="ElementShortName">instructionDecode[31:0]</obj_property>
       <obj_property name="ObjectShortName">instructionDecode[31:0]</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/tl/controlly/RegWrite" type="logic">
-      <obj_property name="ElementShortName">RegWrite</obj_property>
-      <obj_property name="ObjectShortName">RegWrite</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/tl/controlly/ALUSrc" type="logic">
-      <obj_property name="ElementShortName">ALUSrc</obj_property>
-      <obj_property name="ObjectShortName">ALUSrc</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/tl/controlly/RegDst" type="logic">
-      <obj_property name="ElementShortName">RegDst</obj_property>
-      <obj_property name="ObjectShortName">RegDst</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/tl/controlly/MemWrite" type="logic">
-      <obj_property name="ElementShortName">MemWrite</obj_property>
-      <obj_property name="ObjectShortName">MemWrite</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/tl/controlly/MemRead" type="logic">
-      <obj_property name="ElementShortName">MemRead</obj_property>
-      <obj_property name="ObjectShortName">MemRead</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/tl/controlly/Branch" type="logic">
-      <obj_property name="ElementShortName">Branch</obj_property>
-      <obj_property name="ObjectShortName">Branch</obj_property>
-   </wvobject>
-   <wvobject fp_name="/top_level_tb/tl/controlly/MemToReg" type="logic">
-      <obj_property name="ElementShortName">MemToReg</obj_property>
-      <obj_property name="ObjectShortName">MemToReg</obj_property>
    </wvobject>
    <wvobject fp_name="/top_level_tb/tl/controlly/ALUControl" type="array">
       <obj_property name="ElementShortName">ALUControl[4:0]</obj_property>

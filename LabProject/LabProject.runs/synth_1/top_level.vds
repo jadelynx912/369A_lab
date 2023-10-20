@@ -2,8 +2,8 @@
 # Vivado v2020.2 (64-bit)
 # SW Build 3064766 on Wed Nov 18 09:12:45 MST 2020
 # IP Build 3064653 on Wed Nov 18 14:17:31 MST 2020
-# Start of session at: Thu Oct 19 16:12:57 2023
-# Process ID: 1868
+# Start of session at: Fri Oct 20 08:39:07 2023
+# Process ID: 28108
 # Current directory: C:/Users/kari_/Desktop/ECE 369A/369A_lab/LabProject/LabProject.runs/synth_1
 # Command line: vivado.exe -log top_level.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source top_level.tcl
 # Log file: C:/Users/kari_/Desktop/ECE 369A/369A_lab/LabProject/LabProject.runs/synth_1/top_level.vds
@@ -16,9 +16,9 @@ Attempting to get a license for feature 'Synthesis' and/or device 'xc7a100t'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a100t'
 INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
 INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
-INFO: [Synth 8-7075] Helper process launched with PID 29728
+INFO: [Synth 8-7075] Helper process launched with PID 32876
 ---------------------------------------------------------------------------------
-Starting Synthesize : Time (s): cpu = 00:00:01 ; elapsed = 00:00:02 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Starting Synthesize : Time (s): cpu = 00:00:02 ; elapsed = 00:00:04 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-6157] synthesizing module 'top_level' [C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/top_level.v:25]
 INFO: [Synth 8-6157] synthesizing module 'Mux32Bit2To1' [C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Mux32Bit2To1.v:10]
@@ -57,24 +57,24 @@ INFO: [Synth 8-6157] synthesizing module 'DataMem_To_WriteBack' [C:/Users/kari_/
 INFO: [Synth 8-6155] done synthesizing module 'DataMem_To_WriteBack' (14#1) [C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/DataMem_To_WriteBack.v:23]
 INFO: [Synth 8-6155] done synthesizing module 'top_level' (15#1) [C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/top_level.v:25]
 ---------------------------------------------------------------------------------
-Finished Synthesize : Time (s): cpu = 00:00:01 ; elapsed = 00:00:04 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Synthesize : Time (s): cpu = 00:00:02 ; elapsed = 00:00:05 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:01 ; elapsed = 00:00:04 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Constraint Validation : Time (s): cpu = 00:00:02 ; elapsed = 00:00:05 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7a100tcsg324-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:01 ; elapsed = 00:00:04 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:02 ; elapsed = 00:00:05 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 INFO: [Device 21-403] Loading part xc7a100tcsg324-1
-WARNING: [Synth 8-327] inferring latch for variable 'ALUControl_reg' [C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Controller.v:41]
+WARNING: [Synth 8-327] inferring latch for variable 'ALUControl_reg' [C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Controller.v:42]
 WARNING: [Synth 8-327] inferring latch for variable 'ALUResult_reg' [C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/ALU32Bit.v:41]
 WARNING: [Synth 8-327] inferring latch for variable 'Zero_reg' [C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/ALU32Bit.v:63]
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:01 ; elapsed = 00:00:05 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:02 ; elapsed = 00:00:05 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 No constraint files found.
 ---------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ Start RTL Component Statistics
 ---------------------------------------------------------------------------------
 Detailed RTL Component Info : 
 +---Adders : 
-	   2 Input   32 Bit       Adders := 2     
+	   2 Input   32 Bit       Adders := 3     
 	   3 Input   32 Bit       Adders := 1     
 +---XORs : 
 	   2 Input     32 Bit         XORs := 1     
@@ -94,12 +94,12 @@ Detailed RTL Component Info :
 	              32x32  Multipliers := 1     
 +---Muxes : 
 	   2 Input   32 Bit        Muxes := 9     
-	   8 Input   32 Bit        Muxes := 1     
+	  62 Input   32 Bit        Muxes := 1     
 	  11 Input    5 Bit        Muxes := 1     
 	   2 Input    5 Bit        Muxes := 3     
 	   2 Input    1 Bit        Muxes := 11    
 	  15 Input    1 Bit        Muxes := 10    
-	  11 Input    1 Bit        Muxes := 1     
+	  11 Input    1 Bit        Muxes := 4     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
 ---------------------------------------------------------------------------------
@@ -129,7 +129,7 @@ DSP Report: Generating DSP ALUResult0, operation Mode is: (PCIN>>17)+A*B.
 DSP Report: operator ALUResult0 is absorbed into DSP ALUResult0.
 DSP Report: operator ALUResult0 is absorbed into DSP ALUResult0.
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:03 ; elapsed = 00:00:08 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:06 ; elapsed = 00:00:14 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -163,7 +163,7 @@ No constraint files found.
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:00:03 ; elapsed = 00:00:08 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Timing Optimization : Time (s): cpu = 00:00:06 ; elapsed = 00:00:14 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start ROM, RAM, DSP, Shift Register and Retiming Reporting
@@ -183,7 +183,7 @@ Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:00:03 ; elapsed = 00:00:08 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Technology Mapping : Time (s): cpu = 00:00:06 ; elapsed = 00:00:15 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start IO Insertion
@@ -201,37 +201,52 @@ Start Final Netlist Cleanup
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished IO Insertion : Time (s): cpu = 00:00:07 ; elapsed = 00:00:17 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:07 ; elapsed = 00:00:17 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:07 ; elapsed = 00:00:17 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:07 ; elapsed = 00:00:17 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:07 ; elapsed = 00:00:17 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:07 ; elapsed = 00:00:17 . Memory (MB): peak = 1022.273 ; gain = 1.016
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Static Shift Register Report:
++------------+----------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|Module Name | RTL Name             | Length | Width | Reset Signal | Pull out first Reg | Pull out last Reg | SRL16E | SRLC32E | 
++------------+----------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|top_level   | dmtw/RegWriteOut_reg | 3      | 1     | NO           | NO                 | YES               | 1      | 0       | 
+|top_level   | dmtw/MemToRegOut_reg | 3      | 1     | NO           | NO                 | YES               | 1      | 0       | 
++------------+----------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -248,58 +263,59 @@ Report Cell Usage:
 |      |Cell    |Count |
 +------+--------+------+
 |1     |BUFG    |     1|
-|2     |CARRY4  |    20|
+|2     |CARRY4  |    42|
 |3     |DSP48E1 |     3|
-|4     |LUT1    |     2|
-|5     |LUT2    |    81|
-|6     |LUT3    |    11|
-|7     |LUT4    |     1|
-|8     |LUT5    |     2|
-|9     |LUT6    |    32|
-|10    |RAM32M  |     6|
-|11    |FDRE    |   143|
-|12    |LD      |     3|
-|13    |IBUF    |     2|
-|14    |OBUF    |    64|
+|4     |LUT1    |     1|
+|5     |LUT2    |    89|
+|6     |LUT3    |   110|
+|7     |LUT4    |    95|
+|8     |LUT5    |   149|
+|9     |LUT6    |   281|
+|10    |RAM32M  |    12|
+|11    |SRL16E  |     2|
+|12    |FDRE    |   212|
+|13    |LD      |     5|
+|14    |IBUF    |     2|
+|15    |OBUF    |    64|
 +------+--------+------+
 
 Report Instance Areas: 
 +------+------------+---------------------+------+
 |      |Instance    |Module               |Cells |
 +------+------------+---------------------+------+
-|1     |top         |                     |   371|
-|2     |  Pcount    |ProgramCounter       |    34|
-|3     |  adder     |PCAdder              |     9|
-|4     |  alu       |ALU32Bit             |    22|
-|5     |  controlly |Controller           |     4|
-|6     |  dmtw      |DataMem_To_WriteBack |    35|
-|7     |  dte       |Decode_To_Execute    |   152|
-|8     |  etdm      |Execute_To_DataMem   |    35|
-|9     |  ftd       |Fetch_To_Decode      |     7|
-|10    |  reggy     |RegisterFile         |     6|
+|1     |top         |                     |  1068|
+|2     |  Pcount    |ProgramCounter       |    49|
+|3     |  adder     |PCAdder              |     8|
+|4     |  alu       |ALU32Bit             |    49|
+|5     |  controlly |Controller           |     5|
+|6     |  dmtw      |DataMem_To_WriteBack |    71|
+|7     |  dte       |Decode_To_Execute    |   702|
+|8     |  etdm      |Execute_To_DataMem   |    39|
+|9     |  ftd       |Fetch_To_Decode      |    65|
+|10    |  reggy     |RegisterFile         |    13|
 +------+------------+---------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:07 ; elapsed = 00:00:17 . Memory (MB): peak = 1022.273 ; gain = 1.016
 ---------------------------------------------------------------------------------
 Synthesis finished with 0 errors, 0 critical warnings and 6 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 1007.375 ; gain = 0.000
-Synthesis Optimization Complete : Time (s): cpu = 00:00:04 ; elapsed = 00:00:09 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:07 ; elapsed = 00:00:17 . Memory (MB): peak = 1022.273 ; gain = 1.016
+Synthesis Optimization Complete : Time (s): cpu = 00:00:07 ; elapsed = 00:00:17 . Memory (MB): peak = 1022.273 ; gain = 1.016
 INFO: [Project 1-571] Translating synthesized netlist
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.005 . Memory (MB): peak = 1007.375 ; gain = 0.000
-INFO: [Netlist 29-17] Analyzing 32 Unisim elements for replacement
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 1022.273 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 62 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1007.375 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1022.273 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
-  A total of 9 instances were transformed.
-  LD => LDCE: 3 instances
-  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 6 instances
+  A total of 17 instances were transformed.
+  LD => LDCE: 5 instances
+  RAM32M => RAM32M (RAMD32(x6), RAMS32(x2)): 12 instances
 
 INFO: [Common 17-83] Releasing license: Synthesis
 45 Infos, 6 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:00:05 ; elapsed = 00:00:12 . Memory (MB): peak = 1007.375 ; gain = 0.000
+synth_design: Time (s): cpu = 00:00:09 ; elapsed = 00:00:19 . Memory (MB): peak = 1022.273 ; gain = 20.324
 INFO: [Common 17-1381] The checkpoint 'C:/Users/kari_/Desktop/ECE 369A/369A_lab/LabProject/LabProject.runs/synth_1/top_level.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file top_level_utilization_synth.rpt -pb top_level_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Thu Oct 19 16:13:11 2023...
+INFO: [Common 17-206] Exiting Vivado at Fri Oct 20 08:39:29 2023...

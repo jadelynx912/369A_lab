@@ -38,16 +38,6 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Jal <= 0;
             //To get ALU control value for each instruction
             case(Instruction[5:0])
-                6'b100000: ALUControl <= 5'b00001;      //add
-                6'b100010: ALUControl <= 5'b00010;      //sub
-                6'b011000: ALUControl <= 5'b00011;      //mult
-                6'b000000: ALUControl <= 5'b00100;      //sll
-                6'b000010: ALUControl <= 5'b00101;      //srl
-                6'b100100: ALUControl <= 5'b00110;      //and
-                6'b100101: ALUControl <= 5'b00111;      //or
-                6'b100110: ALUControl <= 5'b01000;      //xor
-                6'b100111: ALUControl <= 5'b01101;      //nor
-                6'b101010: ALUControl <= 5'b01110;      //slt
                 6'b000000: begin
                     ALUControl <= 5'b00000;
                     RegWrite <= 0;
@@ -61,6 +51,16 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
                     Jr <= 0;
                     Jal <= 0;
                 end
+                6'b100000: ALUControl <= 5'b00001;      //add
+                6'b100010: ALUControl <= 5'b00010;      //sub
+                6'b011000: ALUControl <= 5'b00011;      //mult
+                6'b000000: ALUControl <= 5'b00100;      //sll
+                6'b000010: ALUControl <= 5'b00101;      //srl
+                6'b100100: ALUControl <= 5'b00110;      //and
+                6'b100101: ALUControl <= 5'b00111;      //or
+                6'b100110: ALUControl <= 5'b01000;      //xor
+                6'b100111: ALUControl <= 5'b01101;      //nor
+                6'b101010: ALUControl <= 5'b01110;      //slt
             endcase
         end
         6'b100011 || 6'b100000 || 6'b100001: begin        //lw, lb, lh

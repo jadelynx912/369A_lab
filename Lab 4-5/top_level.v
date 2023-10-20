@@ -45,7 +45,7 @@ wire temp1, temp2;
 wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, jOffsetExecute;
 wire [4:0] RegDst1Execute, RegDst2Execute, regDstMux, regDstOutput, ALUControlExecute;
 wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute;
-wire [31:0] ALUSrcOutput;
+wire [31:0] ALUSrcOutput, PCAdder_SignExtension;
 
 wire [31:0] ALUResult;
 wire Zero;

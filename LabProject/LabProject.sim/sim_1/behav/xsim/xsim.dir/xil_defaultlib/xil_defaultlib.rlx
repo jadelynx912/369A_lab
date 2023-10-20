@@ -6,7 +6,7 @@ C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 1/InstructionMemory.v,1697739075,ve
 C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 1/PCAdder.v,1697063116,verilog,,C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 1/ProgramCounter.v,,PCAdder,,,,,,,,
 C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 1/ProgramCounter.v,1697063116,verilog,,C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/RegisterFile.v,,ProgramCounter,,,,,,,,
 C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/ALU32Bit.v,1697756249,verilog,,C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Controller.v,,ALU32Bit,,,,,,,,
-C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Controller.v,1697756011,verilog,,C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/DataMem_To_WriteBack.v,,Controller,,,,,,,,
+C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Controller.v,1697816097,verilog,,C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/DataMem_To_WriteBack.v,,Controller,,,,,,,,
 C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/DataMem_To_WriteBack.v,1697702837,verilog,,C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/DataMemory.v,,DataMem_To_WriteBack,,,,,,,,
 C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/DataMemory.v,1697735391,verilog,,C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Decode_To_Execute.v,,DataMemory,,,,,,,,
 C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Decode_To_Execute.v,1697743027,verilog,,C:/Users/kari_/Desktop/ECE 369A/369A_lab/Lab 4-5/Execute_To_DataMem.v,,Decode_To_Execute,,,,,,,,
