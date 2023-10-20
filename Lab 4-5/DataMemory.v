@@ -65,11 +65,21 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     end
     
     always @ (*) begin
-        if (MemRead[1:0] == 2'b11) begin                            //lb
-            ReadData = memory[Address[11:2]][7:0];
+        if (MemRead[1:0] == 2'b11) begin
+            if (Address[1:0] == 2'b00)                              //lb
+                ReadData = memory[Address[11:2]][7:0];
+            else if (Address[1:0] == 2'b01) 
+                ReadData = memory[Address[11:2]][15:8];
+            else if (Address[1:0] == 2'b10)
+                ReadData = memory[Address[11:2]][23:16];
+            else 
+                ReadData = memory[Address[11:2]][31:24];   
         end
         else if (MemRead[1:0] == 2'b10) begin                       //lh
-            ReadData = memory[Address[11:2]][15:0];
+            if (Address[1] == 1)
+                ReadData = memory[Address[11:2]][15:0];
+            else 
+                ReadData = memory[Address[11:2]][31:16];
         end
         else if (MemRead[1:0] == 2'b01) begin                       //lw
             ReadData = memory[Address[11:2]];
