@@ -80,7 +80,7 @@ always @(posedge Clk) begin
 end
 
 always @ (*) begin
-    if (ReadRegister1 == 0) begin
+    if (ReadRegister1 == 0) begin               //for the zero register
         ReadData1 <= 0;
     end
     else begin

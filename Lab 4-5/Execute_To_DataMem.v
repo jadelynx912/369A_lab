@@ -28,11 +28,13 @@ RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JalOut, ZeroOut, R
 
 input Clk, Reset;
 
-input RegWrite, MemWrite, MemRead, Branch, MemToReg, Jal, Zero;
+input RegWrite, Branch, MemToReg, Jal, Zero;
+input [1:0] MemWrite, MemRead;
 input [31:0] RData2, ALUResult, PCAddResult, BranchPC;
 input [4:0] RdReg;
 
-output reg RegWriteOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JalOut, ZeroOut;
+output reg RegWriteOut, BranchOut, MemToRegOut, JalOut, ZeroOut;
+output reg [1:0] MemWriteOut, MemReadOut;
 output reg [31:0] RData2Out, ALUResultOut, PCAddResultOut, BranchPCOut;
 output reg [4:0] RdRegOut;
 

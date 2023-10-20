@@ -27,13 +27,15 @@ RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegO
 
 input Clk, Reset;
 
-input RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jr, Jal;
+input RegWrite, ALUSrc, RegDst, Branch, MemToReg, Jr, Jal;
+input [1:0] MemWrite, MemRead;
 input [4:0] ALUControl, RegDst1, RegDst2;
 input [31:0] PCAddResult, ReadData1, ReadData2, SignExt, jOffset;
 
 output reg [31:0] PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut, jOffsetOut;
 output reg [4:0] ALUControlOut, RegDst1Out, RegDst2Out;
-output reg RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, BranchOut, MemToRegOut, JrOut, JalOut;
+output reg RegWriteOut, ALUSrcOut, RegDstOut, BranchOut, MemToRegOut, JrOut, JalOut;
+output reg [1:0] MemWriteOut, MemReadOut;
 
 always @(posedge Clk) begin
     RegWriteOut <= RegWrite;

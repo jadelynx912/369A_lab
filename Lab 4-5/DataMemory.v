@@ -55,10 +55,10 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
         if (MemWrite[1:0] == 2'b11) begin                           //sb
             memory[Address[11:2]][7:0] <= WriteData[7:0];
         end
-        else if (MemWrite[3:2] == 2'b10) begin                      //sh
+        else if (MemWrite[1:0] == 2'b10) begin                      //sh
             memory[Address[11:2]][15:0] <= WriteData[15:0];
         end
-        else if (MemWrite[3:2] == 2'b01) begin                      //sw
+        else if (MemWrite[1:0] == 2'b01) begin                      //sw
             memory[Address[11:2]] <= WriteData;
         end
         //else don't do anything
@@ -68,10 +68,10 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
         if (MemRead[1:0] == 2'b11) begin                            //lb
             ReadData = memory[Address[11:2]][7:0];
         end
-        else if (MemRead[3:2] == 2'b10) begin                       //lh
+        else if (MemRead[1:0] == 2'b10) begin                       //lh
             ReadData = memory[Address[11:2]][15:0];
         end
-        else if (MemRead[3:2] == 2'b01) begin                       //lw
+        else if (MemRead[1:0] == 2'b01) begin                       //lw
             ReadData = memory[Address[11:2]];
         end
         //else don't do anything

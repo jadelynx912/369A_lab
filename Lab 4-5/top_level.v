@@ -34,7 +34,8 @@ wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
 wire PCSrc, PCSrc_Jump_OR;
-wire RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal; 
+wire RegWrite, ALUSrc, RegDst, Branch, MemToReg, Jump, Jr, Jal; 
+wire [1:0] MemWrite, MemRead;
 wire [4:0] ALUControl;
 wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, jOffset, WritebackOutput; 
 wire [27:0] tempOffset;
@@ -44,15 +45,17 @@ wire temp1, temp2;
 
 wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, jOffsetExecute;
 wire [4:0] RegDst1Execute, RegDst2Execute, regDstMux, regDstOutput, ALUControlExecute;
-wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute;
+wire RegWriteExecute, ALUSrcExecute, RegDstExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute;
 wire [31:0] ALUSrcOutput, PCAdder_SignExtension;
+wire[1:0] MemWriteExecute, MemReadExecute;
 
 wire [31:0] ALUResult;
 wire Zero;
 //////////////////////////////////
-wire RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory;
+wire RegWriteMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory;
 wire [31:0] PCAdder_SignExtensionMemory, PCAddResultMemory, ALUResultMemory, ReadData1Memory, ReadData2Memory;
 wire [4:0] RdMemory;
+wire [1:0] MemWriteMemory, MemReadMemory;
 wire ZeroMemory;
 
 wire RegWriteWrite, MemToRegWrite, JalWrite;
@@ -124,8 +127,6 @@ DataMemory DataMem(ALUResultMemory, ReadData2Memory, Clk, MemWriteMemory, MemRea
 //DATA MEMORY STAGE / WRITE BACK STAGE
 DataMem_To_WriteBack dmtw(Clk, Reset, PCAddResultMemory, ReadData, ALUResultMemory, RdMemory, RegWriteMemory, MemToRegMemory, JalMemory,
 			PCAddResultWrite, MemReadDataWrite, ALUResultWrite, RegRdWrite, RegWriteWrite, MemToRegWrite, JalWrite); 
-
-//PCAddResult being passed in, why?
 
 Mux32Bit2To1 Writeback(WritebackOutput, ALUResultWrite, MemReadDataWrite, MemToRegWrite);
 
