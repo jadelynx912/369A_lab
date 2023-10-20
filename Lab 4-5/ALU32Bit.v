@@ -71,7 +71,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 	    end
 	    5'b01101: // Logical nor
 	      ALUResult = ~(A | B);
-	    5'b01110: //Logical slt
+	    5'b01110: begin//Logical slt
 	      if (A != B) begin
 		    if (A > B) begin
 		     ALUResult <= 0;
@@ -88,6 +88,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 			  ALUResult <= 1;
 			end
 		  end
+	   end
 	   5'b01111:  begin // Branch on not equal (bne)
    	     ALUResult = (A!=B)?8'd1:8'd0;
          if (ALUResult == 1) begin
