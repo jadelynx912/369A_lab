@@ -48,6 +48,19 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
                 6'b100110: ALUControl <= 5'b01000;      //xor
                 6'b100111: ALUControl <= 5'b01101;      //nor
                 6'b101010: ALUControl <= 5'b01110;      //slt
+                6'b000000: begin
+                    ALUControl <= 5'b00000;
+                    RegWrite <= 0;
+                    ALUSrc <= 0;
+                    RegDst <= 0;
+                    MemWrite <= 0;
+                    MemRead <= 0;
+                    Branch <= 0;
+                    MemToReg <= 0;
+                    Jump <= 0;
+                    Jr <= 0;
+                    Jal <= 0;
+                end
             endcase
         end
         6'b100011 || 6'b100000 || 6'b100001: begin        //lw, lb, lh
@@ -76,6 +89,19 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Jal <= 0;
             ALUControl <= 5'b00001;     //add to get address
         end
+        6'b001000: begin            //addi
+            RegWrite <= 1;
+            ALUSrc <= 1;
+            RegDst <= 0;
+            MemWrite <= 0; 
+            MemRead <= 0;
+            Branch <= 0;
+            MemToReg <= 1;
+            Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
+            ALUControl <= 5'b00001;
+        end 
         6'b001100: begin            //andi
             RegWrite <= 1;
             ALUSrc <= 1;
@@ -238,6 +264,19 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Jr <= 1;
             Jal <= 0;
             ALUControl <= 5'bxxxxx;
+        end
+        default: begin
+            RegWrite <= 0;
+            ALUSrc <= 0;
+            RegDst <= 0;
+            MemWrite <= 0; 
+            MemRead <= 0;
+            Branch <= 0;
+            MemToReg <= 0;
+            Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
+            ALUControl <= 5'b00000;
         end
         endcase
     end    

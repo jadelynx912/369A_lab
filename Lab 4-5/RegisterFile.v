@@ -70,6 +70,7 @@ input [31:0] WriteData;
 
 reg [31:0] regFile [31:0];
 
+
 output reg [31:0] ReadData1, ReadData2;
 
 always @(posedge Clk) begin
@@ -79,10 +80,19 @@ always @(posedge Clk) begin
 end
 
 always @ (*) begin
-    ReadData1 <= regFile[ReadRegister1];
-    ReadData2 <= regFile[ReadRegister2];
+    if (ReadRegister1 == 0) begin
+        ReadData1 <= 0;
+    end
+    else begin
+        ReadData1 <= regFile[ReadRegister1];
+    end
+    if (ReadRegister2 == 0) begin
+        ReadData2 <= 0;
+    end
+    else begin
+        ReadData2 <= regFile[ReadRegister2];
+    end
     
 end
-
 
 endmodule

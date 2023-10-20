@@ -34,23 +34,25 @@ wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
 wire PCSrc, PCSrc_Jump_OR;
-wire RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl; 
+wire RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal; 
+wire [4:0] ALUControl;
 wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, jOffset, WritebackOutput; 
 wire [27:0] tempOffset;
 ///////////////////
 wire [31:0] temp;
 wire temp1, temp2;
 
-wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute;
-wire [4:0] RegDst1Execute, RegDst2Execute;
-wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, ALUControlExecute, JrExecute, JalExecute;
-wire [31:0] ALUSrcOutput, regDstOutput, regDstMux;
+wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, jOffsetExecute;
+wire [4:0] RegDst1Execute, RegDst2Execute, regDstMux, regDstOutput, ALUControlExecute;
+wire RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute;
+wire [31:0] ALUSrcOutput;
 
 wire [31:0] ALUResult;
 wire Zero;
 //////////////////////////////////
 wire RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory;
-wire [31:0] PCAdder_SignExtensionMemory, PCAddResultMemory, ALUResultMemory, ReadData1Memory, ReadData2Memory, RdMemory;
+wire [31:0] PCAdder_SignExtensionMemory, PCAddResultMemory, ALUResultMemory, ReadData1Memory, ReadData2Memory;
+wire [4:0] RdMemory;
 wire ZeroMemory;
 
 wire RegWriteWrite, MemToRegWrite, JalWrite;
@@ -102,9 +104,9 @@ assign PCAdder_SignExtension = temp + PCAddResultExecute;
 
 Mux32Bit2To1 aluSource(ALUSrcOutput, SignExtExecute, ReadData2Execute, ALUSrcExecute); //SignExtOut if 1, ReadData2Out if 0
 
-Mux32Bit2To1 regDest(regDstMux, RegDst2Execute, RegDst1Execute, RegDstExecute); //RegDst1Out if 0 , RegDst2Out if 1
+Mux5bit2to1 regDest(regDstMux, RegDst2Execute, RegDst1Execute, RegDstExecute); //RegDst1Out if 0 , RegDst2Out if 1
 
-Mux32Bit2To1 JalRAMux(regDstOutput, 31, regDstMux, JalExecute); //$ra is reg 31
+Mux5bit2to1 JalRAMux(regDstOutput, 5'b11111, regDstMux, JalExecute); //$ra is reg 31
 
 ALU32Bit alu(ALUControlExecute, ReadData1Execute, ALUSrcOutput, ALUResult, Zero);
 

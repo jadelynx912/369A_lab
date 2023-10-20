@@ -116,7 +116,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
        endcase
      end 
 
-  always @ (ALUControl) begin
+  always @ (ALUResult) begin
 	if (ALUResult == 0) begin
 	    Zero = 1;
 	end

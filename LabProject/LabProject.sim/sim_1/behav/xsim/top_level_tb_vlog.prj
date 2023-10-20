@@ -9,6 +9,7 @@ verilog xil_defaultlib  \
 "../../../../../Lab 4-5/Fetch_To_Decode.v" \
 "../../../../../Lab 1/InstructionMemory.v" \
 "../../../../../Lab 4-5/Mux32Bit2To1.v" \
+"../../../../LabProject.srcs/sources_1/new/Mux5bit2to1.v" \
 "../../../../../Lab 1/PCAdder.v" \
 "../../../../../Lab 1/ProgramCounter.v" \
 "../../../../../Lab 4-5/RegisterFile.v" \
