@@ -70,7 +70,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
            end
 	    end
 	    5'b01101: // Logical nor
-	      ALUResult = !(A | B);
+	      ALUResult = ~(A | B);
 	    5'b01110: //Logical slt
 	      if (A != B) begin
 		    if (A > B) begin
