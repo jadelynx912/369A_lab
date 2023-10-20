@@ -39,8 +39,8 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     input Clk;
     input [31:0] Address; 	// Input Address 
     input [31:0] WriteData; // Data that needs to be written into the address 
-    input [3:0] MemWrite; 		// Control signal for memory write 
-    input [3:0] MemRead; 			// Control signal for memory read 
+    input [1:0] MemWrite; 		// Control signal for memory write 
+    input [1:0] MemRead; 			// Control signal for memory read 
 
     output reg[31:0] ReadData; // Contents of memory location at Address
 
@@ -52,60 +52,29 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     end
     
     always @ (posedge Clk) begin
-        if (MemWrite[3:2] == 2'b11) begin       //store byte
-            if (MemWrite[1:0] == 2'b00) begin
-                memory[Address[11:2]][7:0] <= WriteData[7:0];
-            end
-            else if (MemWrite[3:2] == 2'b01) begin
-                memory[Address[11:2]][15:8] <= WriteData[15:8];
-            end
-            else if (MemWrite[3:2] == 2'b10) begin
-                memory[Address[11:2]][23:16] <= WriteData[23:16];
-            end
-            else begin
-                memory[Address[11:2]][31:24] <= WriteData[31:24];
-            end
+        if (MemWrite[1:0] == 2'b11) begin                           //sb
+            memory[Address[11:2]][7:0] <= WriteData[7:0];
         end
-        else if (MemWrite[3:2] == 2'b10) begin  //store half 
-            if (MemWrite[1] == 0) begin
-                memory[Address[11:2]][15:0] <= WriteData[15:0];
-            end
-            else begin 
-                memory[Address[11:2]][31:16] <= WriteData[31:16];
-            end
+        else if (MemWrite[3:2] == 2'b10) begin                      //sh
+            memory[Address[11:2]][15:0] <= WriteData[15:0];
         end
-        else if (MemWrite[3:2] == 2'b01) begin  //store word
+        else if (MemWrite[3:2] == 2'b01) begin                      //sw
             memory[Address[11:2]] <= WriteData;
         end
         //else don't do anything
     end
     
     always @ (*) begin
-        if (MemRead[3:2] == 2'b11) begin       //load byte
-            if (MemRead[1:0] == 2'b00) begin
-                ReadData = memory[Address[11:2]][7:0];
-            end
-            else if (MemRead[3:2] == 2'b01) begin
-                ReadData = memory[Address[11:2]][15:8];
-            end
-            else if (MemRead[3:2] == 2'b10) begin
-                ReadData = memory[Address[11:2]][23:16];
-            end
-            else begin
-                ReadData = memory[Address[11:2]][31:24];
-            end
+        if (MemRead[1:0] == 2'b11) begin                            //lb
+            ReadData = memory[Address[11:2]][7:0];
         end
-        else if (MemRead[3:2] == 2'b10) begin  //load half 
-            if (MemRead[1] == 0) begin
-                ReadData = memory[Address[11:2]][15:0];
-            end
-            else begin 
-                ReadData = memory[Address[11:2]][31:15];
-            end
+        else if (MemRead[3:2] == 2'b10) begin                       //lh
+            ReadData = memory[Address[11:2]][15:0];
         end
-        else if (MemRead[3:2] == 2'b01) begin  //load word
+        else if (MemRead[3:2] == 2'b01) begin                       //lw
             ReadData = memory[Address[11:2]];
         end
+        //else don't do anything
     end       
     
 endmodule

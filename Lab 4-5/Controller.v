@@ -20,8 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl);
     input [31:0] Instruction;
-    output reg RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal;
+    output reg RegWrite, ALUSrc, RegDst, Branch, MemToReg, Jump, Jr, Jal;
     output reg [4:0] ALUControl;
+    output reg [1:0] MemWrite, MemRead;
     
     always @ (Instruction) begin
         case(Instruction[31:26])
@@ -29,8 +30,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 1;
             ALUSrc <= 0;
             RegDst <= 1;
-            MemWrite <= 0;
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
@@ -43,8 +44,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
                     RegWrite <= 0;
                     ALUSrc <= 0;
                     RegDst <= 0;
-                    MemWrite <= 0;
-                    MemRead <= 0;
+                    MemWrite <= 2'b00;
+                    MemRead <= 2'b00;
                     Branch <= 0;
                     MemToReg <= 0;
                     Jump <= 0;
@@ -63,12 +64,12 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
                 6'b101010: ALUControl <= 5'b01110;      //slt
             endcase
         end
-        6'b100011 || 6'b100000 || 6'b100001: begin        //lw, lb, lh
+        6'b100011: begin                                //lw
             RegWrite <= 1;
             ALUSrc <= 1;
             RegDst <= 0;
-            MemWrite <= 0;
-            MemRead <= 1;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b01;
             Branch <= 0;
             MemToReg <= 0;
             Jump <= 0;
@@ -76,12 +77,64 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             Jal <= 0;
             ALUControl <= 5'b00001;      //add to get address
         end
-        6'b101011 || 6'b101000 || 6'b101001: begin      //sw, sb, sh
+        6'b100000: begin                                //lb
+            RegWrite <= 1;
+            ALUSrc <= 1;
+            RegDst <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b11;
+            Branch <= 0;
+            MemToReg <= 0;
+            Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
+            ALUControl <= 5'b00001;      //add to get address
+        end
+        6'b100001: begin                                //lh
+            RegWrite <= 1;
+            ALUSrc <= 1;
+            RegDst <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b10;
+            Branch <= 0;
+            MemToReg <= 0;
+            Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
+            ALUControl <= 5'b00001;      //add to get address
+        end      
+        6'b101011: begin                            //sw
             RegWrite <= 0;
             ALUSrc <= 1;
             RegDst <= 1'bx;
-            MemWrite <= 1; 
-            MemRead <= 0;
+            MemWrite <= 2'b01;
+            MemRead <= 2'b00;
+            Branch <= 0;
+            MemToReg <= 1'bx;
+            Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
+            ALUControl <= 5'b00001;     //add to get address
+        end
+        6'b101000: begin                            //sb
+            RegWrite <= 0;
+            ALUSrc <= 1;
+            RegDst <= 1'bx;
+            MemWrite <= 2'b11;
+            MemRead <= 2'b00;
+            Branch <= 0;
+            MemToReg <= 1'bx;
+            Jump <= 0;
+            Jr <= 0;
+            Jal <= 0;
+            ALUControl <= 5'b00001;     //add to get address
+        end
+        6'b101001: begin                            //sh
+            RegWrite <= 0;
+            ALUSrc <= 1;
+            RegDst <= 1'bx;
+            MemWrite <= 2'b10;
+            MemRead <= 2'b00;
             Branch <= 0;
             MemToReg <= 1'bx;
             Jump <= 0;
@@ -93,8 +146,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 1;
             ALUSrc <= 1;
             RegDst <= 0;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
@@ -106,8 +159,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 1;
             ALUSrc <= 1;
             RegDst <= 0;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
@@ -119,8 +172,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 1;
             ALUSrc <= 1;
             RegDst <= 0;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
@@ -132,8 +185,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 1;
             ALUSrc <= 1;
             RegDst <= 0;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
@@ -145,8 +198,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 1;
             ALUSrc <= 1;
             RegDst <= 0;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 0;
             MemToReg <= 1;
             Jump <= 0;
@@ -158,8 +211,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 0;
             ALUSrc <= 0;
             RegDst <= 1'bx;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
@@ -171,8 +224,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 0;
             ALUSrc <= 0;
             RegDst <= 1'bx;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
@@ -184,8 +237,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 0;
             ALUSrc <= 0;
             RegDst <= 1'bx;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
@@ -204,8 +257,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 0;
             ALUSrc <= 0;
             RegDst <= 1'bx;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
@@ -217,8 +270,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 0;
             ALUSrc <= 0;
             RegDst <= 1'bx;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
@@ -230,8 +283,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 0;
             ALUSrc <= 1'bx;
             RegDst <= 1'bx;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 0;
             MemToReg <= 1'bx;
             Jump <= 1;
@@ -243,8 +296,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 0;
             ALUSrc <= 0;
             RegDst <= 1'bx;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 1;
@@ -256,8 +309,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 0;
             ALUSrc <= 0;
             RegDst <= 1'bx;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 1;
             MemToReg <= 1'bx;
             Jump <= 0;
@@ -269,8 +322,8 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegWrite <= 0;
             ALUSrc <= 0;
             RegDst <= 0;
-            MemWrite <= 0; 
-            MemRead <= 0;
+            MemWrite <= 2'b00;
+            MemRead <= 2'b00;
             Branch <= 0;
             MemToReg <= 0;
             Jump <= 0;
