@@ -43,10 +43,10 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
            ALUResult = A - B;
         5'b00011: // Multiplication
            ALUResult = A * B;
-        5'b00100:// Logical shift left
-           ALUResult = A << B;
-        5'b00101: // Logical shift right 
-           ALUResult = A >> B;
+        5'b00100: // Logical shift left
+           ALUResult = B << A[11:7];
+        5'b00101:  // Logical shift right 
+           ALUResult = B >> A[11:7];
         5'b00110: // Logical and
            ALUResult = A & B;
 	    5'b00111: //Logical or
@@ -70,8 +70,8 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
            end
 	    end
 	    5'b01101: // Logical nor
-	      ALUResult = !(A | B);
-	    5'b01110: //Logical slt
+	      ALUResult = ~(A | B);
+	    5'b01110: begin//Logical slt
 	      if (A != B) begin
 		    if (A > B) begin
 		     ALUResult <= 0;
@@ -87,6 +87,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 	        else begin
 			  ALUResult <= 1;
 			end
+		  end
 		  end
 	   5'b01111:  begin // Branch on not equal (bne)
    	     ALUResult = (A!=B)?8'd1:8'd0;
