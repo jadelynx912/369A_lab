@@ -36,8 +36,8 @@ wire [31:0] PCAddResultDecode, instructionDecode;
 wire PCSrc, PCSrc_Jump_OR;
 wire RegWrite, ALUSrc, RegDst, Branch, MemToReg, Jump, Jr, Jal; 
 wire [1:0] MemWrite, MemRead;
-wire [4:0] ALUControl;
-wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, jOffset, WritebackOutput; 
+wire [4:0] ALUControl, ShiftMuxWire;
+wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, jOffset, WritebackOutput, ShiftSwitchWire; 
 wire [27:0] tempOffset;
 ///////////////////
 wire [31:0] temp;
@@ -93,13 +93,15 @@ RegisterFile reggy(instructionDecode[25:21], instructionDecode[20:16], RegRdWrit
 
 SignExtension signE(instructionDecode[15:0], signExtend);
 
+Mux32Bit2To1 ReadData1_SE_Switch(ShiftSwitchWire, signExtend, ReadData1, ShiftControl);
+
 assign tempOffset = instructionDecode[25:0] << 2;
 assign jOffset = {PCAddResultDecode[31:28], tempOffset};
 
-Controller controlly(instructionDecode, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl);
+Controller controlly(instructionDecode, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl);
 
 //DECODE STAGE / EXECUTE STAGE
-Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jr, Jal, ALUControl, PCAddResultDecode, ReadData1, ReadData2, signExtend, jOffset, instructionDecode[20:16], instructionDecode[15:11],
+Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jr, Jal, ALUControl, PCAddResultDecode, ShiftSwitchWire, ReadData2, signExtend, jOffset, instructionDecode[20:16], instructionDecode[15:11],
 RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute, ALUControlExecute, PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, jOffsetExecute, RegDst1Execute, RegDst2Execute);
 
 assign temp = SignExtExecute << 2;
