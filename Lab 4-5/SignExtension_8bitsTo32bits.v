@@ -5,15 +5,15 @@
 // Module - SignExtension.v
 // Description - Sign extension module.
 ////////////////////////////////////////////////////////////////////////////////
-module SignExtension_25to32(in, out);
+module SignExtension_8bitsTo32bits(in, out);
     /* A 16-Bit input word */
-    input [25:0] in;
+    input [7:0] in;
     
     /* A 32-Bit output word */
     output reg [31:0] out;
     
     always @( in ) begin
-        out[31:0] <= { {26{in[25]}}, in[25:0] };
+        out[31:0] <= { {8{in[7]}}, in[7:0] };
     end
 
 endmodule
