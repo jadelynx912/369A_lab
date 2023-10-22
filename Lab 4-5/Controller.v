@@ -40,33 +40,15 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             ShiftControl <= 0;
             //To get ALU control value for each instruction
             case(Instruction[5:0])
-
-                6'b000000: begin //sll
+                6'b000000: begin                        //sll
                     ALUControl <= 5'b00100;
-                    RegWrite <= 0;
-                    ALUSrc <= 0;
-                    RegDst <= 0;
-                    MemWrite <= 2'b00;
-                    MemRead <= 2'b00;
-                    Branch <= 0;
-                    MemToReg <= 0;
-                    Jump <= 0;
-                    Jr <= 0;
-                    Jal <= 0;
                     ShiftControl <= 1;
-                
                 end
-                6'b000010: begin
-                    ALUSrc <= 0;
-                    ALUControl <= 5'b00101;      //srl
+                6'b000010: begin                         //srl
+                    ALUControl <= 5'b00101;
                     ShiftControl <= 1;
-                
                 end
-                6'b100000: begin 
-                ALUControl <= 5'b00001;
-                ALUSrc <= 0;
-                ShiftControl <= 0; 
-                end
+                6'b100000: ALUControl <= 5'b00001;      //add
                 6'b100010: ALUControl <= 5'b00010;      //sub
                 6'b011000: ALUControl <= 5'b00011;      //mult
                 6'b100100: ALUControl <= 5'b00110;      //and
