@@ -59,12 +59,12 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
         end
         6'b011100: begin                                //mul
             RegWrite <= 1;
-            ALUSrc <= 1;
-            RegDst <= 0;
+            ALUSrc <= 0;
+            RegDst <= 1;
             MemWrite <= 2'b00;
-            MemRead <= 2'b01;
+            MemRead <= 2'b00;
             Branch <= 0;
-            MemToReg <= 0;
+            MemToReg <= 1;
             Jump <= 0;
             Jr <= 0;
             Jal <= 0;
