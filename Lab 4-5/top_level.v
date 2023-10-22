@@ -101,8 +101,8 @@ assign jOffset = {PCAddResultDecode[31:28], tempOffset};
 Controller controlly(instructionDecode, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl);
 
 //DECODE STAGE / EXECUTE STAGE
-Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jr, Jal, ALUControl, PCAddResultDecode, ShiftSwitchWire, ReadData2, signExtend, jOffset, instructionDecode[20:16], instructionDecode[15:11],
-RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute, ALUControlExecute, PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, jOffsetExecute, RegDst1Execute, RegDst2Execute);
+Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jr, Jal, ALUControl, PCAddResultDecode, ShiftSwitchWire, ReadData2, signExtend, instructionDecode[20:16], instructionDecode[15:11],
+RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute, ALUControlExecute, PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, RegDst1Execute, RegDst2Execute);
 
 assign temp = SignExtExecute << 2;
 assign PCAdder_SignExtension = temp + PCAddResultExecute;
