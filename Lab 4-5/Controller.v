@@ -50,7 +50,7 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
                 end
                 6'b100000: ALUControl <= 5'b00001;      //add
                 6'b100010: ALUControl <= 5'b00010;      //sub
-                6'b011000: ALUControl <= 5'b00011;      //mult
+                6'b011000: ALUControl <= 5'b00011;      //mul
                 6'b100100: ALUControl <= 5'b00110;      //and
                 6'b100101: ALUControl <= 5'b00111;      //or
                 6'b100110: ALUControl <= 5'b01000;      //xor
