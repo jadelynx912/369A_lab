@@ -30,9 +30,9 @@ input Clk, Reset;
 input RegWrite, ALUSrc, RegDst, Branch, MemToReg, Jr, Jal;
 input [1:0] MemWrite, MemRead;
 input [4:0] ALUControl, RegDst1, RegDst2;
-input [31:0] PCAddResult, ReadData1, ReadData2, SignExt, jOffset;
+input [31:0] PCAddResult, ReadData1, ReadData2, SignExt;
 
-output reg [31:0] PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut, jOffsetOut;
+output reg [31:0] PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut;
 output reg [4:0] ALUControlOut, RegDst1Out, RegDst2Out;
 output reg RegWriteOut, ALUSrcOut, RegDstOut, BranchOut, MemToRegOut, JrOut, JalOut;
 output reg [1:0] MemWriteOut, MemReadOut;
@@ -54,7 +54,6 @@ always @(posedge Clk) begin
     ReadData1Out <= ReadData1;
     ReadData2Out <= ReadData2;
     SignExtOut <= SignExt;
-    jOffsetOut <= jOffset;
 end
 
 
