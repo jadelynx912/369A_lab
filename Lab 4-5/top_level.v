@@ -77,7 +77,7 @@ Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PC
 
 Mux32Bit2To1 JRMux(Jump_To_PC, ReadData1Execute, PCSrcOutput, JrExecute); 
 
-Mux32Bit2To1 JumpMux(NextPC, jOffsetExecute, Jump_To_PC, Jump);
+Mux32Bit2To1 JumpMux(NextPC, jOffset, Jump_To_PC, Jump);
 
 ProgramCounter Pcount(Jump_To_PC, PCResult, Reset, Clk);
 
