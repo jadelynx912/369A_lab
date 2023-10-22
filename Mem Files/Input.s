@@ -52,13 +52,13 @@ loop:
     nop
     nop
     nop
-    sll $t4, $t3, 3 # t4 = 4 << 3 = 64, display 192, 64
+    sll $t4, $t3, 3 # t4 = 4 << 3 = 32, display 192, 32
     nop
     nop
     nop
     nop
     nop
-    srl $t5, $t4, 2 # t5 = 16 64 >> 2, display 216, 2
+    srl $t5, $t4, 2 # t5 = 32 >> 2 = 8, display 216, 8
     nop
     nop
     nop
