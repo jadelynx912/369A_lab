@@ -3,67 +3,271 @@
 .text				# Put program here 
 .globl main			# globally define 'main' 
 
-main: 
-    add $t0, $zero, $zero # t0=0, display 0, 0
-    nop
-    nop
-    nop
-    nop
-    nop
-    addi $t1, $zero, 6 # t1= 6, display 24, 6
-    nop
-    nop
-    nop
-    nop
-    nop
-    addi $t2, $zero, 10 # t2 = 10, display 48, 10
-    nop
-    nop
-    nop
-    nop
-    nop
-    sw $t1, 0($t0) # display 72, (no register written)
-    nop
-    nop
-    nop
-    nop
-    nop
-    sw $t2, 4($t0) # display 96,
-    nop
-    nop
-    nop
-    nop
-    nop
-    lw $s0, 0($t0) # s0 = 6, display 120, 6
-    nop
-    nop
-    nop
-    nop
-    nop
-    lw $s1, 4($t0) # s1 = 10, display 144, 10
-    nop
-    nop
-    nop
-    nop
-    nop
-    sub $t3, $s1, $s0 # t3 = 10-6 = 4, display 168, 4
-    nop
-    nop
-    nop
-    nop
-    nop
-    sll $t4, $t3, 3 # t4 = 4 << 3 = 32, display 192, 32
-    nop
-    nop
-    nop
-    nop
-    nop
-    srl $t5, $t4, 2 # t5 = 32 >> 2 = 8, display 216, 8
-    nop
-    nop
-    nop
-    nop
-    nop
-    j loop # display 240,
+
+//r-type / data
+main: addi $t0, $zero, 8 // ==8
+nop
+nop
+nop
+nop
+nop
+addi $t1, $zero, 6 // == 6
+nop
+nop
+nop
+nop
+nop
+add $t2, $t0, $t1 // == 14
+nop
+nop
+nop
+nop
+nop
+sub $t2, $t0, $t1 // == 2
+nop
+nop
+nop
+nop
+nop
+mul $t2, $t0, $t1 // == 48
+nop
+nop
+nop
+nop
+nop
+lw $s0, 0($t0) // == 8
+nop
+nop
+nop
+nop
+nop
+sw $t0, 0($t2) // == 8
+nop
+nop
+nop
+nop
+nop
+
+
+//logical
+add $t0, $zero, $zero
+nop
+nop
+nop
+nop
+nop
+addi $t1, $zero, 1
+nop
+nop
+nop
+nop
+nop
+and $t2, $t0, $t1 // == 0
+nop
+nop
+nop
+nop
+nop
+andi $t2, $t1, 1 // == 1
+nop
+nop
+nop
+nop
+nop
+or $t2, $t0, $t1 // == 1
+nop
+nop
+nop
+nop
+nop
+nor $t2, $t0, $t1 // == 0
+nop
+nop
+nop
+nop
+nop
+xor $t2, $t0, $t1 // == 1
+nop
+nop
+nop
+nop
+nop
+ori $t2, $t0, 0 // == 0
+nop
+nop
+nop
+nop
+nop
+xori $t2, $t1,  // == 0
+nop
+nop
+nop
+nop
+nop
+sll $t2, $t1, 2 // == 4
+nop
+nop
+nop
+nop
+nop
+srl $t2, $t2, 2 // == 1
+nop
+nop
+nop
+nop
+nop
+slt $t2, $t0, $t1 // == 1
+nop
+nop
+nop
+nop
+nop
+slti $t2, $t1, 0 // == 0
+nop
+nop
+nop
+nop
+nop
+
+//Branches
+addi $t0, $zero, 8 // ==8
+nop
+nop
+nop
+nop
+nop
+addi $t1, $zero, 6 // == 6
+nop
+nop
+nop
+nop
+nop
+addi $t2, $zero, -8
+nop
+nop
+nop
+nop
+nop
+
+bgez $t1, branch1
+nop
+nop
+nop
+nop
+nop
+
+addi $t6, $zero, 404
+nop
+nop
+nop
+nop
+nop
+
+branch1: beq $t0, $t0, branch2
+nop
+nop
+nop
+nop
+nop
+
+addi $t6, $zero, 404
+nop
+nop
+nop
+nop
+nop
+
+branch2: bne $t0, $t1, branch3
+nop
+nop
+nop
+nop
+nop
+
+addi $t6, $zero, 404
+nop
+nop
+nop
+nop
+nop
+
+branch3: bgtz $t0, branch4
+nop
+nop
+nop
+nop
+nop
+
+addi $t6, $zero, 404
+nop
+nop
+nop
+nop
+nop
+
+branch4: blez $t2, branch5
+nop
+nop
+nop
+nop
+nop
+
+addi $t6, $zero, 404
+nop
+nop
+nop
+nop
+nop
+
+branch5: bltz $t2, branch6
+nop
+nop
+nop
+nop
+nop
+
+addi $t6, $zero, 404
+nop
+nop
+nop
+nop
+nop
+
+branch6: j jump1
+nop
+nop
+nop
+nop
+nop
+
+addi $t6, $zero, 404
+nop
+nop
+nop
+nop
+nop
+
+jump1: jal jump2
+nop
+nop
+nop
+nop
+nop
+
+addi $t6, $zero, 424
+nop
+nop
+nop
+nop
+nop
+
+jump2: jr $ra
+nop
+nop
+nop
+nop
+nop
+
+
 
 .end
