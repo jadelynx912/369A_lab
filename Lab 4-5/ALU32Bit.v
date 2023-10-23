@@ -116,15 +116,6 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 	   default: ALUResult = 0; 
        endcase
      end 
-
-  always @ (ALUResult) begin
-	if (ALUResult == 0) begin
-	    Zero = 1;
-	end
-	else begin
-	    Zero = 0;
-	end
-  end
 	
 
 endmodule
