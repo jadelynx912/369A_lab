@@ -267,7 +267,7 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             ShiftControl <= 0;
             case(Instruction[20:16])            //Uses rt as an extension of the opcode
                 5'b00001: begin                 //bgez
-                    ALUControl <= 5'b01111;
+                    ALUControl <= 5'b01011;
                 end
                 5'b00000: begin                 //bltz
                     ALUControl <=5'b10010;
