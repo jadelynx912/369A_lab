@@ -40,6 +40,20 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             ShiftControl <= 0;
             //To get ALU control value for each instruction
             case(Instruction[5:0])
+                6'b001000: begin            //jr
+                    RegWrite <= 0;
+                    ALUSrc <= 0;
+                    RegDst <= 1'bx;
+                    MemWrite <= 2'b00;
+                    MemRead <= 2'b00;
+                    Branch <= 0;
+                    MemToReg <= 1'bx;
+                    Jump <= 0;
+                    Jr <= 1;
+                    Jal <= 0;
+                    ALUControl <= 5'bxxxxx;
+                    ShiftControl <= 0;
+                end
                 6'b000000: begin                        //sll
                     ALUControl <= 5'b00100;
                     ShiftControl <= 1;
@@ -322,7 +336,7 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             RegDst <= 1'bx;
             MemWrite <= 2'b00;
             MemRead <= 2'b00;
-            Branch <= 1;
+            Branch <= 0;
             MemToReg <= 1'bx;
             Jump <= 1;
             Jr <= 0;
@@ -330,20 +344,7 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             ALUControl <= 5'bxxxxx;
             ShiftControl <= 0;
         end
-        6'b001001: begin            //jr
-            RegWrite <= 0;
-            ALUSrc <= 0;
-            RegDst <= 1'bx;
-            MemWrite <= 2'b00;
-            MemRead <= 2'b00;
-            Branch <= 1;
-            MemToReg <= 1'bx;
-            Jump <= 0;
-            Jr <= 1;
-            Jal <= 0;
-            ALUControl <= 5'bxxxxx;
-            ShiftControl <= 0;
-        end
+        //jr has opcode 000000, funct 001000 - see top in rtype
         default: begin
             RegWrite <= 0;
             ALUSrc <= 0;
