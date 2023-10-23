@@ -66,13 +66,15 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     
     always @ (*) begin
         if (MemRead[1:0] == 2'b11) begin                            //lb
-            ReadData = memory[Address[11:2]][7:0];
+            ReadData[7:0] <= memory[Address[11:2]][7:0];
+            ReadData[31:8] <= {24{ReadData[7]}};
         end
         else if (MemRead[1:0] == 2'b10) begin                       //lh
-            ReadData = memory[Address[11:2]][15:0];
+            ReadData[15:0] <= memory[Address[11:2]][15:0];
+            ReadData[31:16] <= {16{ReadData[15]}};
         end
         else if (MemRead[1:0] == 2'b01) begin                       //lw
-            ReadData = memory[Address[11:2]];
+            ReadData <= memory[Address[11:2]];
         end
         //else don't do anything
     end       
