@@ -37,93 +37,97 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 
     always @ (ALUControl, A, B) begin
         case (ALUControl)  
-        5'b00001: // Addition
-           ALUResult = A + B;
-        5'b00010: //Subtraction
-           ALUResult = A - B;
-        5'b00011: // Multiplication
-           ALUResult = A * B;
-        5'b00100: // Logical shift left
-           ALUResult = B << A[10:6];
-        5'b00101:  // Logical shift right 
-           ALUResult = B >> A[10:6];
-        5'b00110: // Logical and
-           ALUResult = A & B;
-	    5'b00111: //Logical or
-           ALUResult = A | B;
-	    5'b01000: //  Logical xor
-           ALUResult = A ^ B;
-	    /*5'b01001: // Logical nand 
-           ALUResult = ~(A & B);
-        5'b01010: // Logical xnor
-           ALUResult = ~(A ^ B);*/
-        5'b01011: begin // Branch if greater than or equal to zero (bgez)
-           ALUResult = (A>=B)?8'd1:8'd0;
-           if (ALUResult == 1) begin
-                Zero = 1;
-           end
+            5'b00001: begin                 // Addition
+                ALUResult <= A + B;
+                Zero <= 0;
+            end
+            5'b00010: begin                 //Subtraction
+                ALUResult <= A - B;
+                Zero <= 0;
+            end
+            5'b00011: begin                 // Multiplication
+                ALUResult <= A * B;
+                Zero <= 0;
+            end
+            5'b00100: begin                 // Logical shift left
+                ALUResult <= B << A[10:6];
+                Zero <= 0;
+            end
+            5'b00101: begin                 // Logical shift right 
+                ALUResult <= B >> A[10:6];
+                Zero <= 0;
+            end
+            5'b00110: begin                 // Logical and
+                ALUResult <= A & B;
+                Zero <= 0;
+            end
+            5'b00111: begin                 //Logical or
+                ALUResult <= A | B;
+                Zero <= 0;
+            end    
+	        5'b01000: begin                 //Logical xor
+                ALUResult <= A ^ B;
+                Zero <= 0;
+            end
+            5'b01011: begin                 // Branch if greater than or equal to zero (bgez)
+                ALUResult <= (A>=B)?8'd1:8'd0;
+                if (ALUResult == 1) Zero <= 1;
+                else Zero <= 0;
+            end
+            5'b01100: begin                 // Branch on equal (beq)
+                ALUResult <= (A==B)?8'd1:8'd0;
+	           if (ALUResult == 1) Zero <= 1;
+	           else Zero <= 0;
+            end
+	       5'b01101: begin                  // Logical nor
+	           ALUResult <= ~(A | B);
+	           Zero <= 0;
+            end
+	    5'b01110: begin                    //Logical slt
+	        if (A != B) begin
+                if (A > B) begin
+                    ALUResult <= 0;
+                end
+                else begin
+                    ALUResult <= 1;
+                end
+            end 
+            else begin
+                if (A <= B) begin
+                    ALUResult <= 0;
+                end
+	            else begin
+	               ALUResult <= 1;
+                end
+            end
+        end
+	    5'b01111:  begin                    //Branch on not equal (bne)
+   	        ALUResult <= (A!=B)?8'd1:8'd0;
+            if (ALUResult == 1) Zero <= 1;
+            else Zero <= 0;
+        end
+        5'b10000: begin                     //Branch on greater than zero (btgz)
+	        ALUResult <= (A>B)?8'd1:8'd0;
+	        if (ALUResult == 1) Zero <= 1;
+	        else Zero <= 0;
 	    end
-        5'b01100: begin // Branch on equal (beq)
-           ALUResult = (A==B)?8'd1:8'd0;
-	       if (ALUResult == 1) begin
-                Zero = 1;
-           end
-	    end
-	    5'b01101: // Logical nor
-	      ALUResult = ~(A | B);
-	    5'b01110: begin//Logical slt
-	      if (A != B) begin
-		    if (A > B) begin
-		     ALUResult <= 0;
-		     end 
-		    else begin
-		     ALUResult <= 1;
-		     end
-		  end 
-	      else begin
-		    if (A <= B) begin
-			  ALUResult <= 0;
-		    end
-	        else begin
-			  ALUResult <= 1;
-			end
-		  end
-		  end
-	   5'b01111:  begin // Branch on not equal (bne)
-   	     ALUResult = (A!=B)?8'd1:8'd0;
-         if (ALUResult == 1) begin
-                Zero = 1;
-           end
-       end
-	   5'b10000: begin //Branch on greater than zero (btgz)
-         ALUResult = (A>B)?8'd1:8'd0;
-	     if (ALUResult == 1) begin
-                Zero = 1;
-           end
-	   end
-       5'b10001: begin// Branch if less than or equal to zero (blez)
-         ALUResult = (A<=B)?8'd1:8'd0;
-         if (ALUResult == 1) begin
-                Zero = 1;
-           end
-       end
-	   5'b10010: begin//Branch on less than zero (bltz)
-         ALUResult = (A<B)?8'd1:8'd0;
-	     if (ALUResult == 1) begin
-                Zero = 1;
-           end
-	   end
-	   default: begin
-		ALUResult = 0; 
-		if (ALUResult == 0) begin
-	    		Zero = 1;
-		end
-		else begin
-	    		Zero = 0;
-		end
-	  end
-       endcase
-     end 
+        5'b10001: begin                     // Branch if less than or equal to zero (blez)
+            ALUResult <= (A<=B)?8'd1:8'd0;
+            if (ALUResult == 1) Zero <= 1;
+            else Zero <= 0;
+        end
+	    5'b10010: begin                     //Branch on less than zero (bltz)
+            ALUResult <= (A<B)?8'd1:8'd0;
+            if (ALUResult == 1) Zero <= 1;
+            else Zero <= 0;
+        end
+        default: begin
+            ALUResult = 0; 
+            if (ALUResult == 0) Zero <= 1;
+            else Zero <= 0;
+        end
+   endcase
+end 
 	
 
 endmodule
