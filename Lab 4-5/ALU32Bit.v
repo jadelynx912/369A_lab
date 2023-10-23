@@ -70,14 +70,27 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
                 Zero <= 0;
             end
             5'b01011: begin                 // Branch if greater than or equal to zero (bgez)
-                ALUResult <= (A>=B)?8'd1:8'd0;
-                if (ALUResult == 1) Zero <= 1;
-                else Zero <= 0;
+                if (A>=0) begin
+                    ALUResult <= 8'd1;
+                    Zero <= 1;
+                end
+                else begin
+                    ALUResult <= 8'd0;
+                    Zero <= 0;
+                end
+                if (A [31] == 1) begin
+                    Zero <= 0;
+               end
             end
             5'b01100: begin                 // Branch on equal (beq)
-                ALUResult <= (A==B)?8'd1:8'd0;
-	           if (ALUResult == 1) Zero <= 1;
-	           else Zero <= 0;
+                if (A==B) begin
+                    ALUResult <= 8'd1;
+                    Zero <= 1;
+                end
+                else begin
+                    ALUResult <= 8'd0;
+                    Zero <= 0;
+                end
             end
 	       5'b01101: begin                  // Logical nor
 	           ALUResult <= ~(A | B);
@@ -106,24 +119,53 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
             end
         end
 	    5'b01111:  begin                    //Branch on not equal (bne)
-   	        ALUResult <= (A!=B)?8'd1:8'd0;
-            if (ALUResult == 1) Zero <= 1;
-            else Zero <= 0;
+                if (A!=B) begin
+                    ALUResult <= 8'd1;
+                    Zero <= 1;
+                end
+                else begin
+                    ALUResult <= 8'd0;
+                    Zero <= 0;
+                end
         end
         5'b10000: begin                     //Branch on greater than zero (btgz)
-	        ALUResult <= (A>B)?8'd1:8'd0;
-	        if (ALUResult == 1) Zero <= 1;
-	        else Zero <= 0;
+            if (A>0) begin
+                    ALUResult <= 8'd1;
+                    Zero <= 1;
+                end
+                else begin
+                    ALUResult <= 8'd0;
+                    Zero <= 0;
+                end
+                if (A [31] == 1) begin
+                    Zero <= 0;
+               end
 	    end
         5'b10001: begin                     // Branch if less than or equal to zero (blez)
-            ALUResult <= (A<=B)?8'd1:8'd0;
-            if (ALUResult == 1) Zero <= 1;
-            else Zero <= 0;
+            if (A<=0) begin
+                    ALUResult <= 8'd1;
+                    Zero <= 1;
+                end
+                else begin
+                    ALUResult <= 8'd0;
+                    Zero <= 0;
+                end
+                if (A [31] == 1) begin
+                    Zero <= 1;
+               end
         end
 	    5'b10010: begin                     //Branch on less than zero (bltz)
-            ALUResult <= (A<B)?8'd1:8'd0;
-            if (ALUResult == 1) Zero <= 1;
-            else Zero <= 0;
+            if (A<0) begin
+                    ALUResult <= 8'd1;
+                    Zero <= 1;
+                end
+                else begin
+                    ALUResult <= 8'd0;
+                    Zero <= 0;
+                end
+                if (A [31] == 1) begin
+                    Zero <= 1;
+               end
         end
         default: begin
             ALUResult = 0; 
