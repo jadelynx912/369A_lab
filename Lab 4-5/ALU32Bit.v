@@ -87,17 +87,21 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
 	        if (A != B) begin
                 if (A > B) begin
                     ALUResult <= 0;
+	            Zero <=0;
                 end
                 else begin
                     ALUResult <= 1;
+                    Zero <= 0;
                 end
             end 
             else begin
                 if (A <= B) begin
                     ALUResult <= 0;
+                    Zero <= 0;
                 end
 	            else begin
 	               ALUResult <= 1;
+                       Zero <= 0;
                 end
             end
         end
