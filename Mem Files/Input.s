@@ -1,9 +1,9 @@
 .data 
 
 .text				# Put program here 
-.globl loop			# globally define 'main' 
+.globl main			# globally define 'main' 
 
-loop: 
+main: 
     add $t0, $zero, $zero # t0=0, display 0, 0
     nop
     nop
