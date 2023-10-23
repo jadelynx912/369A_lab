@@ -317,7 +317,7 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
             ShiftControl <= 0;
         end
         6'b000011: begin            //jal
-            RegWrite <= 0;
+            RegWrite <= 1;
             ALUSrc <= 0;
             RegDst <= 1'bx;
             MemWrite <= 2'b00;
