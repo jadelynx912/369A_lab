@@ -107,7 +107,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
                 Zero = 1;
            end
        end
-	   5'b10010: begin//Branch on less than zero (btgz)
+	   5'b10010: begin//Branch on less than zero (bltz)
          ALUResult = (A<B)?8'd1:8'd0;
 	     if (ALUResult == 1) begin
                 Zero = 1;

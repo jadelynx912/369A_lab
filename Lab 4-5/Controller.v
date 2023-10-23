@@ -270,7 +270,7 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
                     ALUControl <= 5'b01111;
                 end
                 5'b00000: begin                 //bltz
-                    ALUControl <= 5'b01100;
+                    ALUControl <=5'b10010;
                 end
             endcase
         end
