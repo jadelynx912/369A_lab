@@ -4,44 +4,43 @@
 .globl main			# globally define 'main' 
 
 
-//r-type / data
-main: addi $t0, $zero, 8 // ==8
+main: addi $t0, $zero, 8  # ==8
 nop
 nop
 nop
 nop
 nop
-addi $t1, $zero, 6 // == 6
+addi $t1, $zero, 6 # == 6
 nop
 nop
 nop
 nop
 nop
-add $t2, $t0, $t1 // == 14
+add $t2, $t0, $t1 # == 14
 nop
 nop
 nop
 nop
 nop
-sub $t2, $t0, $t1 // == 2
+sub $t2, $t0, $t1 # == 2
 nop
 nop
 nop
 nop
 nop
-mul $t2, $t0, $t1 // == 48
+mul $t2, $t0, $t1 # == 48
 nop
 nop
 nop
 nop
 nop
-lw $s0, 0($t0) // == 8
+lw $s0, 0($t0) # == 8
 nop
 nop
 nop
 nop
 nop
-sw $t0, 0($t2) // == 8
+sw $t0, 0($t2) # == 8
 nop
 nop
 nop
@@ -49,7 +48,7 @@ nop
 nop
 
 
-//logical
+#logical
 add $t0, $zero, $zero
 nop
 nop
@@ -62,81 +61,81 @@ nop
 nop
 nop
 nop
-and $t2, $t0, $t1 // == 0
+and $t2, $t0, $t1 # == 0
 nop
 nop
 nop
 nop
 nop
-andi $t2, $t1, 1 // == 1
+andi $t2, $t1, 1 # == 1
 nop
 nop
 nop
 nop
 nop
-or $t2, $t0, $t1 // == 1
+or $t2, $t0, $t1 # == 1
 nop
 nop
 nop
 nop
 nop
-nor $t2, $t0, $t1 // == 0
+nor $t2, $t0, $t1 # == 0
 nop
 nop
 nop
 nop
 nop
-xor $t2, $t0, $t1 // == 1
+xor $t2, $t0, $t1 # == 1
 nop
 nop
 nop
 nop
 nop
-ori $t2, $t0, 0 // == 0
+ori $t2, $t0, 0 # == 0
 nop
 nop
 nop
 nop
 nop
-xori $t2, $t1,  // == 0
+xori $t2, $t1, 1 # == 0
 nop
 nop
 nop
 nop
 nop
-sll $t2, $t1, 2 // == 4
+sll $t2, $t1, 2 # == 4
 nop
 nop
 nop
 nop
 nop
-srl $t2, $t2, 2 // == 1
+srl $t2, $t2, 2 # == 1
 nop
 nop
 nop
 nop
 nop
-slt $t2, $t0, $t1 // == 1
+slt $t2, $t0, $t1 # == 1
 nop
 nop
 nop
 nop
 nop
-slti $t2, $t1, 0 // == 0
+slti $t2, $t1, 0 # == 0
 nop
 nop
 nop
 nop
 nop
 
-//Branches
-addi $t0, $zero, 8 // ==8
+#Branches
+addi $t0, $zero, 8 # ==8
 nop
 nop
 nop
 nop
 nop
-addi $t1, $zero, 6 // == 6
+addi $t1, $zero, 6 # == 6
 nop
 nop
 nop
