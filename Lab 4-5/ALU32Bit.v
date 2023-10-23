@@ -44,9 +44,9 @@ module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
         5'b00011: // Multiplication
            ALUResult = A * B;
         5'b00100: // Logical shift left
-           ALUResult = B << A[11:7];
+           ALUResult = B << A[10:6];
         5'b00101:  // Logical shift right 
-           ALUResult = B >> A[11:7];
+           ALUResult = B >> A[10:6];
         5'b00110: // Logical and
            ALUResult = A & B;
 	    5'b00111: //Logical or
