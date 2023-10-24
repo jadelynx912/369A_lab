@@ -16,6 +16,8 @@
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
+// Percent Effort: William Rains 33%, Kari Cordes 33%, Samantha Perry 33%
+//
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
