@@ -24,6 +24,22 @@ module Controller(Instruction, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Bran
     output reg [4:0] ALUControl;
     output reg [1:0] MemWrite, MemRead;
     
+    
+    initial begin
+        RegWrite <= 0;
+        ALUSrc <= 0;
+        RegDst <= 0;
+        MemWrite <= 2'b00;
+        MemRead <= 2'b00;
+        Branch <= 0;
+        MemToReg <= 0;
+        Jump <= 0;
+        Jr <= 0;
+        Jal <= 0;
+        ALUControl <= 5'b00000;
+        ShiftControl <= 0;
+    end
+    
     always @ (Instruction) begin
         case(Instruction[31:26])
         6'b000000: begin        //R-type instructions
