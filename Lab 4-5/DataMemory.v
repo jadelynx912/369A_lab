@@ -96,7 +96,9 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
         else if (MemRead[1:0] == 2'b01) begin                       //lw
             ReadData <= memory[Address[11:2]];
         end
-        //else don't do anything
+        else begin
+            ReadData <= 8'h0000000;
+        end
     end       
     
 endmodule
