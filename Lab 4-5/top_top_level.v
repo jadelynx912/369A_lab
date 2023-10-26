@@ -16,6 +16,8 @@
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
+//
+// Percent Effort: Kari Cordes - 33%, William Rains - 33%, Samantha Perry - 33%
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -30,7 +32,7 @@ module top_top_level(Clk, Reset, out7, en_out);
     wire ClkOut;
     
     ClkDiv clkdiv1(Clk, 0, ClkOut);
-    top_level datapath(Clk, Reset, PCResult, WriteDataReg);
+    top_level datapath(ClkOut, Reset, PCResult, WriteDataReg);
     Two4DigitDisplay tdd1(Clk, WriteDataReg[15:0], PCResult[15:0], out7, en_out);
 
 endmodule
