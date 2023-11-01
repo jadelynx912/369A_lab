@@ -906,24 +906,27 @@ endfors:
      #Checks (i == 0 && j ==0)
      slt $t7, $zero, $t0            # 0 < i
      slt $t8, $t0, $zero            # i < 0 - want both to be 0, not < || > than 0
-     or $t8, $t7, $t8               # t9 is 0 if i == 0
+     or $t8, $t7, $t8               # t8 is 0 if i == 0
      slt $t7, $zero, $t1            # 0 < j
      slt $t9, $t1, $zero            # j < 0
-     or $s6, $t7, $t9               # need both to be 0
+     or $s6, $t7, $t9               # s6 is j == 0 - need both to be 0
+     slt $t6, $t1, $s5              # j < fcols-wcols
+     slt $t9, $s5, $t1              # j > fcols-wcols
+     or $t6, $t6, $t9               # t6 is 0 if j == fcols - wcols 
      or $t9, $t8, $s6               # need i == 0 (0) and j == 0 (0)
-     beq $t9, $zero, addtoj         # if $t9 == 0 add
+	 or $t7, $t9, $t6				# t7 == 0 if i, j, and fcols-wcols == 0
+	 beq $t7, $zero, addtoi			# if (i == 0 and j == 0) and j == fcols-wcols add to i instead
+     beq $t9, $zero, addtoj         # if $t9 == 0 add to j
 
      #Checks (i == 0 && j == fcols-wcols)
-     slt $t6, $t1, $s5              
-     slt $t9, $s5, $t1
-     or $t6, $t6, $t9
+     
      or $t9, $t6, $t8
      beq $t9, $zero, addtoi
 
      #Checks (j == 0 && i == frows-wrows)
      slt $t7, $t0, $s4
      slt $t9, $s4, $t0
-     or $t7, $t7, $t9
+     or $t7, $t7, $t9               #t7 is 0 if i == frows - wrows
      or $t9, $t7, $s6
      beq $t9, $zero, addtoj
 
