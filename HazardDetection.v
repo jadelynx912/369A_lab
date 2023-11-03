@@ -26,7 +26,7 @@ module HazardDetection(rs, rt, rtExecution, MemReadExecution, DecodeRegWrite, PC
     input MemReadExecution;
     output reg DecodeRegWrite, PCWrite, MuxControl;
     
-    if (MemReadExecution & ((rt == rtExecution) | (rs == rtExecution))) begin
+    if (MemReadExecution == 1 & ((rt == rtExecution) | (rs == rtExecution))) begin
         PCWrite <= 0;
         DecodeRegWrite <= 0;
         MuxControl <= 1;
