@@ -35,7 +35,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
         Jump <= 0;
         Jr <= 0;
         Jal <= 0;
-        ALUControl <= 5'b00000;
+        ALUControl <= 5'b11111;
         ShiftControl <= 0;
         PCSrc <= 0;
     end
@@ -66,7 +66,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
                     Jump <= 0;
                     Jr <= 1;
                     Jal <= 0;
-                    ALUControl <= 5'bxxxxx;
+                    ALUControl <= 5'b11111;
                     ShiftControl <= 0;
                     PCSrc <= 0;
                 end
@@ -265,7 +265,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jump <= 0;
             Jr <= 0;
             Jal <= 0;
-            ALUControl <= 5'b01111;
+            ALUControl <= 5'b11111;
             ShiftControl <= 0;
             if (eq == 0) PCSrc <= 1;
             else PCSrc <= 0;
@@ -280,7 +280,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jump <= 0;
             Jr <= 0;
             Jal <= 0;
-            ALUControl <= 5'b01100;
+            ALUControl <= 5'b11111;
             ShiftControl <= 0;
             if (eq == 1) PCSrc <= 1;
             else PCSrc <= 0;
@@ -298,12 +298,12 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             ShiftControl <= 0;
             case(Instruction[20:16])            //Uses rt as an extension of the opcode
                 5'b00001: begin                 //bgez
-                    ALUControl <= 5'b01011;
+                    ALUControl <= 5'b11111;
                     if (gt == 1 | eq == 1) PCSrc <= 1;
                     else PCSrc <= 0;
                 end
                 5'b00000: begin                 //bltz
-                    ALUControl <=5'b10010;
+                    ALUControl <=5'b11111;
                     if (lt == 1) PCSrc <= 1;
                     else PCSrc <= 0;
                 end
@@ -319,7 +319,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jump <= 0;
             Jr <= 0;
             Jal <= 0;
-            ALUControl <= 5'b10000;
+            ALUControl <= 5'b11111;
             ShiftControl <= 0;
             if (gt == 1) PCSrc <= 1;
             else PCSrc <= 0;
@@ -334,7 +334,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jump <= 0;
             Jr <= 0;
             Jal <= 0;
-            ALUControl <= 5'b10001;
+            ALUControl <= 5'b11111;
             ShiftControl <= 0;
             if (lt == 1 | eq == 1) PCSrc <= 1;
             else PCSrc <= 0;
@@ -349,7 +349,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jump <= 1;
             Jr <= 0;
             Jal <= 0;
-            ALUControl <= 5'bxxxxx;
+            ALUControl <= 5'b11111;
             ShiftControl <= 0;
             PCSrc <= 0;
         end
@@ -363,7 +363,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jump <= 1;
             Jr <= 0;
             Jal <= 1;
-            ALUControl <= 5'bxxxxx;
+            ALUControl <= 5'b11111;
             ShiftControl <= 0;
             PCSrc <= 0;
         end
@@ -378,7 +378,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jump <= 0;
             Jr <= 0;
             Jal <= 0;
-            ALUControl <= 5'b00000;
+            ALUControl <= 5'b11111;
             ShiftControl <= 0;
             PCSrc <= 0;
         end
