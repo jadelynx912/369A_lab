@@ -63,14 +63,6 @@ wire [31:0] ReadData, MemReadDataWrite, ALUResultWrite, PCAddResultWrite;
 wire [4:0] RegRdWrite;
 
 
-//Branch PC may be fucked and needs to be checked
-//Branch vs BranchPC???
-//Double check I pass through ALUControl, and RD Mux values through as 5 bits and not signals.
-//DATAMEN_TO_WRITEBACK MISSING CONTROL SIGNALS
-//Check any signal that should be 5 bits
-//RegDstOutput should be 5 bits
-
-
 //assign PCSrc_Jump_OR = JumpMemory | PCSrc; //Do we grab Jump straight from controller or from memory pipeline?
 
 Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtensionMemory, PCAddResult, PCSrc); 
@@ -98,37 +90,35 @@ Mux32Bit2To1 ReadData1_SE_Switch(ShiftSwitchWire, signExtend, ReadData1, ShiftCo
 assign tempOffset = instructionDecode[25:0] << 2;
 assign jOffset = {PCAddResultDecode[31:28], tempOffset};
 
+assign temp = SignExt << 2;
+assign PCAdder_SignExtension = temp + PCAddResultDecode;
+
+Mux5bit2to1 regDest(regDstMux, instructionDecode[15:11], instructionDecode[20:16], RegDst); //rt if 0 , rd if 1
+
+Mux5bit2to1 JalRAMux(regDstOutput, 5'b11111, regDstMux, Jal); //$ra is reg 31
+
+//ADD COMPARATOR
 Controller controlly(instructionDecode, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl);
 
-//DECODE STAGE / EXECUTE STAGE
-Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, Branch, MemToReg, Jr, Jal, ALUControl, PCAddResultDecode, ShiftSwitchWire, ReadData2, signExtend, instructionDecode[20:16], instructionDecode[15:11],
-RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute, ALUControlExecute, PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, RegDst1Execute, RegDst2Execute);
-
-assign temp = SignExtExecute << 2;
-assign PCAdder_SignExtension = temp + PCAddResultExecute;
+//EXECUTE STAGE
+Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jr, Jal, ALUControl, PCAddResultDecode, ShiftSwitchWire, ReadData2, signExtend,
+RegWriteExecute, ALUSrcExecute, RegDstExecute, MemWriteExecute, MemReadExecute, MemToRegExecute, JrExecute, JalExecute, ALUControlExecute, PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute);
 
 Mux32Bit2To1 aluSource(ALUSrcOutput, SignExtExecute, ReadData2Execute, ALUSrcExecute); //SignExtOut if 1, ReadData2Out if 0
-
-Mux5bit2to1 regDest(regDstMux, RegDst2Execute, RegDst1Execute, RegDstExecute); //RegDst1Out if 0 , RegDst2Out if 1
-
-Mux5bit2to1 JalRAMux(regDstOutput, 5'b11111, regDstMux, JalExecute); //$ra is reg 31
 
 ALU32Bit alu(ALUControlExecute, ReadData1Execute, ALUSrcOutput, ALUResult, Zero);
 
 
-//EXECUTE STAGE / DATA MEMORY STAGE
-Execute_To_DataMem etdm(Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, BranchExecute, MemToRegExecute, JalExecute, Zero, ReadData2Execute, ALUResult, PCAddResultExecute, PCAdder_SignExtension, regDstOutput, 
-RegWriteMemory, MemWriteMemory, MemReadMemory, BranchMemory, MemToRegMemory, JalMemory, ZeroMemory, ReadData2Memory, ALUResultMemory, PCAddResultMemory, PCAdder_SignExtensionMemory, RdMemory);
+//DATA MEMORY STAGE
+Execute_To_DataMem etdm(Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, MemToRegExecute, JalExecute, ReadData2Execute, ALUResult, PCAddResultExecute, rdExecute, 
+                                    RegWriteMemory, MemWriteMemory, MemReadMemory, MemToRegMemory, JalMemory, ReadData2Memory, ALUResultMemory, PCAddResultMemory, RdMemory);
 
-assign temp1 = ZeroMemory;
-assign temp2 = BranchMemory;
-
-assign PCSrc = temp1 & temp2;
 DataMemory DataMem(ALUResultMemory, ReadData2Memory, Clk, MemWriteMemory, MemReadMemory, ReadData); 
 
-//DATA MEMORY STAGE / WRITE BACK STAGE
+
+//WRITE BACK STAGE
 DataMem_To_WriteBack dmtw(Clk, Reset, PCAddResultMemory, ReadData, ALUResultMemory, RdMemory, RegWriteMemory, MemToRegMemory, JalMemory,
-			PCAddResultWrite, MemReadDataWrite, ALUResultWrite, RegRdWrite, RegWriteWrite, MemToRegWrite, JalWrite); 
+			                          PCAddResultWrite, MemReadDataWrite, ALUResultWrite, RegRdWrite, RegWriteWrite, MemToRegWrite, JalWrite); 
 
 Mux32Bit2To1 Writeback(WritebackOutput, ALUResultWrite, MemReadDataWrite, MemToRegWrite);
 
