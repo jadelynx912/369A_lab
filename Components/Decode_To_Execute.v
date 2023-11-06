@@ -20,37 +20,52 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Decode_To_Execute(Clk, Reset, RegWrite, ALUSrc, MemWrite, MemRead, MemToReg, Jr, Jal, ALUControl, PCAddResult, ReadData1, ReadData2, SignExt, RegRd,
-RegWriteOut, ALUSrcOut, MemWriteOut, MemReadOut, MemToRegOut, JrOut, JalOut, ALUControlOut, PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut, RegRdOut);
-//Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, MemWrite, MemRead, MemToReg, Jr, Jal, ALUControl, PCAddResultDecode, ShiftSwitchWire, ReadData2, signExtend,
-//RegWriteExecute, ALUSrcExecute, MemWriteExecute, MemReadExecute, MemToRegExecute, JrExecute, JalExecute, ALUControlExecute, PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute);
+module Decode_To_Execute(Clk, Reset, DecodeRegWrite, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jr, Jal, ALUControl, PCAddResult, ReadData1, ReadData2, SignExt, 
+RegWriteOut, ALUSrcOut, RegDstOut, MemWriteOut, MemReadOut, MemToRegOut, JrOut, JalOut, ALUControlOut, PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut);
 
-input Clk, Reset;
+input Clk, Reset, DecodeRegWrite;
 
-input RegWrite, ALUSrc, MemToReg, Jr, Jal;
+input RegWrite, ALUSrc, RegDst, MemToReg, Jr, Jal;
 input [1:0] MemWrite, MemRead;
-input [4:0] ALUControl, RegRd;
+input [4:0] ALUControl;
 input [31:0] PCAddResult, ReadData1, ReadData2, SignExt;
 
 output reg [31:0] PCAddResultOut, ReadData1Out, ReadData2Out, SignExtOut;
-output reg [4:0] ALUControlOut, RegRdOut;
-output reg RegWriteOut, ALUSrcOut, MemToRegOut, JrOut, JalOut;
+output reg [4:0] ALUControlOut;
+output reg RegWriteOut, ALUSrcOut, RegDstOut, MemToRegOut, JrOut, JalOut;
 output reg [1:0] MemWriteOut, MemReadOut;
 
 always @(posedge Clk) begin
-    RegWriteOut <= RegWrite;
-    ALUSrcOut <= ALUSrc;
-    MemWriteOut <= MemWrite;
-    MemReadOut <= MemRead;
-    MemToRegOut <= MemToReg;
-    JrOut <= Jr;
-    JalOut <= Jal;
-    ALUControlOut <= ALUControl;
-    PCAddResultOut <= PCAddResult;
-    ReadData1Out <= ReadData1;
-    ReadData2Out <= ReadData2;
-    SignExtOut <= SignExt;
-    RegRdOut <= RegRd;
+    if (DecodeRegWrite)begin //Stall, might be dne incrorectly
+        RegWriteOut <= RegWriteOut;
+        ALUSrcOut <= ALUSrcOut;
+        RegDstOut <= RegDstOut;
+        MemWriteOut <= MemWriteOut;
+        MemReadOut <= MemReadOut;
+        MemToRegOut <= MemToRegOut;
+        JrOut <= JrOut;
+        JalOut <= JalOut;
+        ALUControlOut <= ALUControlOut;
+        PCAddResultOut <= PCAddResultOut;
+        ReadData1Out <= ReadData1Out;
+        ReadData2Out <= ReadData2Out;
+        SignExtOut <= SignExtOut;
+        end
+    else begin
+        RegWriteOut <= RegWrite;
+        ALUSrcOut <= ALUSrc;
+        RegDstOut <= RegDst;
+        MemWriteOut <= MemWrite;
+        MemReadOut <= MemRead;
+        MemToRegOut <= MemToReg;
+        JrOut <= Jr;
+        JalOut <= Jal;
+        ALUControlOut <= ALUControl;
+        PCAddResultOut <= PCAddResult;
+        ReadData1Out <= ReadData1;
+        ReadData2Out <= ReadData2;
+        SignExtOut <= SignExt;
+        end
 end
 
 
