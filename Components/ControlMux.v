@@ -40,7 +40,7 @@ always @(*) begin
         RegDst <= PreRegDst;
         MemWrite <= PreMemWrite;
         MemRead <= PreMemRead;
-        MemToReg <= MemToReg;
+        MemToReg <= PreMemToReg;
         Jump <= PreJump;
         Jr <= PreJr;
         Jal <= PreJal;

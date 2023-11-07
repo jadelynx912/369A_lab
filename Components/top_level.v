@@ -66,7 +66,9 @@ wire RegWriteWrite, MemToRegWrite, JalWrite;
 wire [31:0] MemReadDataWrite, ALUResultWrite, PCAddResultWrite, WritebackOutput;
 wire [4:0] RegRdWrite;
 
-
+assign PCWrite = 1;
+assign DecodeWrite = 1;
+assign controlMuxSignal = 1;
 
 Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtension, PCAddResult, PCSrc); 
 
@@ -76,7 +78,7 @@ Mux32Bit2To1 JumpMux(NextPC, jOffset, Jump_To_PC, Jump);
 
 ProgramCounter Pcount(NextPC, PCResult, Reset, Clk, PCWrite);
 
-InstructionMemory Imem(PCResult, instruction); //Replaced PCSrcOutput with PCResult
+InstructionMemory Imem(PCResult, instruction);
 
 PCAdder adder(PCResult, PCAddResult);
 
@@ -111,7 +113,7 @@ ControlMux controlMux1(PreRegWrite, PreALUSrc, PreRegDst, PreMemWrite, PreMemRea
 //                    RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl, PCSrc, controlMuxSignal);
 
 
-HazardDetection hazzy (instructionDecode, A_grt_B, A_ls_B, A_eq_B, RegDst, RdMemory, RegWrite, PCWrite, MuxControl, RegWriteExecute, RegWriteMemory);
+//HazardDetection hazzy (instructionDecode, A_grt_B, A_ls_B, A_eq_B, RegDst, RdMemory, RegWrite, PCWrite, MuxControl, RegWriteExecute, RegWriteMemory);
 
 
 //EXECUTE STAGE
