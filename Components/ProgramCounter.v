@@ -30,19 +30,17 @@ module ProgramCounter(Address, PCResult, Reset, Clk, PCWrite);
 	input Reset, Clk, PCWrite;
 
 	output reg [31:0] PCResult;
-	reg [31:0] lastAddress;
 
     always @ (posedge Clk) begin;
         if (Reset) begin
             PCResult <= 0;
         end
-        else if (PCWrite) begin
-            PCResult <= lastAddress;
+        else if (PCWrite == 0) begin
+            PCResult <= Address - 4;
         end 
         else begin
             PCResult <= Address;
         end
-        lastAddress <= Address;
     end
 
 endmodule
