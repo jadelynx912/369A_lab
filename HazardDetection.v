@@ -72,7 +72,7 @@ module HazardDetection(instruction, MemReadExecution, MemReadMemory, rdExecution
         if ((regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt)))begin //nop
             PCWrite <= 0;
             DecodeRegWrite <= 0;
-            MuxControl <= 1;
+            MuxControl <= 0;
             
         end        
         
@@ -80,7 +80,7 @@ module HazardDetection(instruction, MemReadExecution, MemReadMemory, rdExecution
          else if ((regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt)))begin //nop
             PCWrite <= 0;
             DecodeRegWrite <= 0;
-            MuxControl <= 1;
+            MuxControl <= 0;
         end
         
         //r-type followed by branch
