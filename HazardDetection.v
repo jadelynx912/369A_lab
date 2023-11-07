@@ -23,12 +23,13 @@
 
 //module HazardDetection(instruction, rtExecution, MemReadExecution, MemReadMemory, DecodeRegWrite, PCWrite, MuxControl, rtExecution, rdExecution, rtMemory, rdMemory, regWriteExecution, regWriteMemory);
 
-module HazardDetection(instruction, rdExecution, rdMemory, DecodeRegWrite, PCWrite, MuxControl, regWriteExecution, regWriteMemory);
+module HazardDetection(instruction, MemReadExecution, MemReadMemory, rdExecution, rdMemory, DecodeRegWrite, PCWrite, MuxControl, regWriteExecution, regWriteMemory);
     input [31:0] instruction;
     //input [4:0] rtExecution, rdExecution, rtMemory, rdMemory;
     input [4:0] rdExecution, rdMemory;
     input regWriteExecution, regWriteMemory;
-   // input [1:0] MemReadExecution, MemReadMemory;
+    
+    input [1:0] MemReadExecution, MemReadMemory;
     output reg DecodeRegWrite, PCWrite, MuxControl;
     reg [4:0] rs, rt;
     ////// MemReadExecution
@@ -68,7 +69,7 @@ module HazardDetection(instruction, rdExecution, rdMemory, DecodeRegWrite, PCWri
         ////Non-memory hazard
         
         /////// Execute Stage
-        if ((regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt)))begin
+        if ((regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt)))begin //nop
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
@@ -76,17 +77,51 @@ module HazardDetection(instruction, rdExecution, rdMemory, DecodeRegWrite, PCWri
         end        
         
         ////////Memory Stage
-         else if ((regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt)))begin
+         else if ((regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt)))begin //nop
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
         end
-        else begin
-            PCWrite <= 1;
+        
+        //r-type followed by branch
+        else if (((instruction[31:28] == 4'b0001) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt))) | ((instruction[31:28] == 4'b0001) & (regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt)))) begin
+            PCWrite <= 0;
             DecodeRegWrite <= 0;
+            MuxControl <= 1;
+        end
+        
+        //lw followed by branch
+        else if (((instruction[31:28] == 4'b0001) & ((MemReadMemory != 2'b00) & ((rt == rdMemory) | (rs == rdMemory)))) | ((instruction[31:28] == 4'b0001) & ((MemReadExecution != 2'b00) & ((rt == rdExecution) | (rs == rdExecution))))) begin
+        //MemReadMemory, MemReadExecute, regWriteExecute; 
+            PCWrite <= 0;
+            DecodeRegWrite <= 0;
+            MuxControl <= 1;
+        end
+
+//Above 2 might be able to be combined
+
+        //r-type followed by JR
+        else if (((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt))) | ((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000) & (regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt)))) begin
+            PCWrite <= 0;
+            DecodeRegWrite <= 0;
+            MuxControl <= 1;
+        end        
+        
+        //lw followed by JR
+        //checks both opcode and func
+        else if (((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000) & ((MemReadMemory != 2'b00) & ((rt == rdMemory) | (rs == rdMemory)))) | ((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000) & (MemReadExecution != 2'b00) & ((rt == rdExecution) | (rs == rdExecution)))) begin
+            PCWrite <= 0;
+            DecodeRegWrite <= 0;
+            MuxControl <= 1;
+        end        
+         
+        
+        else begin //Normal function
+            PCWrite <= 1;
+            DecodeRegWrite <= 1;
             MuxControl <= 0;
         end
-       
+        
         
     end
 
