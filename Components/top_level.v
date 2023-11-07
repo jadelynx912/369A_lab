@@ -45,7 +45,7 @@ wire [4:0] ALUControl;
 wire [4:0] regDstMux, regDstOutput;
 wire [31:0] ReadData1, ReadData2, signExtend, jOffset, ShiftSwitchWire, temp, PCAdder_SignExtension; 
 wire [27:0] tempOffset;
-wire A_grt_B, A_ls_B, A_eq_B;
+wire Branch, BranchOutput;
 
 //////////////////////////////////
 wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, ALUSrcOutput;
@@ -102,10 +102,10 @@ Mux5bit2to1 regDest(regDstMux, instructionDecode[15:11], instructionDecode[20:16
 
 Mux5bit2to1 JalRAMux(regDstOutput, 5'b11111, regDstMux, Jal); //$ra is reg 31
 
-Controller controlly(instructionDecode, A_grt_B, A_ls_B, A_eq_B, PreRegWrite, PreALUSrc, PreRegDst, PreMemWrite, PreMemRead, PreMemToReg, PreJump, PreJr, PreJal, PreALUControl, PreShiftControl, PrePCSrc);
+Controller controlly(instructionDecode, BranchOutput, PreRegWrite, PreALUSrc, PreRegDst, PreMemWrite, PreMemRead, PreMemToReg, PreJump, PreJr, PreJal, PreALUControl, PreShiftControl, PrePCSrc);
 //Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl, PCSrc);
 
-Comparator compy (ReadData1, ReadData2, A_grt_B, A_ls_B, A_eq_B);
+Comparator compy (instructionDecode, ReadData1, ReadData2, Branch, BranchOutput);
 
 ControlMux controlMux1(PreRegWrite, PreALUSrc, PreRegDst, PreMemWrite, PreMemRead, PreMemToReg, PreJump, PreJr, PreJal, PreALUControl, PreShiftControl, PrePCSrc,
                         RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl, PCSrc, controlMuxSignal);

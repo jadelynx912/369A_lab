@@ -18,9 +18,9 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl, PCSrc);
+module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl, PCSrc);
     input [31:0] Instruction;
-    input gt, lt, eq;
+    input BranchOutput;
     output reg RegWrite, ALUSrc, RegDst, MemToReg, Jump, Jr, Jal, ShiftControl, PCSrc;
     output reg [4:0] ALUControl;
     output reg [1:0] MemWrite, MemRead;
@@ -40,7 +40,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
         PCSrc <= 0;
     end
     
-    always @ (Instruction) begin
+    always @ (*) begin
         case(Instruction[31:26])
         6'b000000: begin        //R-type instructions
             RegWrite <= 1;
@@ -267,7 +267,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jal <= 0;
             ALUControl <= 5'b11111;
             ShiftControl <= 0;
-            if (eq == 0) PCSrc <= 1;
+            if (BranchOutput) PCSrc <= 1;
             else PCSrc <= 0;
         end
         6'b000100: begin            //beq
@@ -282,7 +282,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jal <= 0;
             ALUControl <= 5'b11111;
             ShiftControl <= 0;
-            if (eq == 1) PCSrc <= 1;
+            if (BranchOutput) PCSrc <= 1;
             else PCSrc <= 0;
         end
         6'b000001: begin            //bgez, bltz
@@ -299,12 +299,12 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             case(Instruction[20:16])            //Uses rt as an extension of the opcode
                 5'b00001: begin                 //bgez
                     ALUControl <= 5'b11111;
-                    if (gt == 1 | eq == 1) PCSrc <= 1;
+                    if (BranchOutput) PCSrc <= 1;
                     else PCSrc <= 0;
                 end
                 5'b00000: begin                 //bltz
                     ALUControl <=5'b11111;
-                    if (lt == 1) PCSrc <= 1;
+                    if (BranchOutput) PCSrc <= 1;
                     else PCSrc <= 0;
                 end
             endcase
@@ -321,7 +321,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jal <= 0;
             ALUControl <= 5'b11111;
             ShiftControl <= 0;
-            if (gt == 1) PCSrc <= 1;
+            if (BranchOutput) PCSrc <= 1;
             else PCSrc <= 0;
         end
         6'b000110: begin            //blez
@@ -336,7 +336,7 @@ module Controller(Instruction, gt, lt, eq, RegWrite, ALUSrc, RegDst, MemWrite, M
             Jal <= 0;
             ALUControl <= 5'b11111;
             ShiftControl <= 0;
-            if (lt == 1 | eq == 1) PCSrc <= 1;
+            if (BranchOutput) PCSrc <= 1;
             else PCSrc <= 0;
         end
         6'b000010: begin            //j
