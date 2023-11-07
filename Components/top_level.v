@@ -33,40 +33,37 @@ wire [31:0] PCAddResult, PCSrcOutput, Jump_To_PC, NextPC;
 wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
-wire PCSrc, PCSrc_Jump_OR;
-wire RegWrite, ALUSrc, RegDst, Branch, MemToReg, Jump, Jr, Jal; 
+wire PCWrite, MuxControl;
 
-wire DecodeRegWrite, PCWrite, MuxControl;
-wire PreRegWrite, PreALUSrc, PreRegDst, PreMemRead, PreBranch, PreJump, PreJr, PreJal, PreShiftControl;
-wire [1:0] PreMemWrite, PreMemToReg;
+wire PreRegWrite, PreALUSrc, PreRegDst, PreMemToReg, PreJump, PreJr, PreJal, PreShiftControl, PrePCSrc;
+wire [1:0] PreMemWrite, PreMemRead;
 wire [4:0] PreALUControl;
-
+wire RegWrite, ALUSrc, RegDst, MemToReg, Jump, Jr, Jal, ShiftControl, PCSrc; 
 wire [1:0] MemWrite, MemRead;
-wire [4:0] ALUControl, ShiftMuxWire;
-wire [31:0] WriteRegister, WriteDataReg, ReadData1, ReadData2, signExtend, jOffset, WritebackOutput, ShiftSwitchWire; 
+wire [4:0] ALUControl;
+
+wire [4:0] regDstMux, regDstOutput;
+wire [31:0] ReadData1, ReadData2, signExtend, jOffset, ShiftSwitchWire, temp, PCAdder_SignExtension; 
 wire [27:0] tempOffset;
 wire A_grt_B, A_ls_B, A_eq_B;
-///////////////////
-wire [31:0] temp;
-wire temp1, temp2;
 
-wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, jOffsetExecute;
-wire [4:0] RegDst1Execute, RegDst2Execute, regDstMux, regDstOutput, ALUControlExecute;
-wire RegWriteExecute, ALUSrcExecute, RegDstExecute, BranchExecute, MemToRegExecute, JrExecute, JalExecute;
-wire [31:0] ALUSrcOutput, PCAdder_SignExtension;
+//////////////////////////////////
+wire [31:0] PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, ALUSrcOutput;
+wire [4:0] ALUControlExecute, rdExecute;
+wire RegWriteExecute, ALUSrcExecute, MemToRegExecute, JalExecute;
 wire[1:0] MemWriteExecute, MemReadExecute;
 
 wire [31:0] ALUResult;
-wire Zero;
+
 //////////////////////////////////
-wire RegWriteMemory, BranchMemory, MemToRegMemory, JumpMemory, JrMemory, JalMemory;
-wire [31:0] PCAdder_SignExtensionMemory, PCAddResultMemory, ALUResultMemory, ReadData1Memory, ReadData2Memory;
+wire RegWriteMemory, MemToRegMemory, JalMemory;
+wire [31:0] PCAddResultMemory, ALUResultMemory, ReadData2Memory, ReadData;
 wire [4:0] RdMemory;
 wire [1:0] MemWriteMemory, MemReadMemory;
-wire ZeroMemory;
 
+//////////////////////////////////
 wire RegWriteWrite, MemToRegWrite, JalWrite;
-wire [31:0] ReadData, MemReadDataWrite, ALUResultWrite, PCAddResultWrite;
+wire [31:0] MemReadDataWrite, ALUResultWrite, PCAddResultWrite, WritebackOutput;
 wire [4:0] RegRdWrite;
 
 
@@ -114,7 +111,7 @@ ControlMux controlMux1(PreRegWrite, PreALUSrc, PreRegDst, PreMemWrite, PreMemRea
 //                    RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl, PCSrc, controlMuxSignal);
 
 
-HazardDetection hazzy (instructionDecode, A_grt_B, A_ls_B, A_eq_B, RegDstExecute, RdMemory, DecodeRegWrite, PCWrite, MuxControl, RegWriteExecute, RegWriteMemory);
+HazardDetection hazzy (instructionDecode, A_grt_B, A_ls_B, A_eq_B, RegDst, RdMemory, RegWrite, PCWrite, MuxControl, RegWriteExecute, RegWriteMemory);
 
 
 //EXECUTE STAGE
