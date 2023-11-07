@@ -113,7 +113,7 @@ ControlMux controlMux1(PreRegWrite, PreALUSrc, PreRegDst, PreMemWrite, PreMemRea
 //                    RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl, PCSrc, controlMuxSignal);
 
 
-//HazardDetection hazzy (instructionDecode, A_grt_B, A_ls_B, A_eq_B, RegDst, RdMemory, RegWrite, PCWrite, MuxControl, RegWriteExecute, RegWriteMemory);
+HazardDetection hazzy (instructionDecode, Branch, MemReadExecute, MemReadMemory, rdExecute, RdMemory, regWriteExecute, regWriteMemory, DecodeWrite, PCWrite, controlMuxSignal);
 
 
 //EXECUTE STAGE
