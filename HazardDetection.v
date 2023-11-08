@@ -37,38 +37,49 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
         rt = instruction[20:16];
                 
         /////// Execute Stage
-        if ((regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt)))begin //nop
+        if ((rdExecution != 0) & (regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt)))begin //nop
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
             
         end        
         ////////Memory Stage
-         else if ((regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt)))begin //nop
+         else if ((rdMemory != 0) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt)))begin //nop
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
         end
         
         //r-type followed by branch
-        else if (((Branch == 1) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt))) | ((regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt)))) begin
+        else if ((Branch == 1) & (rdMemory != 0) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt))) begin
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
         end
         
+        else if ((Branch == 1) & (rdExecution != 0) & (regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt))) begin
+            PCWrite <= 0;
+            DecodeRegWrite <= 0;
+            MuxControl <= 0;
+        end
         //lw followed by branch
-        else if ((Branch == 1) & (((MemReadMemory != 2'b00) & ((rt == rdMemory) | (rs == rdMemory))) | ((MemReadExecution != 2'b00) & ((rt == rdExecution) | (rs == rdExecution))))) begin
+        else if ((Branch == 1) & (rdMemory != 0) & ((MemReadMemory != 2'b00) & ((rt == rdMemory) | (rs == rdMemory)))) begin
         //MemReadMemory, MemReadExecute, regWriteExecute; 
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
         end
 
+        else if((Branch == 1) & (rdExecution != 0) & (MemReadExecution != 2'b00) & ((rt == rdExecution) | (rs == rdExecution))) begin
+        //MemReadMemory, MemReadExecute, regWriteExecute; 
+            PCWrite <= 0;
+            DecodeRegWrite <= 0;
+            MuxControl <= 0;
+        end
 //Above 2 might be able to be combined - I think they can
 
         //r-type followed by JR
-        else if (((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000)) & (((regWriteMemory == 1) & (rdMemory == 31)) | ((regWriteExecution == 1) & ((rdExecution == 31))))) begin
+        else if (((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000)) & (((rdMemory != 0) & (regWriteMemory == 1) & (rdMemory == 31)) | ((rdExecution != 0) &(regWriteExecution == 1) & ((rdExecution == 31))))) begin
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
@@ -76,7 +87,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
         
         //lw followed by JR
         //checks both opcode and func
-        else if (((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000)) & (((MemReadMemory != 2'b00) & (rdMemory == 31)) | ((MemReadExecution != 2'b00) & (rdExecution == 31)))) begin
+        else if (((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000)) & (((rdMemory != 0) & (MemReadMemory != 2'b00) & (rdMemory == 31)) | ((rdExecution != 0) & (MemReadExecution != 2'b00) & (rdExecution == 31)))) begin
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
