@@ -73,7 +73,7 @@ reg [31:0] regFile [31:0];
 
 output reg [31:0] ReadData1, ReadData2;
 
-always @(posedge Clk) begin
+always @(*) begin
     if (RegWrite == 1) begin
         regFile[WriteRegister] <= WriteData;
     end

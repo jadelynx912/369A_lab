@@ -34,7 +34,7 @@ always @(posedge Clk) begin
         PCAddResultOut <= PCAddResult;
         InstructionOut <= Instruction;
     end
-    else begin
+    else if (Reset == 1) begin
         PCAddResultOut <= 0;
         InstructionOut <= 0;
     end
