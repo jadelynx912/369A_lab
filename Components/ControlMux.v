@@ -48,7 +48,7 @@ always @(*) begin
         ShiftControl <= PreShiftControl;
         PCSrc <= PrePCSrc;
     end
-    else if (controlMuxSignal == 0) begin
+    else begin
         RegWrite <= 0;
         ALUSrc <= 0;
         RegDst <= 0;
