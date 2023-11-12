@@ -30,13 +30,13 @@ input [31:0]PCAddResult, Instruction;
 output reg[31:0] PCAddResultOut, InstructionOut;
 
 always @(posedge Clk) begin
-    if (Write == 1) begin
-        PCAddResultOut <= PCAddResult;
-        InstructionOut <= Instruction;
-    end
-    else if (Reset == 1) begin
+    if (Reset == 1) begin
         PCAddResultOut <= 0;
         InstructionOut <= 0;
+    end
+    else if (Write == 1) begin
+        PCAddResultOut <= PCAddResult;
+        InstructionOut <= Instruction;        
     end
 end
 
