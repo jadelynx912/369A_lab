@@ -32,6 +32,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
     output reg DecodeRegWrite, PCWrite, MuxControl;
     reg [4:0] rs, rt;
         
+    reg [3:0] path;
     always @ (*) begin
         rs = instruction[25:21];
         rt = instruction[20:16];
@@ -41,6 +42,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            path <= 1;
             
         end        
         ////////Memory Stage
@@ -48,6 +50,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            path <= 2;
         end
         
         //r-type followed by branch
@@ -55,12 +58,14 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            path <= 3;
         end
         
         else if ((Branch == 1) & (rdExecution != 0) & (regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt))) begin
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            path <= 4;
         end
         //lw followed by branch
         else if ((Branch == 1) & (rdMemory != 0) & ((MemReadMemory != 2'b00) & ((rt == rdMemory) | (rs == rdMemory)))) begin
@@ -68,6 +73,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            path <= 5;
         end
 
         else if((Branch == 1) & (rdExecution != 0) & (MemReadExecution != 2'b00) & ((rt == rdExecution) | (rs == rdExecution))) begin
@@ -75,6 +81,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            path <= 6;
         end
 //Above 2 might be able to be combined - I think they can
 
@@ -83,6 +90,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            path <= 7;
         end        
         
         //lw followed by JR
@@ -91,13 +99,14 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            path <= 8;
         end        
-         
         
         else begin //Normal function
             PCWrite <= 1;
             DecodeRegWrite <= 1;
             MuxControl <= 1;
+            path <= 9;
         end
         
         

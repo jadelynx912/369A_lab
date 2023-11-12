@@ -41,12 +41,7 @@ module top_level_tb();
     begin
         Rst <= 1'b1;
         @ (posedge Clk);
-        #21 Rst <= 1'b0; 
-        @ (posedge Clk);
-        @ (posedge Clk);
-        @ (posedge Clk);
-        @ (posedge Clk);
-        @ (posedge Clk);
+        #25 Rst <= 1'b0; 
         
     end
 endmodule
