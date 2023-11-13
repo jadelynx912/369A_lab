@@ -67,7 +67,7 @@ module ALU32Bit(ALUControl, A, B, ALUResult);
                 ALUResult <= (A < B);
             end
             default: begin
-                ALUResult = 0; 
+                ALUResult <= 0; 
             end
         endcase
     end 

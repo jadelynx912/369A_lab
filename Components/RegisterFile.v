@@ -69,11 +69,11 @@ input Clk, RegWrite;
 input [31:0] WriteData;
 
 reg [31:0] regFile [31:0];
-
+//reg [31:0] regDefult [31:0];
 
 output reg [31:0] ReadData1, ReadData2;
 
-always @(*) begin
+always @(negedge Clk) begin
     if (RegWrite == 1) begin
         regFile[WriteRegister] <= WriteData;
     end
