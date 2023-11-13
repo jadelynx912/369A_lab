@@ -20,17 +20,21 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Fetch_To_Decode(PCAddResult, Instruction, PCAddResultOut, InstructionOut, Clk, Reset, Write);
+module Fetch_To_Decode(PCAddResult, Instruction, PCAddResultOut, InstructionOut, Clk, Reset, Write, flushControl);
 //Fetch_To_Decode ftd(PCAddResult, instruction,  PCAddResultDecode, instructionDecode, Clk, Reset);
 
 
-input Clk, Reset, Write;
+input Clk, Reset, Write, flushControl;
 input [31:0]PCAddResult, Instruction;
 
 output reg[31:0] PCAddResultOut, InstructionOut;
 
 always @(posedge Clk) begin
     if (Reset == 1) begin
+        PCAddResultOut <= 0;
+        InstructionOut <= 0;
+    end
+    else if (flushControl == 1) begin
         PCAddResultOut <= 0;
         InstructionOut <= 0;
     end

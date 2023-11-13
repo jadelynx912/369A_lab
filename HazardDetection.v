@@ -23,13 +23,13 @@
 
 //module HazardDetection(instruction, rtExecution, MemReadExecution, MemReadMemory, DecodeRegWrite, PCWrite, MuxControl, rtExecution, rdExecution, rtMemory, rdMemory, regWriteExecution, regWriteMemory);
 
-module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdExecution, rdMemory, regWriteExecution, regWriteMemory, DecodeRegWrite, PCWrite, MuxControl);
+module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdExecution, rdMemory, regWriteExecution, regWriteMemory, DecodeRegWrite, PCWrite, MuxControl, flushControl);
     input [31:0] instruction;
     input [4:0] rdExecution, rdMemory;
     input regWriteExecution, regWriteMemory, Branch;
     input [1:0] MemReadExecution, MemReadMemory;
     
-    output reg DecodeRegWrite, PCWrite, MuxControl;
+    output reg DecodeRegWrite, PCWrite, MuxControl, flushControl;
     reg [4:0] rs, rt;
         
     reg [3:0] path;
@@ -42,6 +42,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            flushControl <= 0;
             path <= 1;
             
         end        
@@ -50,6 +51,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            flushControl <= 0;
             path <= 2;
         end
         
@@ -58,6 +60,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            flushControl <= 1;
             path <= 3;
         end
         
@@ -65,6 +68,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            flushControl <= 1;
             path <= 4;
         end
         //lw followed by branch
@@ -73,6 +77,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            flushControl <= 1;
             path <= 5;
         end
 
@@ -81,6 +86,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            flushControl <= 1;
             path <= 6;
         end
 //Above 2 might be able to be combined - I think they can
@@ -90,6 +96,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            flushControl <= 1;
             path <= 7;
         end        
         
@@ -99,6 +106,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
+            flushControl <= 1;
             path <= 8;
         end        
         
@@ -106,10 +114,10 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 1;
             DecodeRegWrite <= 1;
             MuxControl <= 1;
+            flushControl <= 0;
             path <= 9;
         end
-        
-        
+                
     end
 
 endmodule

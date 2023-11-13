@@ -33,7 +33,7 @@ wire [31:0] PCAddResult, PCSrcOutput, Jump_To_PC, NextPC;
 wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
-wire PCWrite, MuxControl;
+wire PCWrite, MuxControl, flushControl;
 
 wire PreRegWrite, PreALUSrc, PreRegDst, PreMemToReg, PreJump, PreJr, PreJal, PreShiftControl, PrePCSrc;
 wire [1:0] PreMemWrite, PreMemRead;
@@ -109,7 +109,7 @@ ControlMux controlMux1(PreRegWrite, PreALUSrc, PreRegDst, PreMemWrite, PreMemRea
 //                    RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl, PCSrc, controlMuxSignal);
 
 
-HazardDetection hazzy (instructionDecode, Branch, MemReadExecute, MemReadMemory, rdExecute, RdMemory, RegWriteExecute, RegWriteMemory, DecodeWrite, PCWrite, controlMuxSignal);
+HazardDetection hazzy (instructionDecode, Branch, MemReadExecute, MemReadMemory, rdExecute, RdMemory, RegWriteExecute, RegWriteMemory, DecodeWrite, PCWrite, controlMuxSignal, flushControl);
 
 
 //EXECUTE STAGE
