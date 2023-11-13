@@ -80,7 +80,7 @@ PCAdder adder(PCResult, PCAddResult);
 
 
 //INSTRUCTION FETCH STAGE / DECODE STAGE
-Fetch_To_Decode ftd(PCAddResult, instruction,  PCAddResultDecode, instructionDecode, Clk, Reset, DecodeWrite);
+Fetch_To_Decode ftd(PCAddResult, instruction,  PCAddResultDecode, instructionDecode, Clk, Reset, DecodeWrite, flushControl);
 
 RegisterFile reggy(instructionDecode[25:21], instructionDecode[20:16], RegRdWrite, WriteDataReg, RegWriteWrite, Clk, ReadData1, ReadData2);
 
