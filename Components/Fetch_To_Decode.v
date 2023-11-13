@@ -35,7 +35,7 @@ always @(posedge Clk) begin
         InstructionOut <= 0;
     end
     else if (flushControl == 1) begin
-        PCAddResultOut <= 0;
+        PCAddResultOut <= PCAddResult;
         InstructionOut <= 0;
     end
     else if (Write == 1) begin

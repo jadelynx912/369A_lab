@@ -23,10 +23,10 @@
 
 //module HazardDetection(instruction, rtExecution, MemReadExecution, MemReadMemory, DecodeRegWrite, PCWrite, MuxControl, rtExecution, rdExecution, rtMemory, rdMemory, regWriteExecution, regWriteMemory);
 
-module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdExecution, rdMemory, regWriteExecution, regWriteMemory, DecodeRegWrite, PCWrite, MuxControl, flushControl);
+module HazardDetection(instruction, BranchOutput, Branch, MemReadExecution, MemReadMemory, rdExecution, rdMemory, regWriteExecution, regWriteMemory, DecodeRegWrite, PCWrite, MuxControl, flushControl);
     input [31:0] instruction;
     input [4:0] rdExecution, rdMemory;
-    input regWriteExecution, regWriteMemory, Branch;
+    input regWriteExecution, regWriteMemory, Branch, BranchOutput;
     input [1:0] MemReadExecution, MemReadMemory;
     
     output reg DecodeRegWrite, PCWrite, MuxControl, flushControl;
@@ -43,7 +43,7 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
-            flushControl <= 1;
+            flushControl <= 0;
             path <= 3;
         end
         
@@ -51,28 +51,17 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
-            flushControl <= 1;
+            flushControl <= 0;
             path <= 4;
         end
-        //lw followed by branch
-        else if ((Branch == 1) & (rdMemory != 0) & ((MemReadMemory != 2'b00) & ((rt == rdMemory) | (rs == rdMemory)))) begin
-        //MemReadMemory, MemReadExecute, regWriteExecute; 
-            PCWrite <= 0;
-            DecodeRegWrite <= 0;
-            MuxControl <= 0;
+       
+        //Above 2 might be able to be combined - I think they can
+        else if (Branch == 1) begin
+            PCWrite <= 1;
+            DecodeRegWrite <= 1;
+            MuxControl <= 1;
             flushControl <= 1;
-            path <= 5;
         end
-
-        else if((Branch == 1) & (rdExecution != 0) & (MemReadExecution != 2'b00) & ((rt == rdExecution) | (rs == rdExecution))) begin
-        //MemReadMemory, MemReadExecute, regWriteExecute; 
-            PCWrite <= 0;
-            DecodeRegWrite <= 0;
-            MuxControl <= 0;
-            flushControl <= 1;
-            path <= 6;
-        end
-//Above 2 might be able to be combined - I think they can
 
         //r-type followed by JR
         else if (((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000)) & (((rdMemory != 0) & (regWriteMemory == 1) & (rdMemory == 31)) | ((rdExecution != 0) &(regWriteExecution == 1) & ((rdExecution == 31))))) begin
@@ -117,18 +106,30 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             flushControl <= 0;
             path <= 9;
         end
-        
-        
-        
-                
-        if (Branch == 1) begin
-            flushControl <= 1;
-        
-        end
     end
 
 endmodule
 
+
+ //lw followed by branch
+//        else if ((Branch == 1) & (rdMemory != 0) & ((MemReadMemory != 2'b00) & ((rt == rdMemory) | (rs == rdMemory)))) begin
+//        //MemReadMemory, MemReadExecute, regWriteExecute; 
+//            PCWrite <= 0;
+//            DecodeRegWrite <= 0;
+//            MuxControl <= 0;
+//            flushControl <= 0;
+//            path <= 5;
+//        end
+
+//        else if((Branch == 1) & (rdExecution != 0) & (MemReadExecution != 2'b00) & ((rt == rdExecution) | (rs == rdExecution))) begin
+//        //MemReadMemory, MemReadExecute, regWriteExecute; 
+//            PCWrite <= 0;
+//            DecodeRegWrite <= 0;
+//            MuxControl <= 0;
+//            flushControl <= 0;
+//            path <= 6;
+//        end
+/////////////////////////////////////////////////////////////////////
         //Execute Stage
 //        if ((MemReadExecution != 2'b00) & ((rt == rtExecution) | (rs == rtExecution))) begin
 //            PCWrite <= 0;

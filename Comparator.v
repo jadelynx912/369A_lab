@@ -24,11 +24,11 @@
 module Comparator(Instruction, A, B, Branch, Output);
     input signed [31:0] A, B;
     input [31:0] Instruction;
-    output reg Branch, Output;
+    output reg Output, Branch;
     
     always@(*) begin
-        Branch <= 0;
         Output <= 0;
+        Branch <= 0;
         case(Instruction[31:26])
         6'b000101: begin            //bne
             Branch <= 1;
@@ -39,12 +39,13 @@ module Comparator(Instruction, A, B, Branch, Output);
             if (A == B) Output <= 1;
         end
         6'b000001: begin            //bgez, bltz
-            Branch <= 1;
             case(Instruction[20:16])            //Uses rt as an extension of the opcode
                 5'b00001: begin                 //bgez
+                    Branch <= 1;
                     if (A >= 0) Output <= 1;
                 end
                 5'b00000: begin                 //bltz
+                    Branch <= 1;
                     if (A < 0) Output <= 1;
                 end
             endcase
@@ -56,6 +57,17 @@ module Comparator(Instruction, A, B, Branch, Output);
         6'b000110: begin            //blez
             Branch <= 1;
             if (A <= 0) Output <= 1;
+        end
+        6'b000000: begin
+            case(Instruction[5:0])          //jr
+                6'b001000: Branch <= 1;
+            endcase
+        end
+        6'b000010: begin                    //j
+            Branch <= 1;
+        end
+        6'b000011: begin                    //jal
+            Branch <= 1;
         end
         endcase
     end
