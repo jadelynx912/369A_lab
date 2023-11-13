@@ -38,25 +38,8 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
         rt = instruction[20:16];
                 
         /////// Execute Stage
-        if ((rdExecution != 0) & (regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt)))begin //nop
-            PCWrite <= 0;
-            DecodeRegWrite <= 0;
-            MuxControl <= 0;
-            flushControl <= 0;
-            path <= 1;
-            
-        end        
-        ////////Memory Stage
-         else if ((rdMemory != 0) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt)))begin //nop
-            PCWrite <= 0;
-            DecodeRegWrite <= 0;
-            MuxControl <= 0;
-            flushControl <= 0;
-            path <= 2;
-        end
-        
         //r-type followed by branch
-        else if ((Branch == 1) & (rdMemory != 0) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt))) begin
+        if ((Branch == 1) & (rdMemory != 0) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt))) begin
             PCWrite <= 0;
             DecodeRegWrite <= 0;
             MuxControl <= 0;
@@ -108,7 +91,24 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             MuxControl <= 0;
             flushControl <= 1;
             path <= 8;
+        end     
+           
+        else if ((rdExecution != 0) & (regWriteExecution == 1) & ((rdExecution == rs) | (rdExecution == rt)))begin //nop
+            PCWrite <= 0;
+            DecodeRegWrite <= 0;
+            MuxControl <= 0;
+            flushControl <= 0;
+            path <= 1;
+            
         end        
+        ////////Memory Stage
+         else if ((rdMemory != 0) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt)))begin //nop
+            PCWrite <= 0;
+            DecodeRegWrite <= 0;
+            MuxControl <= 0;
+            flushControl <= 0;
+            path <= 2;
+        end
         
         else begin //Normal function
             PCWrite <= 1;
@@ -117,7 +117,14 @@ module HazardDetection(instruction, Branch, MemReadExecution, MemReadMemory, rdE
             flushControl <= 0;
             path <= 9;
         end
+        
+        
+        
                 
+        if (Branch == 1) begin
+            flushControl <= 1;
+        
+        end
     end
 
 endmodule
