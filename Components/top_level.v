@@ -22,11 +22,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module top_level(Clk, Reset, PCResult, WriteDataReg);
+module top_level(Clk, Reset, xCoord, yCoord);
 
 input Clk, Reset; 
-output [31:0] WriteDataReg;
-output [31:0] PCResult;
+output [31:0] xCoord, yCoord;
+wire [31:0] WriteDataReg;
+wire [31:0] PCResult;
 
 wire [31:0] instruction;
 wire [31:0] PCAddResult, PCSrcOutput, Jump_To_PC, NextPC;
@@ -82,7 +83,7 @@ PCAdder adder(PCResult, PCAddResult);
 //INSTRUCTION FETCH STAGE / DECODE STAGE
 Fetch_To_Decode ftd(PCAddResult, instruction,  PCAddResultDecode, instructionDecode, Clk, Reset, DecodeWrite, flushControl);
 
-RegisterFile reggy(instructionDecode[25:21], instructionDecode[20:16], RegRdWrite, WriteDataReg, RegWriteWrite, Clk, ReadData1, ReadData2);
+RegisterFile reggy(instructionDecode[25:21], instructionDecode[20:16], RegRdWrite, WriteDataReg, RegWriteWrite, Clk, ReadData1, ReadData2, xCoord, yCoord);
 
 SignExtension signE(instructionDecode[15:0], signExtend);
 
