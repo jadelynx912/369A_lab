@@ -56,11 +56,30 @@ module HazardDetection(instruction, BranchOutput, Branch, MemReadExecution, MemR
         end
        
         //Above 2 might be able to be combined - I think they can
-        else if (Branch == 1) begin
+        else if (Branch == 1 & BranchOutput == 1) begin
             PCWrite <= 1;
             DecodeRegWrite <= 1;
             MuxControl <= 1;
             flushControl <= 1;
+        end
+        
+        //lw followed by branch
+        else if ((Branch == 1) & (rdMemory != 0) & ((MemReadMemory != 2'b00) & ((rt == rdMemory) | (rs == rdMemory)))) begin
+        //MemReadMemory, MemReadExecute, regWriteExecute; 
+            PCWrite <= 0;
+            DecodeRegWrite <= 0;
+            MuxControl <= 0;
+            flushControl <= 0;
+            path <= 5;
+        end
+
+        else if((Branch == 1) & (rdExecution != 0) & (MemReadExecution != 2'b00) & ((rt == rdExecution) | (rs == rdExecution))) begin
+        //MemReadMemory, MemReadExecute, regWriteExecute; 
+            PCWrite <= 0;
+            DecodeRegWrite <= 0;
+            MuxControl <= 0;
+            flushControl <= 0;
+            path <= 6;
         end
 
         //r-type followed by JR
@@ -111,24 +130,7 @@ module HazardDetection(instruction, BranchOutput, Branch, MemReadExecution, MemR
 endmodule
 
 
- //lw followed by branch
-//        else if ((Branch == 1) & (rdMemory != 0) & ((MemReadMemory != 2'b00) & ((rt == rdMemory) | (rs == rdMemory)))) begin
-//        //MemReadMemory, MemReadExecute, regWriteExecute; 
-//            PCWrite <= 0;
-//            DecodeRegWrite <= 0;
-//            MuxControl <= 0;
-//            flushControl <= 0;
-//            path <= 5;
-//        end
-
-//        else if((Branch == 1) & (rdExecution != 0) & (MemReadExecution != 2'b00) & ((rt == rdExecution) | (rs == rdExecution))) begin
-//        //MemReadMemory, MemReadExecute, regWriteExecute; 
-//            PCWrite <= 0;
-//            DecodeRegWrite <= 0;
-//            MuxControl <= 0;
-//            flushControl <= 0;
-//            path <= 6;
-//        end
+ 
 /////////////////////////////////////////////////////////////////////
         //Execute Stage
 //        if ((MemReadExecution != 2'b00) & ((rt == rtExecution) | (rs == rtExecution))) begin

@@ -45,7 +45,7 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     output reg[31:0] ReadData; // Contents of memory location at Address
 
     /* Please fill in the implementation here */
-    reg[31:0] memory[0:1023];
+    reg[31:0] memory[0:5095];
     
     initial begin
         $readmemh("data_memory.mem", memory);
@@ -53,13 +53,13 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     
     always @ (posedge Clk) begin
         if (MemWrite[1:0] == 2'b11) begin                           //sb
-            memory[Address[11:2]][7:0] <= WriteData[7:0];
+            memory[Address[16:2]][7:0] <= WriteData[7:0];
         end
         else if (MemWrite[1:0] == 2'b10) begin                      //sh
-            memory[Address[11:2]][15:0] <= WriteData[15:0];
+            memory[Address[16:2]][15:0] <= WriteData[15:0];
         end
         else if (MemWrite[1:0] == 2'b01) begin                      //sw
-            memory[Address[11:2]] <= WriteData;
+            memory[Address[16:2]] <= WriteData;
         end
         //else don't do anything
     end
@@ -67,34 +67,34 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     always @ (*) begin
         if (MemRead[1:0] == 2'b11) begin                            //lb
             if (Address[1:0] == 2'b00) begin
-                ReadData[7:0] <= memory[Address[11:2]][7:0];
+                ReadData[7:0] <= memory[Address[16:2]][7:0];
                 ReadData[31:8] <= {24{ReadData[7]}};
             end
             else if (Address[1:0] == 2'b01) begin
-                ReadData[7:0] <= memory[Address[11:2]][15:8];
+                ReadData[7:0] <= memory[Address[16:2]][15:8];
                 ReadData[31:8] <= {24{ReadData[7]}};
             end
             else if (Address[1:0] == 2'b10) begin
-                ReadData[7:0] <= memory[Address[11:2]][23:16];
+                ReadData[7:0] <= memory[Address[16:2]][23:16];
                 ReadData[31:8] <= {24{ReadData[7]}};
             end
             else if (Address[1:0] == 2'b11) begin
-                ReadData[7:0] <= memory[Address[11:2]][31:24];
+                ReadData[7:0] <= memory[Address[16:2]][31:24];
                 ReadData[31:8] <= {24{ReadData[7]}};
             end
         end
         else if (MemRead[1:0] == 2'b10) begin                       //lh
             if (Address[1] == 0) begin
-                ReadData[15:0] <= memory[Address[11:2]][15:0];
+                ReadData[15:0] <= memory[Address[16:2]][15:0];
                 ReadData[31:16] <= {16{ReadData[15]}};
             end
             else begin      //Address[1] == 1)
-                ReadData[15:0] <= memory[Address[11:2]][31:16];
+                ReadData[15:0] <= memory[Address[16:2]][31:16];
                 ReadData[31:16] <= {16{ReadData[15]}};
             end           
         end
         else if (MemRead[1:0] == 2'b01) begin                       //lw
-            ReadData <= memory[Address[11:2]];
+            ReadData <= memory[Address[16:2]];
         end
         else begin
             ReadData <= 8'h0000000;
