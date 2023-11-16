@@ -78,8 +78,6 @@ always @(negedge Clk) begin
     if (RegWrite == 1) begin
         regFile[WriteRegister] <= WriteData;
     end
-    v0 <= regFile[2];
-    v1 <= regFile[3];
 end
 
 always @ (*) begin
@@ -95,7 +93,8 @@ always @ (*) begin
     else begin
         ReadData2 <= regFile[ReadRegister2];
     end
-    
+    v0 <= regFile[2];
+    v1 <= regFile[3];
 end
 
 endmodule
