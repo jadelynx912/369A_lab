@@ -3,11 +3,27 @@ afbf0000	//				sw	$ra, 0($sp) ->				sw	$ra, 0($sp)
 34040000	//				ori	$a0, $zero, 0 ->				ori	$a0, $zero, 0
 34050010	//				ori	$a1, $zero, 16 ->				ori	$a1, $zero, 16
 34060410	//				ori	$a2, $zero, 1040 ->				ori	$a2, $zero, 1040
-0c00000a	//				jal	vbsme ->				jal	vbsme
+0c00001a	//				jal	vbsme ->				jal	vbsme
+34040490	//				ori	$a0, $zero, 1168 ->				ori	$a0, $zero, 1168
+340504a0	//				ori	$a1, $zero, 1184 ->				ori	$a1, $zero, 1184
+340614a0	//				ori	$a2, $zero, 5280 ->				ori	$a2, $zero, 5280
+0c00001a	//				jal	vbsme ->				jal	vbsme
+340416a0	//				ori	$a0, $zero, 5792 ->				ori	$a0, $zero, 5792
+340516b0	//				ori	$a1, $zero, 5808 ->				ori	$a1, $zero, 5808
+34061ab0	//				ori	$a2, $zero, 6832 ->				ori	$a2, $zero, 6832
+0c00001a	//				jal	vbsme ->				jal	vbsme
+34041b30	//				ori	$a0, $zero, 6960 ->				ori	$a0, $zero, 6960
+34051b40	//				ori	$a1, $zero, 6976 ->				ori	$a1, $zero, 6976
+34061f40	//				ori	$a2, $zero, 8000 ->				ori	$a2, $zero, 8000
+0c00001a	//				jal	vbsme ->				jal	vbsme
+34042040	//				ori	$a0, $zero, 8256 ->				ori	$a0, $zero, 8256
+34052050	//				ori	$a1, $zero, 8272 ->				ori	$a1, $zero, 8272
+34063050	//				ori	$a2, $zero, 12368 ->				ori	$a2, $zero, 12368
+0c00001a	//				jal	vbsme ->				jal	vbsme
 8fbf0000	//				lw	$ra, 0($sp) ->				lw	$ra, 0($sp)
 23bd0004	//				addi	$sp, $sp, 4 ->				addi	$sp, $sp, 4
-08000009	//				j	end_program ->				j	end_program
-08000009	//	end_program:		j	end_program ->	end_program:		j	end_program
+08000019	//				j	end_program ->				j	end_program
+08000019	//	end_program:		j	end_program ->	end_program:		j	end_program
 00001020	//	vbsme:			add	$v0, $zero, $zero ->	vbsme:			add	$v0, $zero, $zero
 00001820	//				add	$v1, $zero, $zero ->				add	$v1, $zero, $zero
 8c900000	//	vars:			lw	$s0, 0($a0) ->	vars:			lw	$s0, 0($a0)
@@ -36,9 +52,9 @@ afbf0000	//				sw	$ra, 0($sp) ->				sw	$ra, 0($sp)
 0152782a	//	outerfor:		slt	$t7, $t2, $s2 ->	outerfor:		slt	$t7, $t2, $s2
 11e0001f	//				beq	$t7, $zero, setmincondition ->				beq	$t7, $zero, setmincondition
 00005820	//				add	$t3, $zero, $zero ->				add	$t3, $zero, $zero
-08000029	//				j	innerfor ->				j	innerfor
+08000039	//				j	innerfor ->				j	innerfor
 214a0001	//	outerforadd:		addi	$t2, $t2, 1 ->	outerforadd:		addi	$t2, $t2, 1
-08000023	//				j	outerfor ->				j	outerfor
+08000033	//				j	outerfor ->				j	outerfor
 0173c02a	//	innerfor:		slt	$t8, $t3, $s3 ->	innerfor:		slt	$t8, $t3, $s3
 1300fffc	//				beq	$t8, $zero, outerforadd ->				beq	$t8, $zero, outerforadd
 010a7020	//				add	$t6, $t0, $t2 ->				add	$t6, $t0, $t2
@@ -57,15 +73,15 @@ afbf0000	//				sw	$ra, 0($sp) ->				sw	$ra, 0($sp)
 01e0702a	//				slt	$t6, $t7, $zero ->				slt	$t6, $t7, $zero
 11c00002	//				beq	$t6, $zero, positive ->				beq	$t6, $zero, positive
 000f7822	//				sub	$t7, $zero, $t7 ->				sub	$t7, $zero, $t7
-0800003c	//				j	positive ->				j	positive
+0800004c	//				j	positive ->				j	positive
 01f6b020	//	positive:		add	$s6, $t7, $s6 ->	positive:		add	$s6, $t7, $s6
-0800003e	//				j	addinnerfor ->				j	addinnerfor
+0800004e	//				j	addinnerfor ->				j	addinnerfor
 216b0001	//	addinnerfor:		addi	$t3, $t3, 1 ->	addinnerfor:		addi	$t3, $t3, 1
-08000029	//				j	innerfor ->				j	innerfor
+08000039	//				j	innerfor ->				j	innerfor
 02c0b820	//	setmin:			add	$s7, $s6, $zero ->	setmin:			add	$s7, $s6, $zero
 01001020	//				add	$v0, $t0, $zero ->				add	$v0, $t0, $zero
 01201820	//				add	$v1, $t1, $zero ->				add	$v1, $t1, $zero
-08000052	//				j	endfors ->				j	endfors
+08000062	//				j	endfors ->				j	endfors
 0008782a	//	setmincondition:	slt	$t7, $zero, $t0 ->	setmincondition:	slt	$t7, $zero, $t0
 0100c02a	//				slt	$t8, $t0, $zero ->				slt	$t8, $t0, $zero
 01f87825	//				or	$t7, $t7, $t8 ->				or	$t7, $t7, $t8
@@ -79,7 +95,7 @@ afbf0000	//				sw	$ra, 0($sp) ->				sw	$ra, 0($sp)
 0019cfc0	//				sll	$t9, $t9, 31 ->				sll	$t9, $t9, 31
 0019cfc2	//				srl	$t9, $t9, 31 ->				srl	$t9, $t9, 31
 1720ffef	//				bne	$t9, $zero, setmin ->				bne	$t9, $zero, setmin
-08000052	//				j	endfors ->				j	endfors
+08000062	//				j	endfors ->				j	endfors
 1600001b	//	endfors:		bne	$s0, $zero, elseadd ->	endfors:		bne	$s0, $zero, elseadd
 0008782a	//				slt	$t7, $zero, $t0 ->				slt	$t7, $zero, $t0
 0100c02a	//				slt	$t8, $t0, $zero ->				slt	$t8, $t0, $zero
@@ -107,21 +123,21 @@ afbf0000	//				sw	$ra, 0($sp) ->				sw	$ra, 0($sp)
 11c0000d	//				beq	$t6, $zero, addtoi ->				beq	$t6, $zero, addtoi
 12c0000c	//				beq	$s6, $zero, addtoi ->				beq	$s6, $zero, addtoi
 11e00005	//				beq	$t7, $zero, addtoj ->				beq	$t7, $zero, addtoj
-0800006e	//				j	elseadd ->				j	elseadd
+0800007e	//				j	elseadd ->				j	elseadd
 00008020	//	elseadd:		add	$s0, $zero, $zero ->	elseadd:		add	$s0, $zero, $zero
 010c4020	//				add	$t0, $t0, $t4 ->				add	$t0, $t0, $t4
 012d4820	//				add	$t1, $t1, $t5 ->				add	$t1, $t1, $t5
-08000017	//				j	mainloop ->				j	mainloop
+08000027	//				j	mainloop ->				j	mainloop
 200effff	//	addtoj:			addi	$t6, $zero, -1 ->	addtoj:			addi	$t6, $zero, -1
 21290001	//				addi	$t1, $t1, 1 ->				addi	$t1, $t1, 1
 718e6002	//				mul	$t4, $t4, $t6 ->				mul	$t4, $t4, $t6
 71ae6802	//				mul	$t5, $t5, $t6 ->				mul	$t5, $t5, $t6
 20100001	//				addi	$s0, $zero, 1 ->				addi	$s0, $zero, 1
-08000017	//				j	mainloop ->				j	mainloop
+08000027	//				j	mainloop ->				j	mainloop
 200effff	//	addtoi:			addi	$t6, $zero, -1 ->	addtoi:			addi	$t6, $zero, -1
 21080001	//				addi	$t0, $t0, 1 ->				addi	$t0, $t0, 1
 718e6002	//				mul	$t4, $t4, $t6 ->				mul	$t4, $t4, $t6
 71ae6802	//				mul	$t5, $t5, $t6 ->				mul	$t5, $t5, $t6
 20100001	//				addi	$s0, $zero, 1 ->				addi	$s0, $zero, 1
-08000017	//				j	mainloop ->				j	mainloop
+08000027	//				j	mainloop ->				j	mainloop
 03e00008	//	exit:			jr	$ra ->	exit:			jr	$ra
