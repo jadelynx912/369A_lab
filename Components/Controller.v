@@ -285,60 +285,60 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             if (BranchOutput) PCSrc <= 1;
             else PCSrc <= 0;
         end
-        6'b000001: begin            //bgez, bltz
-            RegWrite <= 0;
-            ALUSrc <= 0;
-            RegDst <= 1'bx;
-            MemWrite <= 2'b00;
-            MemRead <= 2'b00;
-            MemToReg <= 0;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ShiftControl <= 0;
-            case(Instruction[20:16])            //Uses rt as an extension of the opcode
-                5'b00001: begin                 //bgez
-                    ALUControl <= 5'b11111;
-                    if (BranchOutput) PCSrc <= 1;
-                    else PCSrc <= 0;
-                end
-                5'b00000: begin                 //bltz
-                    ALUControl <=5'b11111;
-                    if (BranchOutput) PCSrc <= 1;
-                    else PCSrc <= 0;
-                end
-            endcase
-        end
-        6'b000111: begin            //bgtz
-            RegWrite <= 0;
-            ALUSrc <= 0;
-            RegDst <= 1'bx;
-            MemWrite <= 2'b00;
-            MemRead <= 2'b00;
-            MemToReg <= 0;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b11111;
-            ShiftControl <= 0;
-            if (BranchOutput) PCSrc <= 1;
-            else PCSrc <= 0;
-        end
-        6'b000110: begin            //blez
-            RegWrite <= 0;
-            ALUSrc <= 0;
-            RegDst <= 1'bx;
-            MemWrite <= 2'b00;
-            MemRead <= 2'b00;
-            MemToReg <= 0;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b11111;
-            ShiftControl <= 0;
-            if (BranchOutput) PCSrc <= 1;
-            else PCSrc <= 0;
-        end
+        // 6'b000001: begin            //bgez, bltz
+        //     RegWrite <= 0;
+        //     ALUSrc <= 0;
+        //     RegDst <= 1'bx;
+        //     MemWrite <= 2'b00;
+        //     MemRead <= 2'b00;
+        //     MemToReg <= 0;
+        //     Jump <= 0;
+        //     Jr <= 0;
+        //     Jal <= 0;
+        //     ShiftControl <= 0;
+        //     case(Instruction[20:16])            //Uses rt as an extension of the opcode
+        //         5'b00001: begin                 //bgez
+        //             ALUControl <= 5'b11111;
+        //             if (BranchOutput) PCSrc <= 1;
+        //             else PCSrc <= 0;
+        //         end
+        //         5'b00000: begin                 //bltz
+        //             ALUControl <=5'b11111;
+        //             if (BranchOutput) PCSrc <= 1;
+        //             else PCSrc <= 0;
+        //         end
+        //     endcase
+        // end
+        // 6'b000111: begin            //bgtz
+        //     RegWrite <= 0;
+        //     ALUSrc <= 0;
+        //     RegDst <= 1'bx;
+        //     MemWrite <= 2'b00;
+        //     MemRead <= 2'b00;
+        //     MemToReg <= 0;
+        //     Jump <= 0;
+        //     Jr <= 0;
+        //     Jal <= 0;
+        //     ALUControl <= 5'b11111;
+        //     ShiftControl <= 0;
+        //     if (BranchOutput) PCSrc <= 1;
+        //     else PCSrc <= 0;
+        // end
+        // 6'b000110: begin            //blez
+        //     RegWrite <= 0;
+        //     ALUSrc <= 0;
+        //     RegDst <= 1'bx;
+        //     MemWrite <= 2'b00;
+        //     MemRead <= 2'b00;
+        //     MemToReg <= 0;
+        //     Jump <= 0;
+        //     Jr <= 0;
+        //     Jal <= 0;
+        //     ALUControl <= 5'b11111;
+        //     ShiftControl <= 0;
+        //     if (BranchOutput) PCSrc <= 1;
+        //     else PCSrc <= 0;
+        // end
         6'b000010: begin            //j
             RegWrite <= 0;
             ALUSrc <= 1'bx;
