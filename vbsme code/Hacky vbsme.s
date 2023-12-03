@@ -79,7 +79,7 @@ frame1: .word 255,  254,  253,  252,  251,  250,  249,  248,  247,  246,  245,  
 window1: .word    99,  99,  99,  99,   
           .word    99,  99,  99,  99,   
           .word    99,  99,  99,  99,   
-           .word   99,  99,  99,  99
+          .word   99,  99,  99,  99
 
 newline: .asciiz     "\n" 
 
@@ -92,10 +92,10 @@ newline: .asciiz     "\n"
 .globl  main
 
 # Begin subroutine
-main:
-    la $a0, asize1     # 1st parameter: address of asize5[0]
-    la $a1, frame1     # 2nd parameter: address of frame5[0]
-    la $a2, window1    # 3rd parameter: address of window5[0] 
+main:  
+    la      $a0, asize1     # 1st parameter: address of asize5[0]
+    la      $a1, frame1     # 2nd parameter: address of frame5[0]
+    la      $a2, window1    # 3rd parameter: address of window5[0] 
     add $v0, $zero, $zero            # reset $v0 and $V1
     add $v1, $zero, $zero
 
@@ -104,69 +104,61 @@ vars:
     addi $s0, $zero, 4             #rows/cols of window
     addi $s1, $zero, 64            #rows/cols of frame
     addi $s2, $zero, 61            #frameRows - windowRows + 1 and frameCols - windowCols + 1
+    addi $s3, $zero, 99            #value for window
+    addi $s5, $zero, 3
 
     addi $s7, $zero, 32767        #set minsad
     addi $t0, $zero, 0              #i = 0
     addi $t1, $zero, 0              #j = 0
    
-                            #Used t2 and t3 later for k and l
-
+                            #Used t2 later for k
 
 mainloop:
     slt $t8, $s2, $t0           #61 < i - should be 0, if 1 i==61 which is wrong
     slt $t9, $s2, $t1           #61 < j
     add $s6, $zero, $zero       # sad = 0
-    or $t7, $t8, $t9            # if 1 we've gone too far
+    add $t7, $t8, $t9           # if 1 we've gone too far
     add $t2, $zero, $zero       #k = 0
     bne $t7, $zero, exit        # exit if the result is not 0, want it to be 0
-    
 
 outerfor:
-    slt $t7, $t2, $s0           #k < 4
-    add $t3, $zero, $zero       #l = 0
-    beq $t7, $zero, setmincondition     #exit the loop if that's false
-    j innerfor
+    slt $t7, $s5, $t2           #3 < k
+    bne $t7, $zero, setmincondition     #exit the loop if that's false
 
-innerfor:
-    slt $t8, $t3, $s0                   # l < wcols
-    beq $t8, $zero, outerforadd         # exit the loop if that's false
     #calc sad - using t6-t9, s6 for curent sad, 7 for minsad
     
-    add $t6, $t0, $t2           #i + k
-    add $t7, $t1, $t3           #j + 1
-    mul $t6, $s1, $t6           # rows (t6) * wcols (zero based indexing so don't subtract)
-    add $t6, $t7, $t6           # rows * cols + cols
-    sll, $t6, $t6, 2            # multiply index for 1D array *4
-    add $t6, $a1, $t6           # Add to base address
-    lw $t8, 0($t6)              # Get frame[i+k, j+l]
+    add $s4, $t0, $t2           #i + k
+    mul $s4, $s1, $s4           # rows (t6) * wcols (zero based indexing so don't subtract)
+    add $s4, $t1, $s4           # rows * cols + cols (j)
+    mul $s4, $s4, $s0           # multiply index for 1D array *4 ($s0 is 4)
+    add $s4, $a1, $s4           # Add to base address
 
-    mul $t7, $s0, $t2           # k * fcols
-    add $t7, $t7, $t3           # add l to k*fcols
-    sll $t7, $t7, 2             # multiply index for 1D array *4
-    add $t7, $a2, $t7           # Add base address
-    lw $t9, 0($t7)              # Get window[k, l]
+    lw $t4, 0($s4)              # Get frame[i+k, j+l]
+    sub $t4, $t4, $s3
 
-    sub $t7, $t8, $t9           #$t8-$t9 (frame[i+k, j+l] - window[k, l])
-    slt $t6, $t7, $zero
-    beq $t6, $zero, positive    # If positive, skip next line
-    sub $t7, $zero, $t7         #subtract t7 from 0 to get -(t7)
+    lw $t5, 4($s4)              #Frame[i+k, j+l+4]
+    sub $t5, $t5, $s3
 
-positive: #Continuation of innerfor
-    add $s6, $t7, $s6           #Set $s6 to current sad
+    lw $t6, 8($s4)
+    sub $t6, $t6, $s3
 
-addinnerfor:
-    addi $t3, $t3, 1                #Add 1 to l
-    j innerfor                      #Loop
+    lw $t7, 12($s4)
+    add $s6, $t4, $t5
+    sub $t7, $t7, $s3
 
-outerforadd:                    #after the inner for loop, add 1 to k
-    addi $t2, $t2, 1            #and jump back to the outer loop
-    j outerfor
+    add $t7, $t6, $t7
+    add $s6, $s6, $t7
+
+    slt $t3, $s7, $s6
+    bne $t3, $zero, endfors
+                                 
+    addi $t2, $t2, 1            #after the inner for loop, add 1 to k
+    j outerfor                  #and jump back to the outer loop
 
 
 setmincondition:
     #Check if sad <= minsad - will trigger on first iteration
-    slt $t9, $s7, $s6               #want it to be 0
-    bne $t9, $zero, endfors         #branch if not 0
+    bne $t3, $zero, endfors         #branch if not 0 - done in outerfor 
 
 setmin:
     add $s7, $s6, $zero             #Minsad = sad
@@ -175,11 +167,10 @@ setmin:
     
 endfors:
     addi $t1, $t1, 1        #j += 1
-    bne $t1, $s2, mainloop
+    bne $t1, $s2, mainloop  #if equal to the number of columns, add 1 to i and set j to 0
     addi $t0, $t0, 1
     add $t1, $zero, $zero
     j mainloop                  
 
 exit:
     j exit
-
