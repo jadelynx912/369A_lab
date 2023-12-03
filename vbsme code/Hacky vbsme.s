@@ -89,65 +89,13 @@ newline: .asciiz     "\n"
 ########################################################################################################################
 
 .text
-
-.globl main
-
-main: 
-    addi    $sp, $sp, -4    # Make space on stack
-    sw      $ra, 0($sp)     # Save return address
-  
-   # Start test 5
-   ############################################################
-   la      $a0, asize1     # 1st parameter: address of asize5[0]
-   la      $a1, frame1     # 2nd parameter: address of frame5[0]
-   la      $a2, window1    # 3rd parameter: address of window5[0] 
-
-   jal     vbsme           # call function
-   jal     print_result    # print results to console
-   ############################################################
-   # End of test 5
-
-
-    lw      $ra, 0($sp)         # Restore return address
-    addi    $sp, $sp, 4         # Restore stack pointer
-    j       end_program                 # Return
-
-end_program:                    # remain in infinite loop
-	j end_program
-################### Print Result ####################################
-print_result:
-   # Printing $v0
-    add     $a0, $v0, $zero     # Load $v0 for printing
-    li      $v0, 1              # Load the system call numbers
-    syscall
-   
-    # Print newline.
-    la      $a0, newline          # Load value for printing
-    li      $v0, 4                # Load the system call numbers
-    syscall
-   
-    # Printing $v1
-    add     $a0, $v1, $zero      # Load $v1 for printing
-    li      $v0, 1                # Load the system call numbers
-    syscall
-
-    # Print newline.
-    la      $a0, newline          # Load value for printing
-    li      $v0, 4                # Load the system call numbers
-    syscall
-   
-    # Print newline.
- #   la      $a0, newline          # Load value for printing
- #   li      $v0, 4                # Load the system call numbers
- #   syscall
-   
- #   jr      $ra                   #function return
-
-.text
-.globl  vbsme
+.globl  main
 
 # Begin subroutine
-vbsme:  
+main:
+    la $a0, asize1     # 1st parameter: address of asize5[0]
+    la $a1, frame1     # 2nd parameter: address of frame5[0]
+    la $a2, window1    # 3rd parameter: address of window5[0] 
     add $v0, $zero, $zero            # reset $v0 and $V1
     add $v1, $zero, $zero
 
@@ -233,5 +181,5 @@ endfors:
     j mainloop                  
 
 exit:
-    jr $ra
+    j exit
 
