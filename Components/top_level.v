@@ -56,6 +56,15 @@ wire[1:0] MemWriteExecute, MemReadExecute;
 
 wire [31:0] ALUResult;
 
+////////////////////////////////// Forwarding vars
+
+wire [1:0] fwdControlA, fwdControlB;
+
+wire [31:0] fwdOutA, fwdOutB;
+
+wire [4:0] RSExecute, RTExecute;
+
+
 //////////////////////////////////
 wire RegWriteMemory, MemToRegMemory, JalMemory;
 wire [31:0] PCAddResultMemory, ALUResultMemory, ReadData2Memory, ReadData;
@@ -114,17 +123,23 @@ HazardDetection hazzy (instructionDecode, BranchOutput, Branch, MemReadExecute, 
 
 
 //EXECUTE STAGE
-Decode_To_Execute dte (Clk, Reset, RegWrite, ALUSrc, MemWrite, MemRead, MemToReg, Jal, ALUControl, PCAddResultDecode, ShiftSwitchWire, ReadData2, signExtend, regDstOutput,
-    RegWriteExecute, ALUSrcExecute, MemWriteExecute, MemReadExecute, MemToRegExecute, JalExecute, ALUControlExecute, PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, rdExecute);
+Decode_To_Execute dte (Clk, Reset, instructionDecode[25:21], instructionDecode[20:16], RegWrite, ALUSrc, MemWrite, MemRead, MemToReg, Jal, ALUControl, PCAddResultDecode, ShiftSwitchWire, ReadData2, signExtend, regDstOutput,
+    RSExecute, RTExecute, RegWriteExecute, ALUSrcExecute, MemWriteExecute, MemReadExecute, MemToRegExecute, JalExecute, ALUControlExecute, PCAddResultExecute, ReadData1Execute, ReadData2Execute, SignExtExecute, rdExecute);
 
 Mux32Bit2To1 aluSource(ALUSrcOutput, SignExtExecute, ReadData2Execute, ALUSrcExecute); //SignExtOut if 1, ReadData2Out if 0
 
-ALU32Bit alu(ALUControlExecute, ReadData1Execute, ALUSrcOutput, ALUResult);
+Mux32Bit3To1 forwdAMux(fwdOutA, ReadData1Execute, ALUResultMemory, WriteDataReg, fwdControlA);
 
+Mux32Bit3To1 forwdBMux(fwdOutB, ALUSrcOutput, ALUResultMemory, WriteDataReg, fwdControlB);
+
+ALU32Bit alu(ALUControlExecute, fwdOutA, fwdOutB, ALUResult);
+
+Forwarding forwd(fwdControlA, fwdControlB, RegWriteMemory, RdMemory, RegWriteWrite, RegRdWrite, RSExecute, RTExecute);
 
 //DATA MEMORY STAGE
 Execute_To_DataMem etdm(Clk, Reset, RegWriteExecute, MemWriteExecute, MemReadExecute, MemToRegExecute, JalExecute, ReadData2Execute, ALUResult, PCAddResultExecute, rdExecute, 
                                     RegWriteMemory, MemWriteMemory, MemReadMemory, MemToRegMemory, JalMemory, ReadData2Memory, ALUResultMemory, PCAddResultMemory, RdMemory);
+
 
 DataMemory DataMem(ALUResultMemory, ReadData2Memory, Clk, MemWriteMemory, MemReadMemory, ReadData); 
 

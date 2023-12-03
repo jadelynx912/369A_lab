@@ -83,6 +83,7 @@ module HazardDetection(instruction, BranchOutput, Branch, MemReadExecution, MemR
         end
 
         //r-type followed by JR
+        //((rdMemory != 0) & (regWriteMemory == 1) & (rdMemory == 31)) | 
         else if (((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000)) & (((rdMemory != 0) & (regWriteMemory == 1) & (rdMemory == 31)) | ((rdExecution != 0) &(regWriteExecution == 1) & ((rdExecution == 31))))) begin
             PCWrite <= 0;
             DecodeRegWrite <= 0;
@@ -93,6 +94,7 @@ module HazardDetection(instruction, BranchOutput, Branch, MemReadExecution, MemR
         
         //lw followed by JR
         //checks both opcode and func
+        //((rdMemory != 0) & (MemReadMemory != 2'b00) & (rdMemory == 31)) | 
         else if (((instruction[31:26] == 6'b000000) & (instruction[5:0] == 6'b001000)) & (((rdMemory != 0) & (MemReadMemory != 2'b00) & (rdMemory == 31)) | ((rdExecution != 0) & (MemReadExecution != 2'b00) & (rdExecution == 31)))) begin
             PCWrite <= 0;
             DecodeRegWrite <= 0;
@@ -110,13 +112,13 @@ module HazardDetection(instruction, BranchOutput, Branch, MemReadExecution, MemR
             
         end        
         ////////Memory Stage
-         else if ((rdMemory != 0) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt)))begin //nop
-            PCWrite <= 0;
-            DecodeRegWrite <= 0;
-            MuxControl <= 0;
-            flushControl <= 0;
-            path <= 2;
-        end
+//         else if ((rdMemory != 0) & (regWriteMemory == 1) & ((rdMemory == rs) | (rdMemory == rt)))begin //nop
+//            PCWrite <= 0;
+//            DecodeRegWrite <= 0;
+//            MuxControl <= 0;
+//            flushControl <= 0;
+//            path <= 2;
+//        end
         
         else begin //Normal function
             PCWrite <= 1;

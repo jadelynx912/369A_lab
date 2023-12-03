@@ -20,25 +20,31 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 module Forwarding(A, B, MemRegWrite, MemWriteReg, WBRegWrite, WBWriteReg, EX_rs, EX_rt);
-    output wire [1:0] A, B;
+    output reg [1:0] A, B;
     input MemRegWrite, WBRegWrite;
     input [4:0] MemWriteReg, WBWriteReg, EX_rs, EX_rt;
 
     always @ (*) begin
         A <= 0;
         B <= 0;
-        if (MemRegWrite && MemWriteReg != 0 && MemWriteREg == EX_rs) begin
+        if (MemRegWrite && MemWriteReg != 0 && MemWriteReg == EX_rs) begin
             A <= 2'd1;
         end 
         else if (WBRegWrite && WBWriteReg != 0 && WBWriteReg == EX_rs) begin
             A <= 2'd2;
         end
+        else begin
+            A <= 2'd0;
+        end
 
-        if (MemRegWrite && MemWriteReg != 0 && MemWriteREg == EX_rt) begin
+        if (MemRegWrite && MemWriteReg != 0 && MemWriteReg == EX_rt) begin
             B <= 2'd1;
         end 
         else if (WBRegWrite && WBWriteReg != 0 && WBWriteReg == EX_rt) begin
             B <= 2'd2;
+        end
+        else begin
+            B <= 2'd0;
         end
     end
     
