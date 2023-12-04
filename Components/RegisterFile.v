@@ -48,7 +48,7 @@
 // to allow for data multiplexing and setup time.
 ////////////////////////////////////////////////////////////////////////////////
 
-module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2, v0, v1);
+module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2, v0, v1, sad);
 
 // ReadRegister1: 5-Bit address to select a register to be read through 32-Bit 
 //                output port 'ReadRegister1'.
@@ -72,7 +72,7 @@ reg [31:0] regFile [31:0];
 //reg [31:0] regDefult [31:0];
 
 output reg [31:0] ReadData1, ReadData2;
-output reg [31:0] v0, v1;
+output reg [31:0] v0, v1, sad;
 
 always @(negedge Clk) begin
     if (RegWrite == 1) begin
@@ -95,6 +95,7 @@ always @ (*) begin
     end
     v0 <= regFile[2];
     v1 <= regFile[3];
+    sad <= regFile[23];
 end
 
 endmodule
