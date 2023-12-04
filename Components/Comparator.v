@@ -58,22 +58,22 @@ module Comparator(Instruction, A, B, Branch, Output);
         //     Branch <= 1;
         //     if (A <= 0) Output <= 1;
         // end
-        6'b000000: begin
-            case(Instruction[5:0])          //jr
-                6'b001000: begin
-                    Branch <= 1;
-                    Output <= 1;
-                end
-            endcase
-        end
+//        6'b000000: begin
+//            case(Instruction[5:0])          //jr
+//                6'b001000: begin
+//                    Branch <= 1;
+//                    Output <= 1;
+//                end
+//            endcase
+//        end
         6'b000010: begin                    //j
             Branch <= 1;
             Output <= 1;
         end
-        6'b000011: begin                    //jal
-            Branch <= 1;
-            Output <= 1;
-        end
+//        6'b000011: begin                    //jal
+//            Branch <= 1;
+//            Output <= 1;
+//        end
         endcase
     end
 endmodule

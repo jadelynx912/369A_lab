@@ -39,10 +39,6 @@ module Controller(Instruction, BranchOutput, controlMuxSignal, RegWrite, ALUSrc,
         PCSrc <= 0;
     end
     
-    always @(*) begin
-
-    end
-    
     always @ (*) begin
         if (controlMuxSignal == 1)begin
         case(Instruction[31:26])
