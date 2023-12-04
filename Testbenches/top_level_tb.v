@@ -25,9 +25,9 @@
 module top_level_tb();
     reg Clk, Rst;
     
-    wire [31:0] xCoord, yCoord;
+    wire [31:0] xCoord, yCoord, sad;
     
-    top_level tl(Clk, Rst, xCoord, yCoord);
+    top_level tl(Clk, Rst, xCoord, yCoord, sad);
     
     always 
     begin
