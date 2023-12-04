@@ -30,8 +30,10 @@ module top_top_level(Clk, Reset, out7, en_out);
     wire [31:0] xCoord;
     wire [31:0] yCoord;
     wire [31:0] sad;
+    wire [31:0] PCResult;
+    wire [31:0] WritebackOutput;
     
-    top_level datapath(Clk, Reset, xCoord, yCoord, sad);
+    top_level datapath(Clk, Reset, xCoord, yCoord, sad, PCResult, WritebackOutput);
     Two4DigitDisplay tdd1(Clk, yCoord[15:0], xCoord[15:0], out7, en_out);
 
 endmodule

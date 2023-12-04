@@ -22,11 +22,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module top_level(Clk, Reset, xCoord, yCoord, sad);
+module top_level(Clk, Reset, xCoord, yCoord, sad, PCResult, WritebackOutput);
 
 input Clk, Reset; 
 output [31:0] xCoord, yCoord, sad;
-wire [31:0] PCResult;
+output [31:0] PCResult;
+output [31:0] WritebackOutput;
 
 wire [31:0] instruction;
 wire [31:0] PCAddResult, PCSrcOutput, NextPC;
@@ -69,7 +70,7 @@ wire [1:0] MemWriteMemory, MemReadMemory;
 
 //////////////////////////////////
 wire RegWriteWrite, MemToRegWrite;
-wire [31:0] MemReadDataWrite, ALUResultWrite, WritebackOutput;
+wire [31:0] MemReadDataWrite, ALUResultWrite;
 wire [4:0] RegRdWrite;
 
 Mux32Bit2To1 PCountSrc(PCSrcOutput, PCAdder_SignExtension, PCAddResult, PCSrc); 
