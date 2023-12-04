@@ -21,16 +21,15 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module top_top_level(Clk, Reset, out7, en_out); 
+module top_top_level(Clk, Reset, out7, en_out);
+// 
     input Clk, Reset;
     output [6:0] out7;
     output [7:0] en_out;
     
     wire [31:0] xCoord;
     wire [31:0] yCoord;
-    //wire ClkOut;
     
-    //ClkDiv clkdiv1(Clk, 0, ClkOut);
     top_level datapath(Clk, Reset, xCoord, yCoord);
     Two4DigitDisplay tdd1(Clk, yCoord[15:0], xCoord[15:0], out7, en_out);
 

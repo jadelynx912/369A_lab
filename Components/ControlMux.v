@@ -20,16 +20,16 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module ControlMux(PreRegWrite, PreALUSrc, PreRegDst, PreMemWrite, PreMemRead, PreMemToReg, PreJump, PreJr, PreJal, PreALUControl, PreShiftControl, PrePCSrc,
-                    RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, Jr, Jal, ALUControl, ShiftControl, PCSrc, controlMuxSignal);
+module ControlMux(PreRegWrite, PreALUSrc, PreRegDst, PreMemWrite, PreMemRead, PreMemToReg, PreJump, PreALUControl, PreShiftControl, PrePCSrc,
+                    RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, ALUControl, ShiftControl, PCSrc, controlMuxSignal);
 
 
 input controlMuxSignal;
-input PreRegWrite, PreALUSrc,PreRegDst, PreMemToReg, PreJump, PreJr, PreJal, PreShiftControl, PrePCSrc;
+input PreRegWrite, PreALUSrc,PreRegDst, PreMemToReg, PreJump, PreShiftControl, PrePCSrc;
 input [1:0] PreMemWrite, PreMemRead;
 input [4:0] PreALUControl;
 
-output reg RegWrite, ALUSrc, RegDst, MemToReg, Jump, Jr, Jal, ShiftControl, PCSrc;
+output reg RegWrite, ALUSrc, RegDst, MemToReg, Jump, ShiftControl, PCSrc;
 output reg [4:0] ALUControl;
 output reg [1:0] MemWrite, MemRead;
 
@@ -42,8 +42,6 @@ always @(*) begin
         MemRead <= PreMemRead;
         MemToReg <= PreMemToReg;
         Jump <= PreJump;
-        Jr <= PreJr;
-        Jal <= PreJal;
         ALUControl <= PreALUControl;
         ShiftControl <= PreShiftControl;
         PCSrc <= PrePCSrc;
@@ -56,8 +54,6 @@ always @(*) begin
         MemRead <= 0;
         MemToReg <= 0;
         Jump <= 0;
-        Jr <= 0;
-        Jal <= 0;
         ALUControl <= 0;
         ShiftControl <= 0;
         PCSrc <= 0;
