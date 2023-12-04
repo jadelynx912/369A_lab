@@ -45,7 +45,7 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData);
     output reg[31:0] ReadData; // Contents of memory location at Address
 
     /* Please fill in the implementation here */
-    reg[31:0] memory[0:5095];
+    reg[31:0] memory[0:3971];
     
     initial begin
         $readmemh("data_memory.mem", memory);
