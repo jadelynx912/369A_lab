@@ -45,24 +45,24 @@ module ALU32Bit(ALUControl, A, B, ALUResult);
             5'b00011: begin                 // Multiplication
                 ALUResult <= A * B;
             end
-            5'b00100: begin                 // Logical shift left
-                ALUResult <= B << A[10:6];
-            end
-            5'b00101: begin                 // Logical shift right 
-                ALUResult <= B >> A[10:6];
-            end
-            5'b00110: begin                 // Logical and
-                ALUResult <= A & B;
-            end
+//            5'b00100: begin                 // Logical shift left
+//                ALUResult <= B << A[10:6];
+//            end
+//            5'b00101: begin                 // Logical shift right 
+//                ALUResult <= B >> A[10:6];
+//            end
+//            5'b00110: begin                 // Logical and
+//                ALUResult <= A & B;
+//            end
             5'b00111: begin                 //Logical or
                 ALUResult <= A | B;
             end    
-	        5'b01000: begin                 //Logical xor
-                ALUResult <= A ^ B;
-            end
-            5'b01101: begin                 // Logical nor
-	            ALUResult <= ~(A | B);
-            end
+//	        5'b01000: begin                 //Logical xor
+//                ALUResult <= A ^ B;
+//            end
+//            5'b01101: begin                 // Logical nor
+//	            ALUResult <= ~(A | B);
+//            end
             5'b01110: begin                 //Logical slt
                 ALUResult <= (A < B);
             end

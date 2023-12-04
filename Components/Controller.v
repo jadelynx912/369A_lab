@@ -70,20 +70,20 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
                     ShiftControl <= 0;
                     PCSrc <= 0;
                 end
-                6'b000000: begin                        //sll
-                    ALUControl <= 5'b00100;
-                    ShiftControl <= 1;
-                end
-                6'b000010: begin                         //srl
-                    ALUControl <= 5'b00101;
-                    ShiftControl <= 1;
-                end
+//                6'b000000: begin                        //sll
+//                    ALUControl <= 5'b00100;
+//                    ShiftControl <= 1;
+//                end
+//                6'b000010: begin                         //srl
+//                    ALUControl <= 5'b00101;
+//                    ShiftControl <= 1;
+//                end
                 6'b100000: ALUControl <= 5'b00001;      //add
                 6'b100010: ALUControl <= 5'b00010;      //sub
-                6'b100100: ALUControl <= 5'b00110;      //and
-                6'b100101: ALUControl <= 5'b00111;      //or
-                6'b100110: ALUControl <= 5'b01000;      //xor
-                6'b100111: ALUControl <= 5'b01101;      //nor
+//                6'b100100: ALUControl <= 5'b00110;      //and
+//                6'b100101: ALUControl <= 5'b00111;      //or
+//                6'b100110: ALUControl <= 5'b01000;      //xor
+//                6'b100111: ALUControl <= 5'b01101;      //nor
                 6'b101010: ALUControl <= 5'b01110;      //slt
             endcase
         end
@@ -115,76 +115,76 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             ShiftControl <= 0;
             PCSrc <= 0;
         end
-        6'b100000: begin                                //lb
-            RegWrite <= 1;
-            ALUSrc <= 1;
-            RegDst <= 0;
-            MemWrite <= 2'b00;
-            MemRead <= 2'b11;
-            MemToReg <= 0;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b00001;      //add to get address
-            ShiftControl <= 0; 
-            PCSrc <= 0;
-        end
-        6'b100001: begin                                //lh
-            RegWrite <= 1;
-            ALUSrc <= 1;
-            RegDst <= 0;
-            MemWrite <= 2'b00;
-            MemRead <= 2'b10;
-            MemToReg <= 0;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b00001;      //add to get address
-            ShiftControl <= 0;
-            PCSrc <= 0;
-        end      
-        6'b101011: begin                            //sw
-            RegWrite <= 0;
-            ALUSrc <= 1;
-            RegDst <= 1'bx;
-            MemWrite <= 2'b01;
-            MemRead <= 2'b00;
-            MemToReg <= 0;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b00001;     //add to get address
-            ShiftControl <= 0;
-            PCSrc <= 0;
-        end
-        6'b101000: begin                            //sb
-            RegWrite <= 0;
-            ALUSrc <= 1;
-            RegDst <= 1'bx;
-            MemWrite <= 2'b11;
-            MemRead <= 2'b00;
-            MemToReg <= 0;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b00001;     //add to get address
-            ShiftControl <= 0;
-            PCSrc <= 0;
-        end
-        6'b101001: begin                            //sh
-            RegWrite <= 0;
-            ALUSrc <= 1;
-            RegDst <= 1'bx;
-            MemWrite <= 2'b10;
-            MemRead <= 2'b00;
-            MemToReg <= 0;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b00001;     //add to get address
-            ShiftControl <= 0;
-            PCSrc <= 0;
-        end
+//        6'b100000: begin                                //lb
+//            RegWrite <= 1;
+//            ALUSrc <= 1;
+//            RegDst <= 0;
+//            MemWrite <= 2'b00;
+//            MemRead <= 2'b11;
+//            MemToReg <= 0;
+//            Jump <= 0;
+//            Jr <= 0;
+//            Jal <= 0;
+//            ALUControl <= 5'b00001;      //add to get address
+//            ShiftControl <= 0; 
+//            PCSrc <= 0;
+//        end
+//        6'b100001: begin                                //lh
+//            RegWrite <= 1;
+//            ALUSrc <= 1;
+//            RegDst <= 0;
+//            MemWrite <= 2'b00;
+//            MemRead <= 2'b10;
+//            MemToReg <= 0;
+//            Jump <= 0;
+//            Jr <= 0;
+//            Jal <= 0;
+//            ALUControl <= 5'b00001;      //add to get address
+//            ShiftControl <= 0;
+//            PCSrc <= 0;
+//        end      
+//        6'b101011: begin                            //sw
+//            RegWrite <= 0;
+//            ALUSrc <= 1;
+//            RegDst <= 1'bx;
+//            MemWrite <= 2'b01;
+//            MemRead <= 2'b00;
+//            MemToReg <= 0;
+//            Jump <= 0;
+//            Jr <= 0;
+//            Jal <= 0;
+//            ALUControl <= 5'b00001;     //add to get address
+//            ShiftControl <= 0;
+//            PCSrc <= 0;
+//        end
+//        6'b101000: begin                            //sb
+//            RegWrite <= 0;
+//            ALUSrc <= 1;
+//            RegDst <= 1'bx;
+//            MemWrite <= 2'b11;
+//            MemRead <= 2'b00;
+//            MemToReg <= 0;
+//            Jump <= 0;
+//            Jr <= 0;
+//            Jal <= 0;
+//            ALUControl <= 5'b00001;     //add to get address
+//            ShiftControl <= 0;
+//            PCSrc <= 0;
+//        end
+//        6'b101001: begin                            //sh
+//            RegWrite <= 0;
+//            ALUSrc <= 1;
+//            RegDst <= 1'bx;
+//            MemWrite <= 2'b10;
+//            MemRead <= 2'b00;
+//            MemToReg <= 0;
+//            Jump <= 0;
+//            Jr <= 0;
+//            Jal <= 0;
+//            ALUControl <= 5'b00001;     //add to get address
+//            ShiftControl <= 0;
+//            PCSrc <= 0;
+//        end
         6'b001000: begin            //addi
             RegWrite <= 1;
             ALUSrc <= 1;
@@ -199,20 +199,20 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             ShiftControl <= 0;
             PCSrc <= 0;
         end 
-        6'b001100: begin            //andi
-            RegWrite <= 1;
-            ALUSrc <= 1;
-            RegDst <= 0;
-            MemWrite <= 2'b00;
-            MemRead <= 2'b00;
-            MemToReg <= 1;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b00110;
-            ShiftControl <= 0;
-            PCSrc <= 0;
-        end 
+//        6'b001100: begin            //andi
+//            RegWrite <= 1;
+//            ALUSrc <= 1;
+//            RegDst <= 0;
+//            MemWrite <= 2'b00;
+//            MemRead <= 2'b00;
+//            MemToReg <= 1;
+//            Jump <= 0;
+//            Jr <= 0;
+//            Jal <= 0;
+//            ALUControl <= 5'b00110;
+//            ShiftControl <= 0;
+//            PCSrc <= 0;
+//        end 
         6'b001101: begin            //ori
             RegWrite <= 1;
             ALUSrc <= 1;
@@ -227,34 +227,34 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             ShiftControl <= 0;
             PCSrc <= 0;
         end
-        6'b001110: begin            //xori
-            RegWrite <= 1;
-            ALUSrc <= 1;
-            RegDst <= 0;
-            MemWrite <= 2'b00;
-            MemRead <= 2'b00;
-            MemToReg <= 1;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b01000;
-            ShiftControl <= 0;
-            PCSrc <= 0;
-        end
-        6'b001010: begin            //slti
-            RegWrite <= 1;
-            ALUSrc <= 1;
-            RegDst <= 0;
-            MemWrite <= 2'b00;
-            MemRead <= 2'b00;
-            MemToReg <= 1;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b01110;
-            ShiftControl <= 0;
-            PCSrc <= 0;
-        end
+//        6'b001110: begin            //xori
+//            RegWrite <= 1;
+//            ALUSrc <= 1;
+//            RegDst <= 0;
+//            MemWrite <= 2'b00;
+//            MemRead <= 2'b00;
+//            MemToReg <= 1;
+//            Jump <= 0;
+//            Jr <= 0;
+//            Jal <= 0;
+//            ALUControl <= 5'b01000;
+//            ShiftControl <= 0;
+//            PCSrc <= 0;
+//        end
+//        6'b001010: begin            //slti
+//            RegWrite <= 1;
+//            ALUSrc <= 1;
+//            RegDst <= 0;
+//            MemWrite <= 2'b00;
+//            MemRead <= 2'b00;
+//            MemToReg <= 1;
+//            Jump <= 0;
+//            Jr <= 0;
+//            Jal <= 0;
+//            ALUControl <= 5'b01110;
+//            ShiftControl <= 0;
+//            PCSrc <= 0;
+//        end
         6'b000101: begin            //bne
             RegWrite <= 0;
             ALUSrc <= 0;
@@ -270,21 +270,21 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             if (BranchOutput) PCSrc <= 1;
             else PCSrc <= 0;
         end
-        6'b000100: begin            //beq
-            RegWrite <= 0;
-            ALUSrc <= 0;
-            RegDst <= 1'bx;
-            MemWrite <= 2'b00;
-            MemRead <= 2'b00;
-            MemToReg <= 0;
-            Jump <= 0;
-            Jr <= 0;
-            Jal <= 0;
-            ALUControl <= 5'b11111;
-            ShiftControl <= 0;
-            if (BranchOutput) PCSrc <= 1;
-            else PCSrc <= 0;
-        end
+//        6'b000100: begin            //beq
+//            RegWrite <= 0;
+//            ALUSrc <= 0;
+//            RegDst <= 1'bx;
+//            MemWrite <= 2'b00;
+//            MemRead <= 2'b00;
+//            MemToReg <= 0;
+//            Jump <= 0;
+//            Jr <= 0;
+//            Jal <= 0;
+//            ALUControl <= 5'b11111;
+//            ShiftControl <= 0;
+//            if (BranchOutput) PCSrc <= 1;
+//            else PCSrc <= 0;
+//        end
         // 6'b000001: begin            //bgez, bltz
         //     RegWrite <= 0;
         //     ALUSrc <= 0;

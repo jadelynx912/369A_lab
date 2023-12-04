@@ -34,10 +34,10 @@ module Comparator(Instruction, A, B, Branch, Output);
             Branch <= 1;
             if (A != B) Output <= 1;
         end
-        6'b000100: begin            //beq
-            Branch <= 1;
-            if (A == B) Output <= 1;
-        end
+//        6'b000100: begin            //beq
+//            Branch <= 1;
+//            if (A == B) Output <= 1;
+//        end
         // 6'b000001: begin            //bgez, bltz
         //     case(Instruction[20:16])            //Uses rt as an extension of the opcode
         //         5'b00001: begin                 //bgez
