@@ -26,8 +26,11 @@ module top_level_tb();
     reg Clk, Rst;
     
     wire [31:0] xCoord, yCoord, sad;
+    wire [31:0] PCResult;
+    wire [31:0] WritebackOutput;
+
     
-    top_level tl(Clk, Rst, xCoord, yCoord, sad);
+    top_level tl(Clk, Rst, xCoord, yCoord, sad, PCResult, WritebackOutput);
     
     always 
     begin
