@@ -33,17 +33,14 @@ wire [31:0] PCAddResult, PCSrcOutput, NextPC;
 wire [31:0] PCAddResultDecode, instructionDecode;
 
 ///////////////////
-wire PCWrite, MuxControl, flushControl;
+wire PCWrite, flushControl;
 
-wire PreRegWrite, PreALUSrc, PreRegDst, PreMemToReg, PreJump, PreShiftControl, PrePCSrc;
-wire [1:0] PreMemWrite, PreMemRead;
-wire [4:0] PreALUControl;
 wire RegWrite, ALUSrc, RegDst, MemToReg, Jump, PCSrc; 
 wire [1:0] MemWrite, MemRead;
 wire [4:0] ALUControl;
 
 wire [4:0] regDstMux;
-wire [31:0] ReadData1, ReadData2, signExtend, jOffset, ShiftSwitchWire, temp, PCAdder_SignExtension; 
+wire [31:0] ReadData1, ReadData2, signExtend, jOffset, temp, PCAdder_SignExtension; 
 wire [27:0] tempOffset;
 wire Branch, BranchOutput;
 
