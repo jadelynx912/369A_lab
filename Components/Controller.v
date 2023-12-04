@@ -18,13 +18,15 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, ALUControl, ShiftControl, PCSrc);
+module Controller(Instruction, BranchOutput, controlMuxSignal, RegWrite, ALUSrc, RegDst, MemWrite, MemRead, MemToReg, Jump, ALUControl, PCSrc);
     input [31:0] Instruction;
     input BranchOutput;
-    output reg RegWrite, ALUSrc, RegDst, MemToReg, Jump, ShiftControl, PCSrc;
+    input controlMuxSignal;
+    output reg RegWrite, ALUSrc, RegDst, MemToReg, Jump, PCSrc;
     output reg [4:0] ALUControl;
     output reg [1:0] MemWrite, MemRead;
-        
+    
+     
     initial begin
         RegWrite <= 0;
         ALUSrc <= 0;
@@ -34,11 +36,15 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
         MemToReg <= 0;
         Jump <= 0;
         ALUControl <= 5'b11111;
-        ShiftControl <= 0;
         PCSrc <= 0;
     end
     
+    always @(*) begin
+
+    end
+    
     always @ (*) begin
+        if (controlMuxSignal == 1)begin
         case(Instruction[31:26])
         6'b000000: begin        //R-type instructions
             RegWrite <= 1;
@@ -48,7 +54,6 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             MemRead <= 2'b00;
             MemToReg <= 1;
             Jump <= 0;
-            ShiftControl <= 0;
             PCSrc <= 0;
             //To get ALU control value for each instruction
             case(Instruction[5:0])
@@ -90,7 +95,6 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             MemToReg <= 1;
             Jump <= 0;
             ALUControl <= 5'b00011;
-            ShiftControl <= 0;
             PCSrc <= 0;
         end
         6'b100011: begin                                //lw
@@ -102,7 +106,6 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             MemToReg <= 0;
             Jump <= 0;
             ALUControl <= 5'b00001;      //add to get address
-            ShiftControl <= 0;
             PCSrc <= 0;
         end
 //        6'b100000: begin                                //lb
@@ -184,7 +187,6 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             MemToReg <= 1;
             Jump <= 0;
             ALUControl <= 5'b00001;
-            ShiftControl <= 0;
             PCSrc <= 0;
         end 
 //        6'b001100: begin            //andi
@@ -210,7 +212,6 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             MemToReg <= 1;
             Jump <= 0;
             ALUControl <= 5'b00111;
-            ShiftControl <= 0;
             PCSrc <= 0;
         end
 //        6'b001110: begin            //xori
@@ -250,7 +251,6 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             MemToReg <= 0;
             Jump <= 0;
             ALUControl <= 5'b11111;
-            ShiftControl <= 0;
             if (BranchOutput) PCSrc <= 1;
             else PCSrc <= 0;
         end
@@ -332,7 +332,6 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             MemToReg <= 0;
             Jump <= 1;
             ALUControl <= 5'b11111;
-            ShiftControl <= 0;
             PCSrc <= 0;
         end
 //        6'b000011: begin            //jal
@@ -359,9 +358,20 @@ module Controller(Instruction, BranchOutput, RegWrite, ALUSrc, RegDst, MemWrite,
             MemToReg <= 0;
             Jump <= 0;
             ALUControl <= 5'b11111;
-            ShiftControl <= 0;
             PCSrc <= 0;
         end
         endcase
+        end
+        else begin
+            RegWrite <= 0;
+            ALUSrc <= 0;
+            RegDst <= 0;
+            MemWrite <= 0;
+            MemRead <= 0;
+            MemToReg <= 0;
+            Jump <= 0;
+            ALUControl <= 0;
+            PCSrc <= 0;
+        end
     end    
 endmodule
